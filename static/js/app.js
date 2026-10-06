@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Gombok és visszajelzők
     const btnSaveTop = document.getElementById('btnSaveTop');
-    const btnSaveBottom = document.getElementById('btnSaveBottom');
     const btnResetDefaults = document.getElementById('btnResetDefaults');
     const statusAlert = document.getElementById('statusAlert');
     const statusAlertTitle = document.getElementById('statusAlertTitle');
@@ -214,6 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (badgeTotalInitialOutlay) {
                 badgeTotalInitialOutlay.textContent = fmt.total_initial_outlay;
+            }
+
+            // --- Új: Kvantitatív Megtérülési Szimuláció (Chart.js) Renderelése ---
+            if (raw.simulation) {
+                renderWealthChart(raw.simulation);
             }
         } catch (err) {
             console.error("Hiba a Python kvantitatív kalkuláció hívásakor:", err);
@@ -694,11 +698,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // UI töltési állapot kijelzés
         const originalTopHtml = btnSaveTop.innerHTML;
-        const originalBottomHtml = btnSaveBottom.innerHTML;
+        const btnRunSimulation = document.getElementById('btnRunSimulation');
+        let originalRunHtml = '';
+        if (btnRunSimulation) {
+            originalRunHtml = btnRunSimulation.innerHTML;
+            btnRunSimulation.disabled = true;
+            btnRunSimulation.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> Gemini AI elemzés futtatása...';
+        }
+        
         btnSaveTop.disabled = true;
-        btnSaveBottom.disabled = true;
         btnSaveTop.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> Elemzés...';
-        btnSaveBottom.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> Gemini AI elemzés futtatása...';
 
         // Gemini kártya megjelenítése és spinner
         if (cardGeminiAnalysis && containerGeminiResults) {
@@ -710,7 +719,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="small text-muted mt-2 mb-0">A 4 kiegészítő információ relevanciájának és DCF modellbeli kihatásának vizsgálata</p>
                 </div>
             `;
-            cardGeminiAnalysis.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         try {
@@ -740,9 +748,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(err);
         } finally {
             btnSaveTop.disabled = false;
-            btnSaveBottom.disabled = false;
             btnSaveTop.innerHTML = originalTopHtml;
-            btnSaveBottom.innerHTML = originalBottomHtml;
+            if (btnRunSimulation) {
+                btnRunSimulation.disabled = false;
+                btnRunSimulation.innerHTML = originalRunHtml;
+            }
         }
     }
 
@@ -766,6 +776,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.ai_adjusted_suggestions) {
                     applyAiAdjustedSuggestionsToUI(data.ai_adjusted_suggestions);
                 }
+
+                // Felhasználói kérés: Az 'Egyéb' szöveges cellák legyenek mindig teljesen üresek oldalbetöltéskor és alapértékre állításkor!
+                if (propOtherInfo) propOtherInfo.value = "";
+                if (loanOtherInfo) loanOtherInfo.value = "";
+                if (rentOtherInfo) rentOtherInfo.value = "";
+                if (invOtherInfo) invOtherInfo.value = "";
             }
         } catch (err) {
             console.error("Nem sikerült lekérni a mentett adatokat:", err);
@@ -789,8 +805,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.property.furnishing_cost_huf !== undefined) {
                 propFurnishingHuf.value = formatWithDots(data.property.furnishing_cost_huf);
             }
-            if (data.property.other_info && propOtherInfo) {
-                propOtherInfo.value = data.property.other_info;
+            if (propOtherInfo) {
+                propOtherInfo.value = data.property.other_info || "";
             }
         }
 
@@ -808,8 +824,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.classList.toggle('active', btn.dataset.term === String(data.loan.loan_term_years));
             });
 
-            if (data.loan.other_info && loanOtherInfo) {
-                loanOtherInfo.value = data.loan.other_info;
+            if (loanOtherInfo) {
+                loanOtherInfo.value = data.loan.other_info || "";
             }
         }
 
@@ -820,8 +836,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.rent.monthly_utilities_huf !== undefined) {
                 rentUtilitiesHuf.value = formatWithDots(data.rent.monthly_utilities_huf);
             }
-            if (data.rent.other_info && rentOtherInfo) {
-                rentOtherInfo.value = data.rent.other_info;
+            if (rentOtherInfo) {
+                rentOtherInfo.value = data.rent.other_info || "";
             }
         }
 
@@ -839,8 +855,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 lblRentInflationBadge.textContent = `${parseFloat(rngRentInflation.value).toFixed(1)}%`;
             }
 
-            if (data.investment.other_info && invOtherInfo) {
-                invOtherInfo.value = data.investment.other_info;
+            if (invOtherInfo) {
+                invOtherInfo.value = data.investment.other_info || "";
             }
         }
 
@@ -859,14 +875,177 @@ document.addEventListener('DOMContentLoaded', () => {
         statusAlert.classList.add('d-none');
     });
 
-    btnSaveTop.addEventListener('click', saveInputsToServer);
-    btnSaveBottom.addEventListener('click', saveInputsToServer);
+    const btnRunSimulation = document.getElementById('btnRunSimulation');
+    const resultsSection = document.getElementById('resultsSection');
 
-    btnResetDefaults.addEventListener('click', () => {
+    btnSaveTop.addEventListener('click', () => {
+        saveInputsToServer();
+        resultsSection.classList.remove('d-none');
+    });
+    
+    if (btnRunSimulation) {
+        btnRunSimulation.addEventListener('click', () => {
+            saveInputsToServer();
+            resultsSection.classList.remove('d-none');
+            
+            // Finom görgetés az eredményekhez egy kis késleltetéssel
+            setTimeout(() => {
+                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        });
+    }
+
+    btnResetDefaults.addEventListener('click', async () => {
         if (confirm('Biztosan visszaállítod az eredeti alapértékeket?')) {
+            try {
+                await fetch('/api/inputs', { method: 'DELETE' });
+            } catch (e) {
+                console.error('Reset failed', e);
+            }
             window.location.reload();
         }
     });
+
+    // --- 9. Vagyonfelhalmozási Chart.js Rajzolás ---
+    let wealthChartInstance = null;
+    let cashflowChartInstance = null;
+    let equityChartInstance = null;
+    
+    const badgeBreakEven = document.getElementById('badgeBreakEven');
+
+    function renderWealthChart(simulation) {
+        if (!simulation || !simulation.trajectories) return;
+
+        const summary = simulation.summary;
+        const traj = simulation.trajectories;
+
+        // Break-even badge frissítése
+        if (badgeBreakEven) {
+            if (summary.break_even_month) {
+                badgeBreakEven.textContent = `Megtérülés: ${summary.break_even_year} év (${summary.break_even_month}. hónap)`;
+                badgeBreakEven.className = "badge bg-success fs-6 py-2";
+            } else {
+                badgeBreakEven.textContent = "Bérlés (ETF) jobban megéri a 30. év végén is!";
+                badgeBreakEven.className = "badge bg-danger fs-6 py-2";
+            }
+        }
+
+        const ctxWealth = document.getElementById('wealthChart');
+        const ctxCashflow = document.getElementById('cashflowChart');
+        const ctxEquity = document.getElementById('equityChart');
+
+        // Pusztítsuk el a régi grafikonokat
+        if (wealthChartInstance) wealthChartInstance.destroy();
+        if (cashflowChartInstance) cashflowChartInstance.destroy();
+        if (equityChartInstance) equityChartInstance.destroy();
+
+        // Közös opciók
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 0 }, // Kikapcsolja a pattogó animációt csúszkahúzáskor
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return (context.dataset.label || '') + ': ' + formatHUF(context.parsed.y);
+                        },
+                        title: function(context) { return context[0].label + '. év'; }
+                    }
+                },
+                legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
+            },
+            scales: {
+                x: { ticks: { maxTicksLimit: 15 } },
+                y: { ticks: { callback: function(value) { return (value / 1000000).toFixed(0) + ' M Ft'; } } }
+            }
+        };
+
+        // 1. Vagyon Chart
+        if (ctxWealth) {
+            wealthChartInstance = new Chart(ctxWealth, {
+                type: 'line',
+                data: {
+                    labels: traj.year,
+                    datasets: [
+                        {
+                            label: 'Saját Lakás (Nettó Vagyon)', data: traj.buy_net_worth,
+                            borderColor: '#0d6efd', backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                        },
+                        {
+                            label: 'Bérlés + ETF (Nettó Vagyon)', data: traj.rent_net_worth,
+                            borderColor: '#ffc107', backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                        }
+                    ]
+                },
+                options: Object.assign({}, commonOptions, {
+                    scales: {
+                        x: commonOptions.scales.x,
+                        y: Object.assign({}, commonOptions.scales.y, { title: { display: true, text: 'Nettó Vagyon (HUF)' } })
+                    }
+                })
+            });
+        }
+
+        // 2. Cash-Flow Chart
+        if (ctxCashflow) {
+            cashflowChartInstance = new Chart(ctxCashflow, {
+                type: 'line',
+                data: {
+                    labels: traj.year,
+                    datasets: [
+                        {
+                            label: 'Tulajdonos havi kiadása (Törlesztő + Rezsi + Amortizáció)', data: traj.monthly_buy_outflow,
+                            borderColor: '#dc3545', backgroundColor: 'transparent',
+                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, tension: 0.1
+                        },
+                        {
+                            label: 'Bérlő havi kiadása (Bérleti díj + Rezsi)', data: traj.monthly_rent_outflow,
+                            borderColor: '#198754', backgroundColor: 'transparent',
+                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, tension: 0.1
+                        }
+                    ]
+                },
+                options: Object.assign({}, commonOptions, {
+                    scales: {
+                        x: commonOptions.scales.x,
+                        y: { ticks: { callback: function(value) { return formatWithDots(value) + ' Ft'; } } }
+                    }
+                })
+            });
+        }
+
+        // 3. Equity vs Debt Chart
+        if (ctxEquity) {
+            equityChartInstance = new Chart(ctxEquity, {
+                type: 'line',
+                data: {
+                    labels: traj.year,
+                    datasets: [
+                        {
+                            label: 'Ingatlan Piaci Értéke', data: traj.property_market_value,
+                            borderColor: '#0dcaf0', backgroundColor: 'rgba(13, 202, 240, 0.1)',
+                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                        },
+                        {
+                            label: 'Fennálló Banki Tartozás', data: traj.remaining_loan_balance,
+                            borderColor: '#dc3545', backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                        }
+                    ]
+                },
+                options: Object.assign({}, commonOptions, {
+                    scales: {
+                        x: commonOptions.scales.x,
+                        y: Object.assign({}, commonOptions.scales.y, { title: { display: true, text: 'HUF' } })
+                    }
+                })
+            });
+        }
+    }
 
     // Kezdeti indítás
     loadInputsFromServer();

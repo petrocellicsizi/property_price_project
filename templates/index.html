@@ -418,6 +418,7 @@
                                 </div>
 
                             </div>
+                            </div>
                         </div>
                     </div>
 
@@ -456,7 +457,7 @@
                                         </div>
                                         <input type="range" class="form-range" id="rngPropGrowth" min="-5.0" max="15.0" step="0.5" value="5.0">
                                         <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
-                                            <i class="bi bi-info-circle me-1"></i>Javasolt érték (KSH utolsó 10 év országos átlaga): <strong>~7.5%</strong>
+                                            <i class="bi bi-info-circle me-1"></i>Javasolt érték: <strong>~7.5%</strong>
                                         </small>
                                     </div>
                                     
@@ -468,7 +469,7 @@
                                         </div>
                                         <input type="range" class="form-range" id="rngRentInflation" min="0.0" max="15.0" step="0.5" value="4.0">
                                         <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
-                                            <i class="bi bi-info-circle me-1"></i>Javasolt érték (KSH utolsó 10 év átlaga): <strong>~6.0%</strong>
+                                            <i class="bi bi-info-circle me-1"></i>Javasolt érték: <strong>~6.0%</strong>
                                         </small>
                                     </div>
                                 </div>
@@ -486,35 +487,81 @@
                                         <i class="bi bi-chat-left-text-fill text-info me-1"></i>Egyéb releváns információk (Befektetés)
                                     </label>
                                     <textarea class="form-control form-control-sm" id="inv_other_info" rows="2"></textarea>
-                                    <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
-                                        Gemini AI elemzi a reálhozamot és likviditási korlátokat.
-                                    </small>
                                 </div>
 
                                 <div class="p-3 bg-light rounded border small mb-3">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-muted">Becsült összes induló tőke:</span>
+                                        <span class="text-muted">Induló tőkeigény:</span>
                                         <strong class="text-primary fs-6" id="badgeTotalInitialOutlay">26.800.000 Ft</strong>
                                     </div>
-                                    <small class="text-muted d-block mt-1" style="font-size: 0.73rem;">
-                                        Önerő + Ügyvéd + Egyéb díjak (120e) + Bútorozás + 4% Illeték.
-                                    </small>
-                                </div>
-
-                                <div class="d-grid">
-                                    <button type="button" class="btn btn-success btn-lg fw-bold shadow-sm" id="btnSaveBottom">
-                                        <i class="bi bi-floppy2-fill me-1"></i> Bemeneti Adatok Mentése
-                                    </button>
                                 </div>
 
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
+
+        <!-- Futtatás Gomb (Középen, a kártyák alatt) -->
+        <div class="row mt-2 mb-5 justify-content-center">
+            <div class="col-lg-6">
+                <div class="d-grid">
+                    <button type="button" class="btn btn-primary btn-lg fw-bold shadow" id="btnRunSimulation">
+                        <i class="bi bi-play-fill me-1 fs-5"></i> Szimuláció és AI Elemzés Futtatása
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- EREDMÉNYEK SZEKCIÓ (Alapból rejtve) -->
+        <div id="resultsSection" class="d-none">
+
+            <!-- 30 Éves Vagyonfelhalmozási Szimuláció (Chart.js) -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-graph-up-arrow text-primary fs-5"></i>
+                        <h5 class="card-title mb-0 fw-bold">Nettó Vagyon Szimuláció (Saját Lakás vs. Bérlés)</h5>
+                    </div>
+                    <span class="badge bg-primary fs-6 py-2" id="badgeBreakEven">Kiszámítás alatt...</span>
+                </div>
+                <div class="card-body p-3 bg-light">
+                    <div class="bg-white p-3 rounded border" style="height: 400px; position: relative;">
+                        <canvas id="wealthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4 g-4">
+                <!-- Cash-Flow Chart -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white py-3 border-bottom">
+                            <h6 class="card-title mb-0 fw-bold"><i class="bi bi-cash-stack text-success me-2"></i>Havi Kiadások Alakulása</h6>
+                        </div>
+                        <div class="card-body p-3 bg-light">
+                            <div class="bg-white p-3 rounded border" style="height: 300px; position: relative;">
+                                <canvas id="cashflowChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Equity vs Debt Chart -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white py-3 border-bottom">
+                            <h6 class="card-title mb-0 fw-bold"><i class="bi bi-pie-chart text-info me-2"></i>Ingatlan Érték vs. Tartozás (Saját Lakás)</h6>
+                        </div>
+                        <div class="card-body p-3 bg-light">
+                            <div class="bg-white p-3 rounded border" style="height: 300px; position: relative;">
+                                <canvas id="equityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         <!-- Gemini AI Szakértői Relevancia & Pénzügyi Elemzés Panel -->
         <div class="card border-0 shadow-sm mt-4 d-none" id="cardGeminiAnalysis">
@@ -537,6 +584,8 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- Alkalmazás Dashboard Szkript -->
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
