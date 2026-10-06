@@ -221,6 +221,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (raw.simulation) {
                 renderWealthChart(raw.simulation);
             }
+            if (raw.sensitivity) {
+                renderHeatmap(raw.sensitivity);
+            }
         } catch (err) {
             console.error("Hiba a Python kvantitatív kalkuláció hívásakor:", err);
         }
@@ -477,6 +480,9 @@ document.addEventListener('DOMContentLoaded', () => {
         triggerPythonCalculations();
     });
 
+    const chkTbsz = document.getElementById('chk_tbsz_enabled');
+    if (chkTbsz) chkTbsz.addEventListener('change', triggerPythonCalculations);
+
     // Eseményfigyelők mezőváltozásokra
     propType.addEventListener('change', triggerPythonCalculations);
     if (propCondition) {
@@ -548,6 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             investment: {
                 expected_return_annual_pct: parseFloat(invReturnPct.value) || 0,
+                tbsz_enabled: document.getElementById('chk_tbsz_enabled') ? document.getElementById('chk_tbsz_enabled').checked : true,
                 property_growth_pct: parseFloat(rngPropGrowth ? rngPropGrowth.value : 5.0),
                 rent_inflation_pct: parseFloat(rngRentInflation ? rngRentInflation.value : 4.0),
                 other_info: invOtherInfo ? invOtherInfo.value.trim() : ""
@@ -889,6 +896,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnRunSimulation.addEventListener('click', () => {
             saveInputsToServer();
             resultsSection.classList.remove('d-none');
+            if (cardAiSummary) cardAiSummary.classList.remove('d-none');
             
             // Finom görgetés az eredményekhez egy kis késleltetéssel
             setTimeout(() => {
@@ -907,6 +915,57 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.reload();
         }
     });
+
+    const btnGenerateSummary = document.getElementById('btnGenerateSummary');
+    const containerAiSummary = document.getElementById('containerAiSummary');
+    const cardAiSummary = document.getElementById('cardAiSummary');
+
+    if (btnGenerateSummary) {
+        btnGenerateSummary.addEventListener('click', async () => {
+            btnGenerateSummary.disabled = true;
+            btnGenerateSummary.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generálás...';
+            containerAiSummary.innerHTML = '<div class="text-center py-3 text-muted"><div class="spinner-border text-info spinner-border-sm me-2"></div> AI elemzés készül...</div>';
+            
+            try {
+                const payload = collectFormData();
+                if (currentAiEvaluations) {
+                    payload.ai_evaluations = currentAiEvaluations;
+                }
+                
+                // 1. Calculate to get the latest simulation results
+                const calcRes = await fetch('/api/calculate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!calcRes.ok) throw new Error("Calculation failed");
+                const calcData = await calcRes.json();
+                
+                // 2. Request the summary
+                const sumRes = await fetch('/api/generate_summary', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        inputs: payload,
+                        simulation: calcData.raw.simulation
+                    })
+                });
+                
+                if (!sumRes.ok) throw new Error("Summary generation failed");
+                const sumData = await sumRes.json();
+                
+                containerAiSummary.innerHTML = `<p class="mb-0 text-dark" style="font-size: 0.95rem; line-height: 1.6;">${sumData.summary_text.replace(/\n/g, '<br>')}</p>`;
+                
+            } catch (err) {
+                console.error(err);
+                containerAiSummary.innerHTML = '<p class="text-danger mb-0">Hiba történt az összefoglaló generálása során.</p>';
+            } finally {
+                btnGenerateSummary.disabled = false;
+                btnGenerateSummary.innerHTML = '<i class="bi bi-magic me-1"></i>Újragenerálás';
+            }
+        });
+    }
 
     // --- 9. Vagyonfelhalmozási Chart.js Rajzolás ---
     let wealthChartInstance = null;
@@ -1047,6 +1106,66 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
             });
         }
+    }
+
+    // --- Új: Heatmap Renderelése ---
+    function renderHeatmap(sensitivity) {
+        const container = document.getElementById('heatmapContainer');
+        if (!container || !sensitivity) return;
+        
+        const etfRates = sensitivity.etf_rates_pct;
+        const propRates = sensitivity.property_growth_rates_pct;
+        const matrix = sensitivity.wealth_difference_matrix;
+        
+        let html = '<div class="table-responsive"><table class="table table-sm table-bordered text-center align-middle" style="font-size: 0.85rem;">';
+        
+        // Fejléc
+        html += '<thead class="table-light"><tr>';
+        html += '<th><div class="small text-muted">Ingatlan drágulás \u2193</div><div class="small text-muted">ETF hozam \u2192</div></th>';
+        etfRates.forEach(etf => {
+            html += `<th class="fw-bold">${etf}%</th>`;
+        });
+        html += '</tr></thead><tbody>';
+        
+        // Sorok
+        propRates.forEach((prop, i) => {
+            html += `<tr><th class="table-light fw-bold text-nowrap">${prop}% / év</th>`;
+            
+            matrix[i].forEach(diff => {
+                let bgColor, textColor, icon;
+                if (diff > 0) {
+                    // Saját lakás nyer (Zöld)
+                    const intensity = Math.min(1, diff / 50000000);
+                    bgColor = `rgba(25, 135, 84, ${0.1 + (intensity * 0.4)})`;
+                    textColor = 'text-success';
+                    icon = '<i class="bi bi-house-door-fill"></i>';
+                } else {
+                    // Bérlés nyer (Piros)
+                    const intensity = Math.min(1, Math.abs(diff) / 50000000);
+                    bgColor = `rgba(220, 53, 69, ${0.1 + (intensity * 0.4)})`;
+                    textColor = 'text-danger';
+                    icon = '<i class="bi bi-piggy-bank-fill"></i>';
+                }
+                
+                const formattedDiff = formatWithDots(Math.abs(Math.round(diff / 1000000))) + ' M Ft';
+                html += `<td style="background-color: ${bgColor};" class="${textColor} fw-bold" title="Különbség: ${formatWithDots(Math.round(diff))} Ft">`;
+                html += `<div class="d-flex flex-column align-items-center justify-content-center"><span>${icon}</span><span>+${formattedDiff}</span></div>`;
+                html += `</td>`;
+            });
+            html += '</tr>';
+        });
+        
+        html += '</tbody></table></div>';
+        
+        // Jelmagyarázat
+        html += `
+            <div class="d-flex justify-content-center gap-4 mt-2 small text-muted">
+                <div><i class="bi bi-house-door-fill text-success"></i> Saját lakás vagyona nagyobb</div>
+                <div><i class="bi bi-piggy-bank-fill text-danger"></i> Bérlés + ETF vagyona nagyobb</div>
+            </div>
+        `;
+        
+        container.innerHTML = html;
     }
 
     // Kezdeti indítás

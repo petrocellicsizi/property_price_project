@@ -375,6 +375,44 @@ MINTA JSON:
             }
         }
 
+    def generate_simulation_summary(self, simulation_results: dict, payload: dict) -> str:
+        """
+        Készít egy rövid, szöveges összefoglalót a szimuláció eredményeiről.
+        """
+        if not self.client:
+            return "A Gemini API nem elérhető, az összefoglaló nem generálható."
+
+        try:
+            summary_data = simulation_results.get("summary", {})
+            bep_status = summary_data.get("break_even_status", "Ismeretlen")
+            bep_year = summary_data.get("break_even_year", "N/A")
+            wealth_buy = summary_data.get("terminal_buy_net_worth", 0)
+            wealth_rent = summary_data.get("terminal_rent_net_worth", 0)
+            
+            rent_pct = payload.get("investment", {}).get("expected_return_annual_pct", 7.0)
+            prop_pct = payload.get("investment", {}).get("property_growth_pct", 5.0)
+
+            prompt = f"""Te egy pénzügyi tanácsadó vagy. Kérlek írj egy RÖVID, 3-4 mondatos összefoglalót a felhasználónak a következő szimuláció eredményéről, érthetően elmagyarázva, hogy miért ez az eredmény jött ki. Ne használj bonyolult formázást (csak sima szöveg, esetleg vastagítás).
+
+SZIMULÁCIÓS EREDMÉNYEK (30 ÉV):
+- Saját lakás (hitelre vett) nettó vagyon 30 év múlva: {wealth_buy:,} Ft
+- Bérlés + ETF (megtakarított pénz befektetése) vagyon 30 év múlva: {wealth_rent:,} Ft
+- Befektetési hozam (ETF): {rent_pct}%/év
+- Ingatlan drágulása: {prop_pct}%/év
+- Megtérülési (Break-Even) pont (mikortól éri meg jobban a saját lakás): {bep_status} (Év: {bep_year})
+
+MAGYARÁZAT:
+Magyarázd el, hogy az ETF magasabb kamatos kamata, vagy az ingatlan tőkeáttétele (hitel) dominált-e, és röviden fűzd hozzá, hogy a futamidő lejárta után hogyan alakult a bérlő vs. tulajdonos havi készpénzárama (törlesztő kiesése vs. egyre növekvő bérleti díj). Légy barátságos!
+"""
+            response = self.client.models.generate_content(
+                model=self.primary_model,
+                contents=prompt,
+            )
+            return response.text.strip()
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Gemini API hiba a szimuláció összefoglalása közben: {str(e)}")
+            return "Nem sikerült az AI összefoglalót generálni hálózati hiba miatt."
 
 # Egyke (Singleton) példány
 gemini_service = GeminiEvaluationService()

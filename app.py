@@ -181,6 +181,7 @@ def calculate_metrics():
         "rent_growth_rate_annual": parse_clean_number(inv.get("rent_inflation_pct", 4.0)) / 100.0,
         "initial_rent_monthly": rent_monthly,
         "opportunity_cost_rate_annual": inv_return_pct / 100.0,
+        "tbsz_enabled": inv.get("tbsz_enabled", True),
         "discount_rate_annual": 0.06
     }
     
@@ -200,7 +201,8 @@ def calculate_metrics():
             "total_rent_outlay_huf": total_rent_outlay,
             "monthly_return_rate_pct": monthly_return_rate,
             "adjustments_info": adjustments_info,
-            "simulation": simulation_results
+            "simulation": simulation_results,
+            "sensitivity": engine.compute_sensitivity_matrix()
         },
         "formatted": {
             "suggested_price_per_sqm": f"{format_huf(suggested_price_per_sqm)}/m²",
@@ -274,7 +276,20 @@ def store_inputs():
             "status": "error",
             "message": f"Nem sikerült elmenteni az adatokat: {str(exc)}"
         }), 500
+@app.route("/api/generate_summary", methods=["POST"])
+def generate_summary():
+    """
+    Készít egy végső szöveges összefoglalót a szimuláció kimenetéről.
+    """
+    payload = request.get_json(silent=True)
+    if not payload:
+        return jsonify({"status": "error", "message": "Hiányzó adatok"}), 400
 
+    sim_results = payload.get("simulation", {})
+    inputs = payload.get("inputs", {})
+
+    summary_text = gemini_service.generate_simulation_summary(sim_results, inputs)
+    return jsonify({"summary_text": summary_text}), 200
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

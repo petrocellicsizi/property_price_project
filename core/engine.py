@@ -88,12 +88,13 @@ class QuantitativeSimulationEngine:
         # 4. Tulajdonosi fenntartási költségek és havi összkiadás
         maint_rate_annual = float(self.params.get("maintenance_rate_annual", 0.01))
         common_cost_base = float(self.params.get("common_cost_monthly", 23_400.0))
-        # Közös költség inflálódása a bérleti díj növekedési ütemével arányosan
+        # Közös költség és karbantartás inflálódása a bérleti díj növekedési ütemével arányosan (általános infláció proxy)
         rent_growth_annual = float(self.params["rent_growth_rate_annual"])
         g_rent_m = (1.0 + rent_growth_annual)**(1.0 / 12.0) - 1.0
         common_cost_traj = common_cost_base * (1.0 + g_rent_m)**self.t
         
-        maintenance_traj = property_value_traj * (maint_rate_annual / 12.0)
+        # JAVÍTOTT KARBANTARTÁS: Az induló érték 1%-a, ami a sima inflációval nő, nem pedig az ingatlanbuborékkal!
+        maintenance_traj = (property_val_0 * (maint_rate_annual / 12.0)) * (1.0 + g_rent_m)**self.t
         
         # Havi tulajdonosi készpénzkiadás
         monthly_buy_pmt = np.zeros(self.total_months)
@@ -108,16 +109,22 @@ class QuantitativeSimulationEngine:
         rent_initial_monthly = float(self.params["initial_rent_monthly"])
         rent_traj = rent_initial_monthly * (1.0 + g_rent_m)**self.t
         
+        # A bérlő havi kiadása: Bérleti díj + Rezsi (ugyanaz a rezsi, mint a tulajdonosnál)
+        monthly_rent_outflow = rent_traj + common_cost_traj
+        
         # Bérlő kezdeti vagyona = a vásárláshoz szükséges teljes önerő és induló díjak
         r_opp_annual = float(self.params["opportunity_cost_rate_annual"])
+        
+        # ETF Adózás kezelése (TBSZ)
+        # Ha a TBSZ ki van kapcsolva, akkor 15% SZJA terheli a hozamot (a nettó hozamot vesszük)
+        is_tbsz = self.params.get("tbsz_enabled", True)
+        if not is_tbsz:
+            r_opp_annual = r_opp_annual * 0.85
+            
         r_opp_m = (1.0 + r_opp_annual)**(1.0 / 12.0) - 1.0
         
         # Havi cash flow különbség: (Vásárló havi kiadása) - (Bérlő havi kiadása)
-        # Ha a vásárló többet fizet (jellemzően az első 10-15 évben a törlesztő miatt),
-        # a bérlő ezt a többletet havonta befekteti a portfóliójába.
-        # Ha a bérleti díj felülmúlja a törlesztőt (vagy a hitel lejárta után), a differencia negatív,
-        # tehát a bérlő a portfóliójából fedezi a hiányt.
-        cf_diff = monthly_buy_outflow - rent_traj
+        cf_diff = monthly_buy_outflow - monthly_rent_outflow
         
         rent_portfolio = np.zeros(self.total_months)
         wealth_acc = initial_equity_needed
@@ -139,13 +146,14 @@ class QuantitativeSimulationEngine:
             bep_year = round(bep_month / 12.0, 2)
 
         # 7. Diszkontált Cash-Flow (DCF) és Jelenérték (NPV)
-        discount_annual = float(self.params.get("discount_rate_annual", 0.06))
+        # A diszkontrátát logikusan az alternatív költséghez (opportunity cost = ETF hozam) kötjük!
+        discount_annual = r_opp_annual
         r_disc_m = (1.0 + discount_annual)**(1.0 / 12.0) - 1.0
         discount_factors = 1.0 / ((1.0 + r_disc_m)**self.t)
         
         # NPV profilok
         dcf_buy = np.cumsum(-monthly_buy_outflow * discount_factors) - initial_equity_needed + (buy_net_worth * discount_factors)
-        dcf_rent = np.cumsum(-rent_traj * discount_factors) - 0.0 + (rent_portfolio * discount_factors)
+        dcf_rent = np.cumsum(-monthly_rent_outflow * discount_factors) - 0.0 + (rent_portfolio * discount_factors)
 
         # Összegző metrikák
         total_interest = float(np.sum(loan_interest_paid))
@@ -183,7 +191,7 @@ class QuantitativeSimulationEngine:
                 "property_market_value": property_value_traj[sampled_indices].round(0).tolist(),
                 "remaining_loan_balance": loan_balance[sampled_indices].round(0).tolist(),
                 "monthly_buy_outflow": monthly_buy_outflow[sampled_indices].round(0).tolist(),
-                "monthly_rent_outflow": rent_traj[sampled_indices].round(0).tolist(),
+                "monthly_rent_outflow": monthly_rent_outflow[sampled_indices].round(0).tolist(),
                 "dcf_buy": dcf_buy[sampled_indices].round(0).tolist(),
                 "dcf_rent": dcf_rent[sampled_indices].round(0).tolist()
             }
@@ -191,36 +199,37 @@ class QuantitativeSimulationEngine:
 
     def compute_sensitivity_matrix(
         self,
-        interest_rate_range: Optional[List[float]] = None,
+        etf_return_range: Optional[List[float]] = None,
         property_growth_range: Optional[List[float]] = None
     ) -> Dict[str, Any]:
         """
-        Kétváltozós érzékenységi mátrixot generál a hitelkamat és az ingatlanáremelkedés rácsán.
-        Eredménye egy BEP (években) hőtérkép.
+        Kétváltozós érzékenységi mátrixot generál az ETF hozam és az ingatlanáremelkedés rácsán.
+        Eredménye a 30. év végi Nettó Vagyon Különbség (Saját Lakás - Bérlés).
+        Ha pozitív, a saját lakás nyert. Ha negatív, a bérlés nyert.
         """
-        if interest_rate_range is None:
-            interest_rate_range = [0.045, 0.055, 0.065, 0.075, 0.085, 0.095]
+        if etf_return_range is None:
+            etf_return_range = [0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12]
         if property_growth_range is None:
-            property_growth_range = [0.020, 0.035, 0.050, 0.065, 0.080, 0.095]
+            property_growth_range = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09]
 
         matrix = []
         base_params = dict(self.params)
 
-        for rate in interest_rate_range:
+        for growth in property_growth_range:
             row = []
-            for growth in property_growth_range:
+            for etf in etf_return_range:
                 sim_params = dict(base_params)
-                sim_params["loan_interest_rate_annual"] = rate
+                sim_params["opportunity_cost_rate_annual"] = etf
                 sim_params["property_growth_rate_annual"] = growth
                 
                 sub_engine = QuantitativeSimulationEngine(sim_params)
                 res = sub_engine.execute()
-                bep_yr = res["summary"]["break_even_year"]
-                row.append(bep_yr if bep_yr is not None else 31.0)  # 31 jelöli, ha 30 év alatt sem fordul át
+                diff = res["summary"]["terminal_buy_net_worth"] - res["summary"]["terminal_rent_net_worth"]
+                row.append(diff)
             matrix.append(row)
 
         return {
-            "interest_rates_pct": [round(r * 100.0, 2) for r in interest_rate_range],
+            "etf_rates_pct": [round(e * 100.0, 2) for e in etf_return_range],
             "property_growth_rates_pct": [round(g * 100.0, 2) for g in property_growth_range],
-            "bep_years_matrix": matrix
+            "wealth_difference_matrix": matrix
         }

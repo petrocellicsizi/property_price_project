@@ -440,6 +440,13 @@
                                         <span class="input-group-text">% / év</span>
                                     </div>
                                     <input type="range" class="form-range" id="rngInvReturn" min="1.0" max="15.0" step="0.25" value="10.25">
+                                    <div class="form-check form-switch mt-2">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="chk_tbsz_enabled" checked>
+                                        <label class="form-check-label small fw-bold text-dark" for="chk_tbsz_enabled">TBSZ számla használata (Adómentes)</label>
+                                    </div>
+                                    <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
+                                        Kikapcsolva 15% SZJA terheli a befektetés hozamát.
+                                    </small>
                                 </div>
                                 
                                 <!-- Új: Makroökonómiai Stresszteszt -->
@@ -559,6 +566,33 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- ÚJ: Heatmap Szenzitivitás Elemzés -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="card-title mb-0 fw-bold"><i class="bi bi-grid-3x3 text-primary me-2"></i>Szenzitivitás Elemzés: Melyik éri meg jobban 30 év múlva?</h5>
+                    <p class="text-muted small mb-0 mt-1">A táblázat a 30. év végi <strong>Nettó Vagyon Különbséget</strong> mutatja (Saját lakás vagyona - Bérlés vagyona). Zöld = Saját lakás nyer, Piros = Bérlés nyer.</p>
+                </div>
+                <div class="card-body p-0 overflow-auto">
+                    <div id="heatmapContainer" class="p-3"></div>
+                </div>
+            </div>
+
+            <!-- AI Összefoglaló (Új) -->
+            <div class="card border-info shadow-sm mt-4 d-none" id="cardAiSummary">
+                <div class="card-header bg-info-subtle py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-robot text-info fs-5"></i>
+                        <h5 class="card-title mb-0 fw-bold text-dark">AI Szimulációs Összefoglaló</h5>
+                    </div>
+                    <button class="btn btn-sm btn-outline-info fw-bold" type="button" id="btnGenerateSummary">
+                        <i class="bi bi-magic me-1"></i>Összefoglaló Generálása
+                    </button>
+                </div>
+                <div class="card-body p-4 bg-white" id="containerAiSummary">
+                    <p class="text-muted mb-0"><i class="bi bi-arrow-up"></i> Kattints a fenti gombra, hogy az AI elmagyarázza a szimuláció eredményét.</p>
                 </div>
             </div>
 
