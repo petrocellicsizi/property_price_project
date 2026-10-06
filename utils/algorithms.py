@@ -124,6 +124,71 @@ def calculate_suggested_rent(
     return int(round(raw_rent / 5000.0) * 5000)
 
 
+def calculate_suggested_price_per_sqm(
+    property_type: str,
+    city: Optional[str] = "Budapest",
+    district: Optional[str] = "VIII. kerület",
+    condition: Optional[str] = "Jó állapotú"
+) -> int:
+    """
+    Kiszámítja a becsült négyzetméterárat (Ft/m²)
+    a település, kerület, ingatlan típus és állapot alapján.
+    """
+    city_str = (city or "Budapest").strip()
+    dist_str = (district or "VIII. kerület").strip().upper()
+    pt = (property_type or "").strip()
+    cond = (condition or "Jó állapotú").strip()
+
+    # Alapár típus szerint (Budapest átlag / újépítésű bázis)
+    if "Újépítésű" in pt or "AA+" in pt:
+        base_price = 1550000.0
+    elif "Korszerű tégla" in pt:
+        base_price = 1250000.0
+    elif "Régi nagypolgári" in pt:
+        base_price = 980000.0
+    elif "Panel (felújított" in pt:
+        base_price = 850000.0
+    elif "Panel (eredeti" in pt:
+        base_price = 720000.0
+    elif "Családi ház" in pt:
+        base_price = 900000.0
+    else:
+        base_price = 1100000.0
+
+    # Állapot szorzók
+    cond_multiplier = 1.0
+    if cond == "Újszerű / Prémium":
+        cond_multiplier = 1.15
+    elif cond == "Jó állapotú":
+        cond_multiplier = 1.00
+    elif cond == "Közepes":
+        cond_multiplier = 0.85
+    elif cond == "Felújítandó":
+        cond_multiplier = 0.70
+
+    # Lokációs szorzók (KSH/Ingatlan.com 2024 becslések alapján)
+    if city_str.lower() != "budapest":
+        if city_str.lower() in ["debrecen", "győr", "szeged", "veszprém"]:
+            loc_multiplier = 0.65  # Nagy egyetemi / ipari központok (pl. Debrecen ~ 950-1M Ft)
+        elif city_str.lower() in ["pécs", "kecskemét", "székesfehérvár"]:
+            loc_multiplier = 0.55
+        else:
+            loc_multiplier = 0.40  # Egyéb vidék
+    else:
+        if any(d in dist_str for d in ["V.", "I.", "II.", "XII."]):
+            loc_multiplier = 1.35  # Prémium Buda & V. kerület
+        elif any(d in dist_str for d in ["VI.", "VII.", "XI.", "XIII."]):
+            loc_multiplier = 1.15  # Külső belváros & Újbuda
+        elif any(d in dist_str for d in ["VIII.", "IX.", "XIV."]):
+            loc_multiplier = 1.00  # Referencia / Átlag pesti
+        else:
+            loc_multiplier = 0.75  # Külső pesti kerületek
+
+    raw_price = base_price * loc_multiplier * cond_multiplier
+    # Kerekítés 10 000 Ft-ra
+    return int(round(raw_price / 10000.0) * 10000)
+
+
 def calculate_suggested_utilities(
     property_type: str,
     size_sqm: float
@@ -168,25 +233,35 @@ def calculate_ai_adjusted_suggestions(
     furnish_base = int(base_suggestions.get("suggested_furnishing_huf", 2800000))
     rent_base = int(base_suggestions.get("suggested_rent_huf", 270000))
     utils_base = int(base_suggestions.get("suggested_utilities_huf", 34000))
+    market_price_base = int(base_suggestions.get("suggested_price_total_huf", 0))
+    market_sqm_base = int(base_suggestions.get("suggested_price_per_sqm_huf", 0))
 
     prop_eval = ai_evaluations.get("property", {}) if isinstance(ai_evaluations, dict) else {}
     rent_eval = ai_evaluations.get("rent", {}) if isinstance(ai_evaluations, dict) else {}
 
     furnish_adj = float(prop_eval.get("furnishing_adjustment_huf", 0) or 0)
+    market_adj_pct = float(prop_eval.get("market_value_adjustment_pct", 0.0) or 0.0)
     rent_adj_pct = float(rent_eval.get("rent_adjustment_pct", 0.0) or 0.0)
     utils_adj_pct = float(rent_eval.get("utilities_adjustment_pct", 0.0) or 0.0)
 
-    # Korrigált értékek kerekítése a standard piaci osztásokra (50k bútor, 5k bérlet, 1k rezsi)
+    # Korrigált értékek kerekítése a standard piaci osztásokra
     adj_furnish = int(round((furnish_base + furnish_adj) / 50000.0) * 50000)
     adj_rent = int(round((rent_base * (1.0 + rent_adj_pct / 100.0)) / 5000.0) * 5000)
     adj_utils = int(max(15000, round((utils_base * (1.0 + utils_adj_pct / 100.0)) / 1000.0) * 1000))
+    
+    # Piaci érték korrekciója az AI alapján
+    adj_market_total = int(round((market_price_base * (1.0 + market_adj_pct / 100.0)) / 100000.0) * 100000) if market_price_base else 0
+    adj_market_sqm = int(round((market_sqm_base * (1.0 + market_adj_pct / 100.0)) / 10000.0) * 10000) if market_sqm_base else 0
 
     return {
         "suggested_furnishing_huf": adj_furnish,
         "suggested_rent_huf": adj_rent,
         "suggested_utilities_huf": adj_utils,
+        "suggested_price_total_huf": adj_market_total,
+        "suggested_price_per_sqm_huf": adj_market_sqm,
         "adjustments_applied": {
             "furnishing_adjustment_huf": int(furnish_adj),
+            "market_value_adjustment_pct": market_adj_pct,
             "rent_adjustment_pct": rent_adj_pct,
             "utilities_adjustment_pct": utils_adj_pct,
         },
@@ -194,6 +269,8 @@ def calculate_ai_adjusted_suggestions(
             "suggested_furnishing": format_huf(adj_furnish),
             "suggested_rent": format_huf(adj_rent),
             "suggested_utilities": format_huf(adj_utils),
+            "suggested_price_total": format_huf(adj_market_total),
+            "suggested_price_per_sqm": f"{format_huf(adj_market_sqm)}/m²"
         }
     }
 

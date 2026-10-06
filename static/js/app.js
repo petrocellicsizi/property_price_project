@@ -21,10 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Ingatlan mezők
     const propType = document.getElementById('prop_type');
+    const propCondition = document.getElementById('prop_condition');
     const propSizeSqm = document.getElementById('prop_size_sqm');
     const propRooms = document.getElementById('prop_rooms');
     const propPriceTotal = document.getElementById('prop_price_total');
     const propPriceSqm = document.getElementById('prop_price_sqm');
+    const btnResetPrice = document.getElementById('btnResetPrice');
+    const badgeSuggestedPriceSqm = document.getElementById('badgeSuggestedPriceSqm');
     const propLawyerPct = document.getElementById('prop_lawyer_pct');
     const propLawyerHuf = document.getElementById('prop_lawyer_huf');
     const propFurnishingHuf = document.getElementById('prop_furnishing_huf');
@@ -53,10 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnResetUtilities = document.getElementById('btnResetUtilities');
     const lblTotalRentOutlay = document.getElementById('lblTotalRentOutlay');
 
-    // Befektetés mezők
+    // Befektetés és Makro mezők
     const invReturnPct = document.getElementById('inv_return_pct');
     const rngInvReturn = document.getElementById('rngInvReturn');
     const lblInvReturnBadge = document.getElementById('lblInvReturnBadge');
+    const rngPropGrowth = document.getElementById('rngPropGrowth');
+    const lblPropGrowthBadge = document.getElementById('lblPropGrowthBadge');
+    const rngRentInflation = document.getElementById('rngRentInflation');
+    const lblRentInflationBadge = document.getElementById('lblRentInflationBadge');
     const lblMonthlyReturnRate = document.getElementById('lblMonthlyReturnRate');
     const badgeTotalInitialOutlay = document.getElementById('badgeTotalInitialOutlay');
 
@@ -81,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCloseAlert = document.getElementById('btnCloseAlert');
 
     // Felhasználói egyedi felülírás állapotjelzők (ha a user kézzel írja át a javaslatot)
+    let userCustomPrice = false;
     let userCustomFurnishing = false;
     let userCustomRent = false;
     let userCustomUtilities = false;
@@ -153,6 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const adjInfo = raw.adjustments_info || {};
 
             // Python által számított ajánlások frissítése AI jelvénnyel (ha van AI korrekció)
+            if (badgeSuggestedPriceSqm) {
+                badgeSuggestedPriceSqm.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_price_per_sqm}`;
+            }
+            if (!userCustomPrice && propPriceSqm && propPriceTotal) {
+                propPriceSqm.value = formatWithDots(raw.suggested_price_per_sqm_huf);
+                propPriceTotal.value = formatWithDots(raw.suggested_price_total_huf);
+                updateLoanFromDownPaymentPct();
+            }
             if (badgeSuggestedFurnishing) {
                 const furnishAdj = adjInfo.furnishing_adjustment_huf || 0;
                 const extraBadge = furnishAdj !== 0 
@@ -267,6 +283,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Reset javaslat gombok (visszaállítja a Python algoritmus ajánlását)
+    if (btnResetPrice) {
+        btnResetPrice.addEventListener('click', (e) => {
+            e.preventDefault();
+            userCustomPrice = false;
+            runPythonCalculations();
+        });
+    }
     if (btnResetFurnishing) {
         btnResetFurnishing.addEventListener('click', (e) => {
             e.preventDefault();
@@ -438,12 +461,31 @@ document.addEventListener('DOMContentLoaded', () => {
         triggerPythonCalculations();
     });
 
+    rngPropGrowth.addEventListener('input', (e) => {
+        lblPropGrowthBadge.textContent = `${parseFloat(e.target.value || 0).toFixed(1)}%`;
+        triggerPythonCalculations();
+    });
+
+    rngRentInflation.addEventListener('input', (e) => {
+        lblRentInflationBadge.textContent = `${parseFloat(e.target.value || 0).toFixed(1)}%`;
+        triggerPythonCalculations();
+    });
+
     // Eseményfigyelők mezőváltozásokra
     propType.addEventListener('change', triggerPythonCalculations);
+    if (propCondition) {
+        propCondition.addEventListener('change', triggerPythonCalculations);
+    }
     propRooms.addEventListener('change', triggerPythonCalculations);
     propSizeSqm.addEventListener('input', updatePriceFromSqm);
-    propPriceSqm.addEventListener('input', updatePriceFromSqm);
-    propPriceTotal.addEventListener('input', updateSqmFromTotalPrice);
+    propPriceSqm.addEventListener('input', () => {
+        userCustomPrice = true;
+        updatePriceFromSqm();
+    });
+    propPriceTotal.addEventListener('input', () => {
+        userCustomPrice = true;
+        updateSqmFromTotalPrice();
+    });
     propCity.addEventListener('input', triggerPythonCalculations);
     propDistrict.addEventListener('input', triggerPythonCalculations);
 
@@ -473,6 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 district: propDistrict.value.trim(),
                 location: `${propCity.value.trim()}, ${propDistrict.value.trim()}`,
                 property_type: propType.value,
+                condition: propCondition ? propCondition.value : "Jó állapotú",
                 size_sqm: parseFloat(propSizeSqm.value) || 0,
                 room_count: parseFloat(propRooms.value) || 1,
                 price_total_huf: parseCleanNumber(propPriceTotal.value),
@@ -499,6 +542,8 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             investment: {
                 expected_return_annual_pct: parseFloat(invReturnPct.value) || 0,
+                property_growth_pct: parseFloat(rngPropGrowth ? rngPropGrowth.value : 5.0),
+                rent_inflation_pct: parseFloat(rngRentInflation ? rngRentInflation.value : 4.0),
                 other_info: invOtherInfo ? invOtherInfo.value.trim() : ""
             }
         };
@@ -508,7 +553,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderGeminiAnalysis(analysis) {
         if (!analysis || !cardGeminiAnalysis || !containerGeminiResults) return;
 
-        cardGeminiAnalysis.classList.remove('d-none');
         if (badgeGeminiModel) {
             badgeGeminiModel.textContent = analysis.model_used || 'Gemini AI';
         }
@@ -561,17 +605,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let cardsHtml = '';
+        let hasAnyData = false;
+
         sections.forEach(s => {
             const item = s.data;
             const score = item.relevance_score || 0;
+            const isProvided = item.provided !== false && score > 0;
+            
+            // Ha nincs adat az adott szekcióhoz, akkor azt nem jelenítjük meg
+            if (!isProvided) {
+                return;
+            }
+            
+            hasAnyData = true;
+            
             const category = item.category || 'Standard tényező';
             const impact = item.impact_analysis || 'Alapértelmezett modell érvényesül.';
             const rec = item.quantitative_recommendation || 'Nincs szükség korrekcióra.';
-            const isProvided = item.provided !== false && score > 0;
 
             cardsHtml += `
                 <div class="col-md-6">
-                    <div class="card h-100 border ${isProvided ? 'border-secondary-subtle' : 'border-light bg-light-subtle'} shadow-sm">
+                    <div class="card h-100 border border-secondary-subtle shadow-sm">
                         <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
                             <span class="fw-bold text-${s.color} small">
                                 <i class="bi ${s.icon} me-1"></i>${s.title}
@@ -603,6 +657,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         });
+
+        // Ha egyetlen szekcióhoz sincs adat, elrejtjük a teljes kártyát
+        if (!hasAnyData) {
+            cardGeminiAnalysis.classList.add('d-none');
+            return;
+        }
+
+        cardGeminiAnalysis.classList.remove('d-none');
 
         containerGeminiResults.innerHTML = `
             <div class="alert alert-dark border-secondary p-3 mb-4 shadow-sm">
@@ -766,7 +828,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.investment) {
             invReturnPct.value = data.investment.expected_return_annual_pct ?? 7.0;
             rngInvReturn.value = invReturnPct.value;
-            lblInvReturnBadge.textContent = `${invReturnPct.value}%`;
+            lblInvReturnBadge.textContent = `${parseFloat(invReturnPct.value).toFixed(2)}%`;
+            
+            if (data.investment.property_growth_pct !== undefined && rngPropGrowth) {
+                rngPropGrowth.value = data.investment.property_growth_pct;
+                lblPropGrowthBadge.textContent = `${parseFloat(rngPropGrowth.value).toFixed(1)}%`;
+            }
+            if (data.investment.rent_inflation_pct !== undefined && rngRentInflation) {
+                rngRentInflation.value = data.investment.rent_inflation_pct;
+                lblRentInflationBadge.textContent = `${parseFloat(rngRentInflation.value).toFixed(1)}%`;
+            }
+
             if (data.investment.other_info && invOtherInfo) {
                 invOtherInfo.value = data.investment.other_info;
             }

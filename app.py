@@ -14,6 +14,7 @@ from utils.algorithms import (
     calculate_suggested_rent,
     calculate_suggested_utilities,
     calculate_ai_adjusted_suggestions,
+    calculate_suggested_price_per_sqm,
 )
 from utils.finance import (
     calculate_monthly_installment,
@@ -84,6 +85,7 @@ def calculate_metrics():
 
     # 1. Piaci és rezsi alap ajánló algoritmusok
     ptype = prop.get("property_type", "Újépítésű társasház (AA+)")
+    condition = prop.get("condition", "Jó állapotú")
     size = parse_clean_number(prop.get("size_sqm", 52))
     rooms = parse_clean_number(prop.get("room_count", 2))
     city = prop.get("city", "Budapest")
@@ -92,6 +94,8 @@ def calculate_metrics():
     base_furnishing = calculate_suggested_furnishing(ptype, size, rooms)
     base_rent = calculate_suggested_rent(ptype, size, rooms, city, district)
     base_utilities = calculate_suggested_utilities(ptype, size)
+    base_price_per_sqm = calculate_suggested_price_per_sqm(ptype, city, district, condition)
+    base_price_total = int(base_price_per_sqm * size)
 
     # 2. AI korrekciók figyelembevétele, ha rendelkezésre állnak
     if ai_evaluations:
@@ -99,16 +103,22 @@ def calculate_metrics():
             "suggested_furnishing_huf": base_furnishing,
             "suggested_rent_huf": base_rent,
             "suggested_utilities_huf": base_utilities,
+            "suggested_price_per_sqm_huf": base_price_per_sqm,
+            "suggested_price_total_huf": base_price_total,
         }
         adjusted = calculate_ai_adjusted_suggestions(base_suggestions, ai_evaluations)
         suggested_furnishing = adjusted["suggested_furnishing_huf"]
         suggested_rent = adjusted["suggested_rent_huf"]
         suggested_utilities = adjusted["suggested_utilities_huf"]
+        suggested_price_per_sqm = adjusted.get("suggested_price_per_sqm_huf", base_price_per_sqm)
+        suggested_price_total = adjusted.get("suggested_price_total_huf", base_price_total)
         adjustments_info = adjusted.get("adjustments_applied", {})
     else:
         suggested_furnishing = base_furnishing
         suggested_rent = base_rent
         suggested_utilities = base_utilities
+        suggested_price_per_sqm = base_price_per_sqm
+        suggested_price_total = base_price_total
         adjustments_info = {}
 
     # 3. Pénzügyi és törlesztési számítások
@@ -147,6 +157,8 @@ def calculate_metrics():
     response_data = {
         "status": "success",
         "raw": {
+            "suggested_price_per_sqm_huf": suggested_price_per_sqm,
+            "suggested_price_total_huf": suggested_price_total,
             "suggested_furnishing_huf": suggested_furnishing,
             "suggested_rent_huf": suggested_rent,
             "suggested_utilities_huf": suggested_utilities,
@@ -157,6 +169,8 @@ def calculate_metrics():
             "adjustments_info": adjustments_info,
         },
         "formatted": {
+            "suggested_price_per_sqm": f"{format_huf(suggested_price_per_sqm)}/m²",
+            "suggested_price_total": format_huf(suggested_price_total),
             "suggested_furnishing": format_huf(suggested_furnishing),
             "suggested_rent": format_huf(suggested_rent),
             "suggested_utilities": format_huf(suggested_utilities),

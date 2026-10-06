@@ -107,6 +107,7 @@ class GeminiEvaluationService:
                 impact_match = re.search(r'"impact_analysis"\s*:\s*"([^"]+)"', block)
                 rec_match = re.search(r'"quantitative_recommendation"\s*:\s*"([^"]+)"', block)
                 furnish_match = re.search(r'"furnishing_adjustment_huf"\s*:\s*(-?\d+)', block)
+                market_match = re.search(r'"market_value_adjustment_pct"\s*:\s*(-?\d+(?:\.\d+)?)', block)
                 rent_match = re.search(r'"rent_adjustment_pct"\s*:\s*(-?\d+(?:\.\d+)?)', block)
                 utils_match = re.search(r'"utilities_adjustment_pct"\s*:\s*(-?\d+(?:\.\d+)?)', block)
 
@@ -117,6 +118,7 @@ class GeminiEvaluationService:
                     "impact_analysis": impact_match.group(1) if impact_match else "A megadott tényező befolyásolja a számítást.",
                     "quantitative_recommendation": rec_match.group(1) if rec_match else "Kvantitatív korrekció szükséges.",
                     "furnishing_adjustment_huf": int(furnish_match.group(1)) if furnish_match else 0,
+                    "market_value_adjustment_pct": float(market_match.group(1)) if market_match else 0.0,
                     "rent_adjustment_pct": float(rent_match.group(1)) if rent_match else 0.0,
                     "utilities_adjustment_pct": float(utils_match.group(1)) if utils_match else 0.0
                 }
@@ -128,6 +130,7 @@ class GeminiEvaluationService:
                     "impact_analysis": "Nem sikerült értelmezni.",
                     "quantitative_recommendation": "Nincs korrekció.",
                     "furnishing_adjustment_huf": 0,
+                    "market_value_adjustment_pct": 0.0,
                     "rent_adjustment_pct": 0.0,
                     "utilities_adjustment_pct": 0.0
                 }
@@ -249,6 +252,7 @@ FELADAT:
 Kifejezetten határozz meg konkrét számszerű módosító értékeket is, amelyek közvetlenül beépülnek a kalkulátor megbecsült javaslataiba:
 - property szekciónál:
   * "furnishing_adjustment_huf": egész szám (Ft), amennyivel az információ növeli vagy csökkenti a berendezési/bútorozási igényt (pl. 300000 vagy -150000, ha nincs: 0)
+  * "market_value_adjustment_pct": százalékos lebegőpontos érték, amennyivel a becsült piaci értéket (vételárat) módosítja az egyedi tényező (pl. +5.0 ha luxus panorámás, -10.0 ha sötét földszinti, 0.0 ha nincs érdemi hatás)
 - rent szekciónál:
   * "rent_adjustment_pct": százalékos lebegőpontos érték, amennyivel a bérleti díj javaslat módosuljon a bérlői igények/lokáció miatt (pl. +15.0 ha Dunamenti vagy prémium lokáció, +10.0 ha kutya felár, -5.0 ha kompromisszumos, 0.0 ha nincs)
   * "utilities_adjustment_pct": százalékos lebegőpontos érték a rezsire (pl. +10.0 ha tetőtéri hűtési többlet, 0.0 ha nincs)
@@ -268,7 +272,8 @@ MINTA JSON:
       "category": "Likviditás és Értékmegőrzés",
       "impact_analysis": "A felújítási igény többletköltséget jelent...",
       "quantitative_recommendation": "300.000 Ft bútorozási többlet indokolt.",
-      "furnishing_adjustment_huf": 300000
+      "furnishing_adjustment_huf": 300000,
+      "market_value_adjustment_pct": 5.0
     }},
     "loan": {{
       "provided": {str(bool(loan_notes)).lower()},

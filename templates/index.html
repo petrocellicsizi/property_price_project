@@ -100,31 +100,42 @@
                             </small>
                         </div>
 
-                        <!-- Ingatlantípus -->
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold text-muted">Ingatlantípus</label>
-                            <select class="form-select" id="prop_type">
-                                <option value="Újépítésű társasház (AA+)" selected>Újépítésű társasház (AA+ energetika)</option>
-                                <option value="Korszerű tégla (2000-2015)">Korszerű tégla (2000–2015)</option>
-                                <option value="Régi nagypolgári tégla">Régi nagypolgári tégla (társasház)</option>
-                                <option value="Panel (felújított / panelprogramos)">Panel (felújított / panelprogramos)</option>
-                                <option value="Panel (eredeti állapotú)">Panel (eredeti állapotú)</option>
-                                <option value="Családi ház / Ikerház">Családi ház / Ikerház</option>
-                            </select>
+                        <!-- Ingatlantípus és Állapot -->
+                        <div class="row g-2 mb-3">
+                            <div class="col-7">
+                                <label class="form-label small fw-semibold text-muted">Ingatlantípus</label>
+                                <select class="form-select form-select-sm" id="prop_type">
+                                    <option value="Újépítésű társasház (AA+)" selected>Újépítésű (AA+)</option>
+                                    <option value="Korszerű tégla (2000-2015)">Korszerű tégla</option>
+                                    <option value="Régi nagypolgári tégla">Régi polgári tégla</option>
+                                    <option value="Panel (felújított / panelprogramos)">Panel (felújított)</option>
+                                    <option value="Panel (eredeti állapotú)">Panel (eredeti)</option>
+                                    <option value="Családi ház / Ikerház">Családi ház / Ikerház</option>
+                                </select>
+                            </div>
+                            <div class="col-5">
+                                <label class="form-label small fw-semibold text-muted">Állapot</label>
+                                <select class="form-select form-select-sm" id="prop_condition">
+                                    <option value="Újszerű / Prémium" selected>Újszerű / Prémium</option>
+                                    <option value="Jó állapotú">Jó állapotú</option>
+                                    <option value="Közepes">Közepes</option>
+                                    <option value="Felújítandó">Felújítandó</option>
+                                </select>
+                            </div>
                         </div>
 
                         <!-- Méret és szobaszám -->
                         <div class="row g-2 mb-3">
                             <div class="col-7">
                                 <label class="form-label small fw-semibold text-muted">Alapterület (m²)</label>
-                                <div class="input-group">
+                                <div class="input-group input-group-sm">
                                     <input type="number" class="form-control" id="prop_size_sqm" value="52" min="15" max="300" step="1">
                                     <span class="input-group-text">m²</span>
                                 </div>
                             </div>
                             <div class="col-5">
                                 <label class="form-label small fw-semibold text-muted">Szobaszám</label>
-                                <select class="form-select" id="prop_rooms">
+                                <select class="form-select form-select-sm" id="prop_rooms">
                                     <option value="1.0">1 szoba</option>
                                     <option value="1.5">1.5 szoba</option>
                                     <option value="2.0" selected>2 szoba</option>
@@ -138,8 +149,12 @@
                         <!-- Vételár és Négyzetméterár (pontozott bevitellel) -->
                         <div class="mb-3 p-3 bg-light rounded border">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label class="form-label small fw-bold text-dark mb-0">Ingatlan Vételára</label>
-                                <span class="badge bg-secondary-subtle text-secondary small">Kétirányú számolás</span>
+                                <label class="form-label small fw-bold text-dark mb-0">Hirdetett / Kínálati Vételár</label>
+                                <button type="button" class="btn btn-sm btn-link p-0 text-decoration-none" id="btnResetPrice" title="Kattints az ajánlott érték visszaállításához">
+                                    <span class="badge bg-secondary-subtle text-secondary small" id="badgeSuggestedPriceSqm">
+                                        <i class="bi bi-magic me-1"></i>Javaslat
+                                    </span>
+                                </button>
                             </div>
                             <div class="input-group mb-2">
                                 <input type="text" inputmode="numeric" class="form-control fw-bold format-huf" id="prop_price_total" value="80.600.000">
@@ -204,7 +219,7 @@
                             <label class="form-label small fw-bold text-dark mb-1">
                                 <i class="bi bi-chat-left-text-fill text-primary me-1"></i>Egyéb releváns információk (Lakás)
                             </label>
-                            <textarea class="form-control form-control-sm" id="prop_other_info" rows="2" placeholder="pl. Tetőtéri, nincs lift a 4. emeletre, felújítandó fürdőszoba, csendes belső udvar"></textarea>
+                            <textarea class="form-control form-control-sm" id="prop_other_info" rows="2"></textarea>
                             <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
                                 Gemini AI elemzi a relevanciáját az értéknövekedésre és fenntartásra.
                             </small>
@@ -327,7 +342,7 @@
                             <label class="form-label small fw-bold text-dark mb-1">
                                 <i class="bi bi-chat-left-text-fill text-success me-1"></i>Egyéb releváns információk (Hitel & Finanszírozás)
                             </label>
-                            <textarea class="form-control form-control-sm" id="loan_other_info" rows="2" placeholder="pl. Babaváró hitel önerőként beszámítva, előtörlesztési terv 5 év múlva, prémium banki kedvezmény"></textarea>
+                            <textarea class="form-control form-control-sm" id="loan_other_info" rows="2"></textarea>
                             <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
                                 Gemini AI elemzi a relevanciáját a kamatkockázatra és törlesztésre.
                             </small>
@@ -396,7 +411,7 @@
                                     <label class="form-label small fw-bold text-dark mb-1">
                                         <i class="bi bi-chat-left-text-fill text-warning me-1"></i>Egyéb releváns információk (Albérlet)
                                     </label>
-                                    <textarea class="form-control form-control-sm" id="rent_other_info" rows="2" placeholder="pl. Kisállat engedélyezett, bútorozatlan, 3 havi kaució lekötése"></textarea>
+                                    <textarea class="form-control form-control-sm" id="rent_other_info" rows="2"></textarea>
                                     <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
                                         Gemini AI elemzi a bérlői többletköltségeket és mobilitást.
                                     </small>
@@ -411,7 +426,7 @@
                         <div class="card border-0 shadow-sm">
                             <div class="card-header bg-white py-3 border-bottom d-flex align-items-center gap-2">
                                 <i class="bi bi-piggy-bank-fill text-info fs-5"></i>
-                                <h5 class="card-title mb-0 fw-bold">4. Maradék Pénz Befektetése</h5>
+                                <h5 class="card-title mb-0 fw-bold">4. Befektetés & Makroökonómia</h5>
                             </div>
                             <div class="card-body p-3">
                                 
@@ -425,11 +440,43 @@
                                         <span class="input-group-text">% / év</span>
                                     </div>
                                     <input type="range" class="form-range" id="rngInvReturn" min="1.0" max="15.0" step="0.25" value="7.00">
-                                    <div class="p-2 bg-light rounded small mt-2">
-                                        <div class="d-flex justify-content-between">
-                                            <span class="text-muted">Számított havi hozamráta:</span>
-                                            <strong class="text-dark" id="lblMonthlyReturnRate">0.57% / hó</strong>
+                                </div>
+                                
+                                <!-- Új: Makroökonómiai Stresszteszt -->
+                                <div class="mb-3 p-3 bg-info-subtle rounded border border-info">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-info text-dark fw-bold mb-0">Makroökonómiai Stresszteszt</span>
+                                    </div>
+                                    
+                                    <!-- Ingatlan felértékelődés -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label small fw-semibold text-dark mb-0">Várható éves ingatlan drágulás</label>
+                                            <strong class="text-dark small" id="lblPropGrowthBadge">5.0%</strong>
                                         </div>
+                                        <input type="range" class="form-range" id="rngPropGrowth" min="-5.0" max="15.0" step="0.5" value="5.0">
+                                        <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
+                                            <i class="bi bi-info-circle me-1"></i>Javasolt érték (KSH utolsó 10 év országos átlaga): <strong>~7.5%</strong>
+                                        </small>
+                                    </div>
+                                    
+                                    <!-- Bérleti díj infláció -->
+                                    <div class="mb-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label small fw-semibold text-dark mb-0">Várható éves bérleti díj infláció</label>
+                                            <strong class="text-dark small" id="lblRentInflationBadge">4.0%</strong>
+                                        </div>
+                                        <input type="range" class="form-range" id="rngRentInflation" min="0.0" max="15.0" step="0.5" value="4.0">
+                                        <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
+                                            <i class="bi bi-info-circle me-1"></i>Javasolt érték (KSH utolsó 10 év átlaga): <strong>~6.0%</strong>
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="p-2 bg-light rounded small mt-2 mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Számított havi hozamráta:</span>
+                                        <strong class="text-dark" id="lblMonthlyReturnRate">0.57% / hó</strong>
                                     </div>
                                 </div>
 
@@ -438,7 +485,7 @@
                                     <label class="form-label small fw-bold text-dark mb-1">
                                         <i class="bi bi-chat-left-text-fill text-info me-1"></i>Egyéb releváns információk (Befektetés)
                                     </label>
-                                    <textarea class="form-control form-control-sm" id="inv_other_info" rows="2" placeholder="pl. TBSZ számla 0% adóval, kockázatkerülő állampapír fókusz, 5 év múlva ETF"></textarea>
+                                    <textarea class="form-control form-control-sm" id="inv_other_info" rows="2"></textarea>
                                     <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
                                         Gemini AI elemzi a reálhozamot és likviditási korlátokat.
                                     </small>
