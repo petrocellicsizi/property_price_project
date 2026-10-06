@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T01:15:33.724339",
+  "updated_at": "2026-10-07T01:30:44.046439",
   "inputs": {
     "property": {
       "city": "Budapest",
@@ -7,13 +7,13 @@
       "location": "Budapest, VIII. kerület",
       "property_type": "Újépítésű társasház (AA+)",
       "condition": "Újszerű / Prémium",
-      "size_sqm": 47,
+      "size_sqm": 46,
       "room_count": 2,
       "price_total_huf": 68900000,
-      "price_per_sqm_huf": 1465957,
+      "price_per_sqm_huf": 1497826,
       "lawyer_fee_pct": 0.5,
       "lawyer_fee_huf": 344500,
-      "furnishing_cost_huf": 3500000,
+      "furnishing_cost_huf": 3000000,
       "other_info": ""
     },
     "loan": {
@@ -27,12 +27,12 @@
       "other_info": ""
     },
     "rent": {
-      "monthly_rent_huf": 295000,
-      "monthly_utilities_huf": 31000,
+      "monthly_rent_huf": 250000,
+      "monthly_utilities_huf": 30000,
       "other_info": ""
     },
     "investment": {
-      "expected_return_annual_pct": 11,
+      "expected_return_annual_pct": 10.25,
       "property_growth_pct": 5,
       "rent_inflation_pct": 4,
       "other_info": ""
@@ -87,8 +87,8 @@
   },
   "ai_adjusted_suggestions": {
     "suggested_furnishing_huf": 3000000,
-    "suggested_rent_huf": 255000,
-    "suggested_utilities_huf": 31000,
+    "suggested_rent_huf": 250000,
+    "suggested_utilities_huf": 30000,
     "suggested_price_total_huf": 0,
     "suggested_price_per_sqm_huf": 0,
     "adjustments_applied": {
@@ -99,8 +99,8 @@
     },
     "formatted": {
       "suggested_furnishing": "3.000.000 Ft",
-      "suggested_rent": "255.000 Ft",
-      "suggested_utilities": "31.000 Ft",
+      "suggested_rent": "250.000 Ft",
+      "suggested_utilities": "30.000 Ft",
       "suggested_price_total": "0 Ft",
       "suggested_price_per_sqm": "0 Ft/m²"
     }

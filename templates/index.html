@@ -129,7 +129,7 @@
                             <div class="col-7">
                                 <label class="form-label small fw-semibold text-muted">Alapterület (m²)</label>
                                 <div class="input-group input-group-sm">
-                                    <input type="number" class="form-control" id="prop_size_sqm" value="52" min="15" max="300" step="1">
+                                    <input type="number" class="form-control" id="prop_size_sqm" value="46" min="15" max="300" step="1">
                                     <span class="input-group-text">m²</span>
                                 </div>
                             </div>
@@ -157,13 +157,13 @@
                                 </button>
                             </div>
                             <div class="input-group mb-2">
-                                <input type="text" inputmode="numeric" class="form-control fw-bold format-huf" id="prop_price_total" value="80.600.000">
+                                <input type="text" inputmode="numeric" class="form-control fw-bold format-huf" id="prop_price_total" value="68.900.000">
                                 <span class="input-group-text">Ft</span>
                             </div>
                             
                             <label class="form-label small fw-semibold text-muted mb-1">Fajlagos m² ár</label>
                             <div class="input-group input-group-sm">
-                                <input type="text" inputmode="numeric" class="form-control format-huf" id="prop_price_sqm" value="1.550.000">
+                                <input type="text" inputmode="numeric" class="form-control format-huf" id="prop_price_sqm" value="1.497.826">
                                 <span class="input-group-text">Ft/m²</span>
                             </div>
                         </div>
@@ -177,13 +177,13 @@
                             <div class="row g-2">
                                 <div class="col-5">
                                     <div class="input-group input-group-sm">
-                                        <input type="number" class="form-control" id="prop_lawyer_pct" value="1.0" min="0.1" max="5.0" step="0.1">
+                                        <input type="number" class="form-control" id="prop_lawyer_pct" value="0.5" min="0.1" max="5.0" step="0.1">
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
                                 <div class="col-7">
                                     <div class="input-group input-group-sm">
-                                        <input type="text" inputmode="numeric" class="form-control format-huf" id="prop_lawyer_huf" value="806.000">
+                                        <input type="text" inputmode="numeric" class="form-control format-huf" id="prop_lawyer_huf" value="344.500">
                                         <span class="input-group-text">Ft</span>
                                     </div>
                                 </div>
@@ -201,12 +201,12 @@
                                 </label>
                                 <button type="button" class="btn btn-sm btn-link p-0 text-decoration-none" id="btnResetFurnishing" title="Kattints az ajánlott érték visszaállításához">
                                     <span class="badge bg-primary-subtle text-primary" id="badgeSuggestedFurnishing" style="font-size: 0.72rem;">
-                                        <i class="bi bi-magic me-1"></i>Javaslat: 2.800.000 Ft
+                                        <i class="bi bi-magic me-1"></i>Javaslat: 3.000.000 Ft
                                     </span>
                                 </button>
                             </div>
                             <div class="input-group">
-                                <input type="text" inputmode="numeric" class="form-control format-huf" id="prop_furnishing_huf" value="2.800.000">
+                                <input type="text" inputmode="numeric" class="form-control format-huf" id="prop_furnishing_huf" value="3.000.000">
                                 <span class="input-group-text">Ft</span>
                             </div>
                             <small class="text-muted d-block mt-1" id="lblFurnishingExplanation" style="font-size: 0.75rem;">
@@ -242,23 +242,23 @@
                         <div class="mb-3 p-3 bg-light rounded border">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <label class="form-label small fw-bold text-dark mb-0">Önerő arány és összeg</label>
-                                <span class="badge bg-success-subtle text-success small" id="lblDownPaymentBadge">25% önerő</span>
+                                <span class="badge bg-success-subtle text-success small" id="lblDownPaymentBadge">27.4% önerő</span>
                             </div>
                             <div class="row g-2 mb-2">
                                 <div class="col-5">
                                     <div class="input-group">
-                                        <input type="number" class="form-control" id="loan_down_payment_pct" value="25" min="10" max="100" step="1">
+                                        <input type="number" class="form-control" id="loan_down_payment_pct" value="27.4" min="10" max="100" step="0.1">
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
                                 <div class="col-7">
                                     <div class="input-group">
-                                        <input type="text" inputmode="numeric" class="form-control format-huf" id="loan_down_payment_huf" value="20.150.000">
+                                        <input type="text" inputmode="numeric" class="form-control format-huf" id="loan_down_payment_huf" value="18.900.000">
                                         <span class="input-group-text">Ft</span>
                                     </div>
                                 </div>
                             </div>
-                            <input type="range" class="form-range" id="rngDownPayment" min="10" max="100" step="1" value="25">
+                            <input type="range" class="form-range" id="rngDownPayment" min="10" max="100" step="1" value="27">
                             <small class="text-muted d-block" style="font-size: 0.75rem;">
                                 MNB előírás: általában minimum 20% (első lakásnál 10%).
                             </small>
@@ -268,7 +268,7 @@
                         <div class="mb-3">
                             <label class="form-label small fw-semibold text-muted mb-1">Felvett hitelösszeg (Ft)</label>
                             <div class="input-group">
-                                <input type="text" inputmode="numeric" class="form-control fw-bold text-success format-huf" id="loan_amount_huf" value="60.450.000">
+                                <input type="text" inputmode="numeric" class="form-control fw-bold text-success format-huf" id="loan_amount_huf" value="50.000.000">
                                 <span class="input-group-text">Ft</span>
                             </div>
                             <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">
@@ -280,13 +280,13 @@
                         <div class="mb-3">
                             <label class="form-label small fw-semibold text-muted mb-1">Hitel futamideje</label>
                             <div class="input-group mb-2">
-                                <input type="number" class="form-control" id="loan_term_years" value="20" min="5" max="35" step="1">
+                                <input type="number" class="form-control" id="loan_term_years" value="21" min="5" max="35" step="1">
                                 <span class="input-group-text">év</span>
                             </div>
                             <div class="btn-group btn-group-sm w-100" role="group">
                                 <button type="button" class="btn btn-outline-secondary btn-term" data-term="10">10 év</button>
                                 <button type="button" class="btn btn-outline-secondary btn-term" data-term="15">15 év</button>
-                                <button type="button" class="btn btn-outline-secondary btn-term active" data-term="20">20 év</button>
+                                <button type="button" class="btn btn-outline-secondary btn-term" data-term="20">20 év</button>
                                 <button type="button" class="btn btn-outline-secondary btn-term" data-term="25">25 év</button>
                                 <button type="button" class="btn btn-outline-secondary btn-term" data-term="30">30 év</button>
                             </div>
@@ -296,7 +296,7 @@
                         <div class="mb-3">
                             <label class="form-label small fw-semibold text-muted mb-1">Hitelkamat / THM (% / év)</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="loan_interest_pct" value="6.50" min="0.0" max="25.0" step="0.1">
+                                <input type="number" class="form-control" id="loan_interest_pct" value="3.0" min="0.0" max="25.0" step="0.1">
                                 <span class="input-group-text">%</span>
                             </div>
                             <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">
@@ -370,12 +370,12 @@
                                         <label class="form-label small fw-semibold text-muted mb-0">Tervezett havi bérleti díj (Ft/hó)</label>
                                         <button type="button" class="btn btn-sm btn-link p-0 text-decoration-none" id="btnResetRent" title="Kattints az ajánlott érték visszaállításához">
                                             <span class="badge bg-warning-subtle text-dark" id="badgeSuggestedRent" style="font-size: 0.72rem;">
-                                                <i class="bi bi-magic me-1"></i>Javaslat: 270.000 Ft
+                                                <i class="bi bi-magic me-1"></i>Javaslat: 250.000 Ft
                                             </span>
                                         </button>
                                     </div>
                                     <div class="input-group">
-                                        <input type="text" inputmode="numeric" class="form-control format-huf" id="rent_monthly_huf" value="270.000">
+                                        <input type="text" inputmode="numeric" class="form-control format-huf" id="rent_monthly_huf" value="250.000">
                                         <span class="input-group-text">Ft/hó</span>
                                     </div>
                                     <small class="text-muted d-block mt-1" id="lblRentExplanation" style="font-size: 0.75rem;">
@@ -388,12 +388,12 @@
                                         <label class="form-label small fw-semibold text-muted mb-0">Havi becsült rezsi (Ft/hó)</label>
                                         <button type="button" class="btn btn-sm btn-link p-0 text-decoration-none" id="btnResetUtilities" title="Kattints az ajánlott érték visszaállításához">
                                             <span class="badge bg-info-subtle text-info" id="badgeSuggestedUtilities" style="font-size: 0.72rem;">
-                                                <i class="bi bi-magic me-1"></i>Javaslat: 34.000 Ft
+                                                <i class="bi bi-magic me-1"></i>Javaslat: 30.000 Ft
                                             </span>
                                         </button>
                                     </div>
                                     <div class="input-group">
-                                        <input type="text" inputmode="numeric" class="form-control format-huf" id="rent_utilities_huf" value="34.000">
+                                        <input type="text" inputmode="numeric" class="form-control format-huf" id="rent_utilities_huf" value="30.000">
                                         <span class="input-group-text">Ft/hó</span>
                                     </div>
                                     <small class="text-muted d-block mt-1" id="lblUtilitiesExplanation" style="font-size: 0.75rem;">
@@ -403,7 +403,7 @@
 
                                 <div class="p-2 bg-light rounded small d-flex justify-content-between align-items-center">
                                     <span class="text-muted">Összes havi bérlői kiadás:</span>
-                                    <strong class="text-dark fs-6" id="lblTotalRentOutlay">305.000 Ft/hó</strong>
+                                    <strong class="text-dark fs-6" id="lblTotalRentOutlay">280.000 Ft/hó</strong>
                                 </div>
 
                                 <!-- Egyéb releváns információk (Albérlet) -->
@@ -417,7 +417,6 @@
                                     </small>
                                 </div>
 
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -434,13 +433,13 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <label class="form-label small fw-semibold text-muted mb-0">Elvárt éves hozam (% / év)</label>
-                                        <strong class="text-info" id="lblInvReturnBadge">7.00%</strong>
+                                        <strong class="text-info" id="lblInvReturnBadge">10.25%</strong>
                                     </div>
                                     <div class="input-group mb-2">
-                                        <input type="number" class="form-control" id="inv_return_pct" value="7.00" min="0.0" max="25.0" step="0.25">
+                                        <input type="number" class="form-control" id="inv_return_pct" value="10.25" min="0.0" max="25.0" step="0.25">
                                         <span class="input-group-text">% / év</span>
                                     </div>
-                                    <input type="range" class="form-range" id="rngInvReturn" min="1.0" max="15.0" step="0.25" value="7.00">
+                                    <input type="range" class="form-range" id="rngInvReturn" min="1.0" max="15.0" step="0.25" value="10.25">
                                 </div>
                                 
                                 <!-- Új: Makroökonómiai Stresszteszt -->

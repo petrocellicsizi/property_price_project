@@ -169,11 +169,11 @@ def calculate_metrics():
         "simulation_years": 30,
         "loan_term_years": term_years,
         "property_size_sqm": size,
-        "price_per_sqm": int(prop.get("price_sqm_huf", suggested_price_per_sqm)),
+        "price_per_sqm": int(prop.get("price_per_sqm_huf", suggested_price_per_sqm)),
         "down_payment_ratio": parse_clean_number(loan.get("down_payment_pct", 25)) / 100.0,
         "transfer_tax_rate": 0.04,  # alapértelmezett illeték
         "legal_fee_rate": parse_clean_number(prop.get("lawyer_fee_pct", 1.0)) / 100.0,
-        "renovation_cost_initial": parse_clean_number(prop.get("furnishing_huf", suggested_furnishing)),
+        "renovation_cost_initial": parse_clean_number(prop.get("furnishing_cost_huf", suggested_furnishing)),
         "loan_interest_rate_annual": parse_clean_number(loan.get("interest_rate_annual_pct", 6.5)) / 100.0,
         "property_growth_rate_annual": parse_clean_number(inv.get("property_growth_pct", 5.0)) / 100.0,
         "maintenance_rate_annual": 0.01,

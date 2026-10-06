@@ -86,11 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusAlertMessage = document.getElementById('statusAlertMessage');
     const btnCloseAlert = document.getElementById('btnCloseAlert');
 
-    // Felhasználói egyedi felülírás állapotjelzők (ha a user kézzel írja át a javaslatot)
-    let userCustomPrice = false;
-    let userCustomFurnishing = false;
-    let userCustomRent = false;
-    let userCustomUtilities = false;
+    // Felhasználói egyedi felülírás állapotjelzők
+    // Alapértelmezetten true, így induláskor/betöltéskor nem írja felül a mentett értékeket az AI javaslattal.
+    // Csak akkor váltanak false-ra, ha a user külön rányom a "Javaslat" gombra.
+    let userCustomPrice = true;
+    let userCustomFurnishing = true;
+    let userCustomRent = true;
+    let userCustomUtilities = true;
 
     // --- 2. Pontozott Formázó Segédfüggvények (UI Gépelési Élményhez) ---
 
