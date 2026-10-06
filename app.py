@@ -1,10 +1,232 @@
-from flask import Flask
+"""
+Flask alkalmazás - Dashboard Bemeneti Adatkezelő és Kvantitatív Motor.
+A teljes matematikai és ingatlanpiaci modellezés a Python utils modulokban fut.
+"""
+import json
+import os
+from datetime import datetime
+from flask import Flask, render_template, request, jsonify
 
-app = Flask(__name__)
+from core.gemini_service import gemini_service
+from utils.formatters import format_huf, format_with_dots, parse_clean_number
+from utils.algorithms import (
+    calculate_suggested_furnishing,
+    calculate_suggested_rent,
+    calculate_suggested_utilities,
+    calculate_ai_adjusted_suggestions,
+)
+from utils.finance import (
+    calculate_monthly_installment,
+    calculate_total_initial_outlay,
+    calculate_monthly_return_rate,
+    calculate_property_metrics,
+    calculate_lawyer_fee_metrics,
+    calculate_down_payment_metrics,
+)
 
-@app.route('/')
-def hello():
-    return "Flask is running!"
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
-if __name__ == '__main__':
-    app.run(debug=True)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+DEFAULT_FILE = os.path.join(DATA_DIR, "default_inputs.json")
+SAVED_FILE = os.path.join(DATA_DIR, "saved_inputs.json")
+
+
+def load_inputs():
+    """Betölti a legutóbb elmentett adatokat, vagy a default értékeket."""
+    target_file = SAVED_FILE if os.path.exists(SAVED_FILE) else DEFAULT_FILE
+    if os.path.exists(target_file):
+        with open(target_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def save_inputs(data):
+    """Elmenti a beérkezett adatokat JSON fájlba."""
+    os.makedirs(DATA_DIR, exist_ok=True)
+    with open(SAVED_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+@app.route("/")
+def index():
+    """Dashboard nézet megjelenítése."""
+    current_data = load_inputs()
+    return render_template("index.html", initial_data=current_data)
+
+
+@app.route("/api/inputs", methods=["GET"])
+def get_inputs():
+    """Visszaadja a jelenleg tárolt bemeneti adatokat."""
+    data = load_inputs()
+    is_custom = os.path.exists(SAVED_FILE)
+    return jsonify({
+        "status": "success",
+        "is_custom": is_custom,
+        "data": data
+    }), 200
+
+
+@app.route("/api/calculate", methods=["POST"])
+def calculate_metrics():
+    """
+    Kvantitatív pénzügyi és piaci számítások végrehajtása (Python backend).
+    Kiszámítja a javasolt berendezési díjat, bérleti díjat, rezsit,
+    a havi hiteltörlesztőt, az induló tőkét és a havi hozamrátát.
+    Támogatja a Gemini AI által meghatározott felárak/diszkontok érvényesítését is.
+    """
+    data = request.get_json(silent=True) or {}
+    prop = data.get("property", {})
+    loan = data.get("loan", {})
+    rent = data.get("rent", {})
+    inv = data.get("investment", {})
+    ai_evaluations = data.get("ai_evaluations") or {}
+
+    # 1. Piaci és rezsi alap ajánló algoritmusok
+    ptype = prop.get("property_type", "Újépítésű társasház (AA+)")
+    size = parse_clean_number(prop.get("size_sqm", 52))
+    rooms = parse_clean_number(prop.get("room_count", 2))
+    city = prop.get("city", "Budapest")
+    district = prop.get("district", "VIII. kerület")
+
+    base_furnishing = calculate_suggested_furnishing(ptype, size, rooms)
+    base_rent = calculate_suggested_rent(ptype, size, rooms, city, district)
+    base_utilities = calculate_suggested_utilities(ptype, size)
+
+    # 2. AI korrekciók figyelembevétele, ha rendelkezésre állnak
+    if ai_evaluations:
+        base_suggestions = {
+            "suggested_furnishing_huf": base_furnishing,
+            "suggested_rent_huf": base_rent,
+            "suggested_utilities_huf": base_utilities,
+        }
+        adjusted = calculate_ai_adjusted_suggestions(base_suggestions, ai_evaluations)
+        suggested_furnishing = adjusted["suggested_furnishing_huf"]
+        suggested_rent = adjusted["suggested_rent_huf"]
+        suggested_utilities = adjusted["suggested_utilities_huf"]
+        adjustments_info = adjusted.get("adjustments_applied", {})
+    else:
+        suggested_furnishing = base_furnishing
+        suggested_rent = base_rent
+        suggested_utilities = base_utilities
+        adjustments_info = {}
+
+    # 3. Pénzügyi és törlesztési számítások
+    price_total = parse_clean_number(prop.get("price_total_huf", 80600000))
+    loan_amount = parse_clean_number(loan.get("loan_amount_huf", 60450000))
+    interest_pct = parse_clean_number(loan.get("interest_rate_annual_pct", 6.5))
+    term_years = int(parse_clean_number(loan.get("loan_term_years", 20)))
+
+    # Hitel annuitásos törlesztő
+    monthly_installment = calculate_monthly_installment(loan_amount, interest_pct, term_years)
+
+    # Induló tőkeigény
+    down_payment = parse_clean_number(loan.get("down_payment_huf", 20150000))
+    lawyer_fee = parse_clean_number(prop.get("lawyer_fee_huf", 806000))
+    other_fees = parse_clean_number(loan.get("other_fees_huf", 120000))
+    furnishing = parse_clean_number(prop.get("furnishing_cost_huf", suggested_furnishing))
+
+    total_initial_outlay = calculate_total_initial_outlay(
+        down_payment_huf=down_payment,
+        lawyer_fee_huf=lawyer_fee,
+        other_fees_huf=other_fees,
+        furnishing_cost_huf=furnishing,
+        price_total_huf=price_total,
+        transfer_tax_rate=0.04
+    )
+
+    # Befektetési havi ráta
+    inv_return_pct = parse_clean_number(inv.get("expected_return_annual_pct", 7.0))
+    monthly_return_rate = calculate_monthly_return_rate(inv_return_pct)
+
+    # Bérlői havi összes kiadás
+    rent_monthly = parse_clean_number(rent.get("monthly_rent_huf", suggested_rent))
+    rent_utilities = parse_clean_number(rent.get("monthly_utilities_huf", suggested_utilities))
+    total_rent_outlay = int(round(rent_monthly + rent_utilities))
+
+    response_data = {
+        "status": "success",
+        "raw": {
+            "suggested_furnishing_huf": suggested_furnishing,
+            "suggested_rent_huf": suggested_rent,
+            "suggested_utilities_huf": suggested_utilities,
+            "estimated_monthly_payment_huf": monthly_installment,
+            "total_initial_outlay_huf": total_initial_outlay,
+            "total_rent_outlay_huf": total_rent_outlay,
+            "monthly_return_rate_pct": monthly_return_rate,
+            "adjustments_info": adjustments_info,
+        },
+        "formatted": {
+            "suggested_furnishing": format_huf(suggested_furnishing),
+            "suggested_rent": format_huf(suggested_rent),
+            "suggested_utilities": format_huf(suggested_utilities),
+            "estimated_monthly_payment": f"{format_huf(monthly_installment)}/hó",
+            "total_initial_outlay": format_huf(total_initial_outlay),
+            "total_rent_outlay": f"{format_huf(total_rent_outlay)}/hó",
+            "monthly_return_rate": f"{monthly_return_rate:.2f}% / hó",
+        }
+    }
+    return jsonify(response_data), 200
+
+
+@app.route("/api/inputs", methods=["POST"])
+def store_inputs():
+    """
+    Fogadja a dashboardról érkező adatokat és letárolja.
+    Meghívja a Gemini AI szolgáltatást az egyéb releváns információk
+    szakmai kiértékelésére és a javaslatok számszerű AI korrekciójára (pl. Dunamenti felár).
+    """
+    payload = request.get_json(silent=True)
+    if not payload:
+        return jsonify({
+            "status": "error",
+            "message": "Érvénytelen vagy hiányzó JSON adat."
+        }), 400
+
+    # 1. Gemini AI elemzés futtatása a kiegészítő megjegyzésekre
+    gemini_analysis = gemini_service.evaluate_all_notes(payload)
+
+    # 2. Alap piaci javaslatok kiszámítása az aktuális lakásadatok alapján
+    prop = payload.get("property", {})
+    ptype = prop.get("property_type", "Újépítésű társasház (AA+)")
+    size = parse_clean_number(prop.get("size_sqm", 52))
+    rooms = parse_clean_number(prop.get("room_count", 2))
+    city = prop.get("city", "Budapest")
+    district = prop.get("district", "VIII. kerület")
+
+    base_suggestions = {
+        "suggested_furnishing_huf": calculate_suggested_furnishing(ptype, size, rooms),
+        "suggested_rent_huf": calculate_suggested_rent(ptype, size, rooms, city, district),
+        "suggested_utilities_huf": calculate_suggested_utilities(ptype, size),
+    }
+
+    # 3. AI korrekciók hozzáadása a javaslatokhoz
+    ai_evaluations = gemini_analysis.get("evaluations", {})
+    ai_adjusted_suggestions = calculate_ai_adjusted_suggestions(base_suggestions, ai_evaluations)
+
+    # Időbélyeg és elemzés hozzáadása az adatrekordhoz
+    stored_payload = {
+        "updated_at": datetime.now().isoformat(),
+        "inputs": payload,
+        "gemini_analysis": gemini_analysis,
+        "ai_adjusted_suggestions": ai_adjusted_suggestions
+    }
+
+    try:
+        save_inputs(stored_payload)
+        return jsonify({
+            "status": "saved",
+            "message": "A bemeneti paraméterek és a Gemini AI elemzés sikeresen elmentve!",
+            "data": stored_payload,
+            "gemini_analysis": gemini_analysis,
+            "ai_adjusted_suggestions": ai_adjusted_suggestions
+        }), 200
+    except Exception as exc:
+        return jsonify({
+            "status": "error",
+            "message": f"Nem sikerült elmenteni az adatokat: {str(exc)}"
+        }), 500
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)

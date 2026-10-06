@@ -1,0 +1,802 @@
+/**
+ * Bemeneti Dashboard Kliens (Frontend UI Vezérlő)
+ * - Architektúra: A teljes pénzügyi és ingatlanpiaci üzleti logika és algoritmus
+ *   a Python backendben (utils modulok és /api/calculate végpont) fut!
+ * - A JavaScript réteg kizárólag a felhasználói felületért, eseménykezelésért,
+ *   a beviteli pontozott számformázásért és a szerverkommunikációért felel.
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. DOM Elemek ---
+
+    // Helyszín és Lakatok (begépelhető input mezők)
+    const propCity = document.getElementById('prop_city');
+    const propDistrict = document.getElementById('prop_district');
+    const btnToggleCityLock = document.getElementById('btnToggleCityLock');
+    const btnToggleDistrictLock = document.getElementById('btnToggleDistrictLock');
+    const iconLockCity = document.getElementById('iconLockCity');
+    const iconLockDistrict = document.getElementById('iconLockDistrict');
+    const badgeCityStatus = document.getElementById('badgeCityStatus');
+    const badgeDistrictStatus = document.getElementById('badgeDistrictStatus');
+
+    // Ingatlan mezők
+    const propType = document.getElementById('prop_type');
+    const propSizeSqm = document.getElementById('prop_size_sqm');
+    const propRooms = document.getElementById('prop_rooms');
+    const propPriceTotal = document.getElementById('prop_price_total');
+    const propPriceSqm = document.getElementById('prop_price_sqm');
+    const propLawyerPct = document.getElementById('prop_lawyer_pct');
+    const propLawyerHuf = document.getElementById('prop_lawyer_huf');
+    const propFurnishingHuf = document.getElementById('prop_furnishing_huf');
+    const badgeSuggestedFurnishing = document.getElementById('badgeSuggestedFurnishing');
+    const btnResetFurnishing = document.getElementById('btnResetFurnishing');
+
+    // Hitel mezők
+    const loanDownPaymentPct = document.getElementById('loan_down_payment_pct');
+    const loanDownPaymentHuf = document.getElementById('loan_down_payment_huf');
+    const rngDownPayment = document.getElementById('rngDownPayment');
+    const lblDownPaymentBadge = document.getElementById('lblDownPaymentBadge');
+    const loanAmountHuf = document.getElementById('loan_amount_huf');
+    const loanTermYears = document.getElementById('loan_term_years');
+    const btnTerms = document.querySelectorAll('.btn-term');
+    const loanInterestPct = document.getElementById('loan_interest_pct');
+    const loanOtherFeesHuf = document.getElementById('loan_other_fees_huf');
+    const loanMonthlyPayment = document.getElementById('loan_monthly_payment');
+    const lblEstimatedPmt = document.getElementById('lblEstimatedPmt');
+
+    // Bérlés mezők
+    const rentMonthlyHuf = document.getElementById('rent_monthly_huf');
+    const badgeSuggestedRent = document.getElementById('badgeSuggestedRent');
+    const btnResetRent = document.getElementById('btnResetRent');
+    const rentUtilitiesHuf = document.getElementById('rent_utilities_huf');
+    const badgeSuggestedUtilities = document.getElementById('badgeSuggestedUtilities');
+    const btnResetUtilities = document.getElementById('btnResetUtilities');
+    const lblTotalRentOutlay = document.getElementById('lblTotalRentOutlay');
+
+    // Befektetés mezők
+    const invReturnPct = document.getElementById('inv_return_pct');
+    const rngInvReturn = document.getElementById('rngInvReturn');
+    const lblInvReturnBadge = document.getElementById('lblInvReturnBadge');
+    const lblMonthlyReturnRate = document.getElementById('lblMonthlyReturnRate');
+    const badgeTotalInitialOutlay = document.getElementById('badgeTotalInitialOutlay');
+
+    // Egyéb releváns információk (4 kategória szövegdobozai)
+    const propOtherInfo = document.getElementById('prop_other_info');
+    const loanOtherInfo = document.getElementById('loan_other_info');
+    const rentOtherInfo = document.getElementById('rent_other_info');
+    const invOtherInfo = document.getElementById('inv_other_info');
+
+    // Gemini AI Elemzés panel elemei
+    const cardGeminiAnalysis = document.getElementById('cardGeminiAnalysis');
+    const containerGeminiResults = document.getElementById('containerGeminiResults');
+    const badgeGeminiModel = document.getElementById('badgeGeminiModel');
+
+    // Gombok és visszajelzők
+    const btnSaveTop = document.getElementById('btnSaveTop');
+    const btnSaveBottom = document.getElementById('btnSaveBottom');
+    const btnResetDefaults = document.getElementById('btnResetDefaults');
+    const statusAlert = document.getElementById('statusAlert');
+    const statusAlertTitle = document.getElementById('statusAlertTitle');
+    const statusAlertMessage = document.getElementById('statusAlertMessage');
+    const btnCloseAlert = document.getElementById('btnCloseAlert');
+
+    // Felhasználói egyedi felülírás állapotjelzők (ha a user kézzel írja át a javaslatot)
+    let userCustomFurnishing = false;
+    let userCustomRent = false;
+    let userCustomUtilities = false;
+
+    // --- 2. Pontozott Formázó Segédfüggvények (UI Gépelési Élményhez) ---
+
+    function formatWithDots(val) {
+        if (val === null || val === undefined || val === '') return '';
+        const cleanStr = String(val).replace(/\D/g, '');
+        if (!cleanStr) return '';
+        return cleanStr.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function parseCleanNumber(val) {
+        if (val === null || val === undefined || val === '') return 0;
+        const cleanStr = String(val).replace(/\D/g, '');
+        return cleanStr ? parseFloat(cleanStr) : 0;
+    }
+
+    function formatHUF(val) {
+        if (val === null || val === undefined || isNaN(val) || val === '') return '0 Ft';
+        const num = Math.round(Number(val));
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' Ft';
+    }
+
+    // Pontozott formázás minden .format-huf mezőre gépeléskor
+    const moneyInputs = document.querySelectorAll('.format-huf');
+    moneyInputs.forEach(input => {
+        input.addEventListener('input', (e) => {
+            const rawVal = e.target.value;
+            const cursorPos = e.target.selectionStart;
+            const prevLen = rawVal.length;
+
+            const formatted = formatWithDots(rawVal);
+            e.target.value = formatted;
+
+            const newLen = formatted.length;
+            const newCursor = cursorPos + (newLen - prevLen);
+            e.target.setSelectionRange(newCursor, newCursor);
+        });
+    });
+
+    // --- 3. Python Backend Számítási Motor Hívása (/api/calculate) ---
+
+    let calcDebounceTimer = null;
+    let currentAiEvaluations = null;
+
+    function triggerPythonCalculations() {
+        if (calcDebounceTimer) clearTimeout(calcDebounceTimer);
+        calcDebounceTimer = setTimeout(runPythonCalculations, 120);
+    }
+
+    async function runPythonCalculations() {
+        const payload = collectFormData();
+        if (currentAiEvaluations) {
+            payload.ai_evaluations = currentAiEvaluations;
+        }
+
+        try {
+            const response = await fetch('/api/calculate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) return;
+            const res = await response.json();
+            const raw = res.raw;
+            const fmt = res.formatted;
+            const adjInfo = raw.adjustments_info || {};
+
+            // Python által számított ajánlások frissítése AI jelvénnyel (ha van AI korrekció)
+            if (badgeSuggestedFurnishing) {
+                const furnishAdj = adjInfo.furnishing_adjustment_huf || 0;
+                const extraBadge = furnishAdj !== 0 
+                    ? ` <span class="badge bg-primary text-white ms-1" style="font-size: 0.7rem;">AI: ${furnishAdj > 0 ? '+' : ''}${formatHUF(furnishAdj)}</span>` 
+                    : '';
+                badgeSuggestedFurnishing.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_furnishing}${extraBadge}`;
+            }
+            if (!userCustomFurnishing && propFurnishingHuf) {
+                propFurnishingHuf.value = formatWithDots(raw.suggested_furnishing_huf);
+            }
+
+            if (badgeSuggestedRent) {
+                const rentAdjPct = adjInfo.rent_adjustment_pct || 0;
+                const extraBadge = rentAdjPct !== 0 
+                    ? ` <span class="badge ${rentAdjPct > 0 ? 'bg-danger' : 'bg-success'} text-white ms-1" style="font-size: 0.7rem;">AI: ${rentAdjPct > 0 ? '+' : ''}${rentAdjPct}%</span>` 
+                    : '';
+                badgeSuggestedRent.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_rent}${extraBadge}`;
+            }
+            if (!userCustomRent && rentMonthlyHuf) {
+                rentMonthlyHuf.value = formatWithDots(raw.suggested_rent_huf);
+            }
+
+            if (badgeSuggestedUtilities) {
+                const utilsAdjPct = adjInfo.utilities_adjustment_pct || 0;
+                const extraBadge = utilsAdjPct !== 0 
+                    ? ` <span class="badge ${utilsAdjPct > 0 ? 'bg-warning text-dark' : 'bg-success text-white'} ms-1" style="font-size: 0.7rem;">AI: ${utilsAdjPct > 0 ? '+' : ''}${utilsAdjPct}%</span>` 
+                    : '';
+                badgeSuggestedUtilities.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_utilities}${extraBadge}`;
+            }
+            if (!userCustomUtilities && rentUtilitiesHuf) {
+                rentUtilitiesHuf.value = formatWithDots(raw.suggested_utilities_huf);
+            }
+
+            // Pénzügyi mutatók frissítése a Python backend válasza alapján
+            if (lblEstimatedPmt) {
+                lblEstimatedPmt.textContent = fmt.estimated_monthly_payment;
+            }
+            if (lblTotalRentOutlay) {
+                lblTotalRentOutlay.textContent = fmt.total_rent_outlay;
+            }
+            if (lblMonthlyReturnRate) {
+                lblMonthlyReturnRate.textContent = fmt.monthly_return_rate;
+            }
+            if (badgeTotalInitialOutlay) {
+                badgeTotalInitialOutlay.textContent = fmt.total_initial_outlay;
+            }
+        } catch (err) {
+            console.error("Hiba a Python kvantitatív kalkuláció hívásakor:", err);
+        }
+    }
+
+    function applyAiAdjustedSuggestionsToUI(adjData) {
+        if (!adjData) return;
+        const raw = adjData;
+        const fmt = adjData.formatted || {};
+        const applied = adjData.adjustments_applied || {};
+
+        // 1. Albérlet javaslat AI felülbírálata
+        if (badgeSuggestedRent && fmt.suggested_rent) {
+            const rentPct = applied.rent_adjustment_pct || 0;
+            const badgeExtra = rentPct !== 0 
+                ? ` <span class="badge ${rentPct > 0 ? 'bg-danger' : 'bg-success'} text-white ms-1" style="font-size: 0.7rem;">AI: ${rentPct > 0 ? '+' : ''}${rentPct}%</span>` 
+                : '';
+            badgeSuggestedRent.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_rent}${badgeExtra}`;
+        }
+        if ((!userCustomRent || (applied.rent_adjustment_pct && applied.rent_adjustment_pct !== 0)) && raw.suggested_rent_huf) {
+            rentMonthlyHuf.value = formatWithDots(raw.suggested_rent_huf);
+            userCustomRent = false;
+        }
+
+        // 2. Rezsi javaslat AI felülbírálata
+        if (badgeSuggestedUtilities && fmt.suggested_utilities) {
+            const utilsPct = applied.utilities_adjustment_pct || 0;
+            const badgeExtra = utilsPct !== 0 
+                ? ` <span class="badge ${utilsPct > 0 ? 'bg-warning text-dark' : 'bg-success text-white'} ms-1" style="font-size: 0.7rem;">AI: ${utilsPct > 0 ? '+' : ''}${utilsPct}%</span>` 
+                : '';
+            badgeSuggestedUtilities.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_utilities}${badgeExtra}`;
+        }
+        if ((!userCustomUtilities || (applied.utilities_adjustment_pct && applied.utilities_adjustment_pct !== 0)) && raw.suggested_utilities_huf) {
+            rentUtilitiesHuf.value = formatWithDots(raw.suggested_utilities_huf);
+            userCustomUtilities = false;
+        }
+
+        // 3. Bútorozási javaslat AI felülbírálata
+        if (badgeSuggestedFurnishing && fmt.suggested_furnishing) {
+            const furnishHuf = applied.furnishing_adjustment_huf || 0;
+            const badgeExtra = furnishHuf !== 0 
+                ? ` <span class="badge ${furnishHuf > 0 ? 'bg-primary' : 'bg-success'} text-white ms-1" style="font-size: 0.7rem;">AI: ${furnishHuf > 0 ? '+' : ''}${formatHUF(furnishHuf)}</span>` 
+                : '';
+            badgeSuggestedFurnishing.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_furnishing}${badgeExtra}`;
+        }
+        if ((!userCustomFurnishing || (applied.furnishing_adjustment_huf && applied.furnishing_adjustment_huf !== 0)) && raw.suggested_furnishing_huf) {
+            propFurnishingHuf.value = formatWithDots(raw.suggested_furnishing_huf);
+            userCustomFurnishing = false;
+        }
+
+        runPythonCalculations();
+    }
+
+    // Felhasználói egyedi átírás figyelése
+    propFurnishingHuf.addEventListener('input', () => {
+        userCustomFurnishing = true;
+        triggerPythonCalculations();
+    });
+    rentMonthlyHuf.addEventListener('input', () => {
+        userCustomRent = true;
+        triggerPythonCalculations();
+    });
+    rentUtilitiesHuf.addEventListener('input', () => {
+        userCustomUtilities = true;
+        triggerPythonCalculations();
+    });
+
+    // Reset javaslat gombok (visszaállítja a Python algoritmus ajánlását)
+    if (btnResetFurnishing) {
+        btnResetFurnishing.addEventListener('click', (e) => {
+            e.preventDefault();
+            userCustomFurnishing = false;
+            runPythonCalculations();
+        });
+    }
+    if (btnResetRent) {
+        btnResetRent.addEventListener('click', (e) => {
+            e.preventDefault();
+            userCustomRent = false;
+            runPythonCalculations();
+        });
+    }
+    if (btnResetUtilities) {
+        btnResetUtilities.addEventListener('click', (e) => {
+            e.preventDefault();
+            userCustomUtilities = false;
+            runPythonCalculations();
+        });
+    }
+
+    // --- 4. Lakat Kapcsolók (City & District) ---
+
+    let cityLocked = true;
+    let districtLocked = true;
+
+    btnToggleCityLock.addEventListener('click', () => {
+        cityLocked = !cityLocked;
+        propCity.disabled = cityLocked;
+        if (cityLocked) {
+            iconLockCity.className = 'bi bi-lock-fill text-danger';
+            badgeCityStatus.innerHTML = '<i class="bi bi-lock-fill"></i> Zárolva';
+            badgeCityStatus.className = 'badge bg-danger-subtle text-danger p-1';
+        } else {
+            iconLockCity.className = 'bi bi-unlock-fill text-success';
+            badgeCityStatus.innerHTML = '<i class="bi bi-unlock-fill"></i> Feloldva';
+            badgeCityStatus.className = 'badge bg-success-subtle text-success p-1';
+            propCity.focus();
+        }
+    });
+
+    btnToggleDistrictLock.addEventListener('click', () => {
+        districtLocked = !districtLocked;
+        propDistrict.disabled = districtLocked;
+        if (districtLocked) {
+            iconLockDistrict.className = 'bi bi-lock-fill text-danger';
+            badgeDistrictStatus.innerHTML = '<i class="bi bi-lock-fill"></i> Zárolva';
+            badgeDistrictStatus.className = 'badge bg-danger-subtle text-danger p-1';
+        } else {
+            iconLockDistrict.className = 'bi bi-unlock-fill text-success';
+            badgeDistrictStatus.innerHTML = '<i class="bi bi-unlock-fill"></i> Feloldva';
+            badgeDistrictStatus.className = 'badge bg-success-subtle text-success p-1';
+            propDistrict.focus();
+        }
+    });
+
+    // --- 5. Kétirányú Szinkronizációk és Python hívások ---
+
+    // A) Méret & m² ár -> Vételár
+    function updatePriceFromSqm() {
+        const size = parseFloat(propSizeSqm.value) || 0;
+        const priceSqm = parseCleanNumber(propPriceSqm.value);
+        const total = Math.round(size * priceSqm);
+        propPriceTotal.value = formatWithDots(total);
+
+        updateLawyerFeeFromPct();
+        updateLoanFromDownPaymentPct();
+        triggerPythonCalculations();
+    }
+
+    // Vételár -> m² ár
+    function updateSqmFromTotalPrice() {
+        const size = parseFloat(propSizeSqm.value) || 1;
+        const total = parseCleanNumber(propPriceTotal.value);
+        propPriceSqm.value = formatWithDots(Math.round(total / size));
+
+        updateLawyerFeeFromPct();
+        updateLoanFromDownPaymentPct();
+        triggerPythonCalculations();
+    }
+
+    // B) Ügyvédi díj: Százalék -> Forint
+    function updateLawyerFeeFromPct() {
+        const total = parseCleanNumber(propPriceTotal.value);
+        const pct = parseFloat(propLawyerPct.value) || 0;
+        propLawyerHuf.value = formatWithDots(Math.round(total * (pct / 100.0)));
+        triggerPythonCalculations();
+    }
+
+    // Ügyvédi díj: Forint -> Százalék
+    function updateLawyerFeeFromHuf() {
+        const total = parseCleanNumber(propPriceTotal.value) || 1;
+        const huf = parseCleanNumber(propLawyerHuf.value);
+        const pct = (huf / total) * 100.0;
+        propLawyerPct.value = pct.toFixed(2);
+        triggerPythonCalculations();
+    }
+
+    // C) Önerő: Százalék -> Forint és Hitelösszeg
+    function updateLoanFromDownPaymentPct() {
+        const total = parseCleanNumber(propPriceTotal.value);
+        const pct = parseFloat(loanDownPaymentPct.value) || 0;
+        const downHuf = Math.round(total * (pct / 100.0));
+        loanDownPaymentHuf.value = formatWithDots(downHuf);
+        rngDownPayment.value = Math.round(pct);
+        lblDownPaymentBadge.textContent = `${pct}% önerő`;
+
+        const loanAmount = Math.max(0, total - downHuf);
+        loanAmountHuf.value = formatWithDots(loanAmount);
+        triggerPythonCalculations();
+    }
+
+    // Önerő: Forint -> Százalék és Hitelösszeg
+    function updateLoanFromDownPaymentHuf() {
+        const total = parseCleanNumber(propPriceTotal.value) || 1;
+        const downHuf = parseCleanNumber(loanDownPaymentHuf.value);
+        const pct = Math.min(100, Math.max(0, (downHuf / total) * 100.0));
+        loanDownPaymentPct.value = pct.toFixed(1);
+        rngDownPayment.value = Math.round(pct);
+        lblDownPaymentBadge.textContent = `${pct.toFixed(1)}% önerő`;
+
+        const loanAmount = Math.max(0, total - downHuf);
+        loanAmountHuf.value = formatWithDots(loanAmount);
+        triggerPythonCalculations();
+    }
+
+    // Hitelösszeg közvetlen átírása
+    function updateDownPaymentFromLoanAmount() {
+        const total = parseCleanNumber(propPriceTotal.value);
+        const loan = parseCleanNumber(loanAmountHuf.value);
+        const downHuf = Math.max(0, total - loan);
+        loanDownPaymentHuf.value = formatWithDots(downHuf);
+        const pct = total > 0 ? (downHuf / total) * 100.0 : 0;
+        loanDownPaymentPct.value = pct.toFixed(1);
+        rngDownPayment.value = Math.round(pct);
+        lblDownPaymentBadge.textContent = `${pct.toFixed(1)}% önerő`;
+        triggerPythonCalculations();
+    }
+
+    // Futamidő gyorsgombok
+    btnTerms.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btnTerms.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loanTermYears.value = btn.dataset.term;
+            triggerPythonCalculations();
+        });
+    });
+
+    loanTermYears.addEventListener('input', () => {
+        const term = loanTermYears.value;
+        btnTerms.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.term === term);
+        });
+        triggerPythonCalculations();
+    });
+
+    // Befektetési hozam csúszka szinkron
+    rngInvReturn.addEventListener('input', (e) => {
+        invReturnPct.value = parseFloat(e.target.value).toFixed(2);
+        lblInvReturnBadge.textContent = `${invReturnPct.value}%`;
+        triggerPythonCalculations();
+    });
+
+    invReturnPct.addEventListener('input', (e) => {
+        rngInvReturn.value = e.target.value;
+        lblInvReturnBadge.textContent = `${parseFloat(e.target.value || 0).toFixed(2)}%`;
+        triggerPythonCalculations();
+    });
+
+    // Eseményfigyelők mezőváltozásokra
+    propType.addEventListener('change', triggerPythonCalculations);
+    propRooms.addEventListener('change', triggerPythonCalculations);
+    propSizeSqm.addEventListener('input', updatePriceFromSqm);
+    propPriceSqm.addEventListener('input', updatePriceFromSqm);
+    propPriceTotal.addEventListener('input', updateSqmFromTotalPrice);
+    propCity.addEventListener('input', triggerPythonCalculations);
+    propDistrict.addEventListener('input', triggerPythonCalculations);
+
+    propLawyerPct.addEventListener('input', updateLawyerFeeFromPct);
+    propLawyerHuf.addEventListener('input', updateLawyerFeeFromHuf);
+
+    loanDownPaymentPct.addEventListener('input', updateLoanFromDownPaymentPct);
+    rngDownPayment.addEventListener('input', (e) => {
+        loanDownPaymentPct.value = e.target.value;
+        updateLoanFromDownPaymentPct();
+    });
+    loanDownPaymentHuf.addEventListener('input', updateLoanFromDownPaymentHuf);
+    loanAmountHuf.addEventListener('input', updateDownPaymentFromLoanAmount);
+
+    [loanInterestPct, loanOtherFeesHuf, loanMonthlyPayment].forEach(el => {
+        el.addEventListener('input', triggerPythonCalculations);
+    });
+
+    // --- 6. Form Adatok Összegyűjtése ---
+    function collectFormData() {
+        const manualPmtStr = loanMonthlyPayment.value.trim();
+        const manualPmt = manualPmtStr !== "" ? parseCleanNumber(manualPmtStr) : null;
+
+        return {
+            property: {
+                city: propCity.value.trim(),
+                district: propDistrict.value.trim(),
+                location: `${propCity.value.trim()}, ${propDistrict.value.trim()}`,
+                property_type: propType.value,
+                size_sqm: parseFloat(propSizeSqm.value) || 0,
+                room_count: parseFloat(propRooms.value) || 1,
+                price_total_huf: parseCleanNumber(propPriceTotal.value),
+                price_per_sqm_huf: parseCleanNumber(propPriceSqm.value),
+                lawyer_fee_pct: parseFloat(propLawyerPct.value) || 0,
+                lawyer_fee_huf: parseCleanNumber(propLawyerHuf.value),
+                furnishing_cost_huf: parseCleanNumber(propFurnishingHuf.value),
+                other_info: propOtherInfo ? propOtherInfo.value.trim() : ""
+            },
+            loan: {
+                down_payment_pct: parseFloat(loanDownPaymentPct.value) || 0,
+                down_payment_huf: parseCleanNumber(loanDownPaymentHuf.value),
+                loan_amount_huf: parseCleanNumber(loanAmountHuf.value),
+                loan_term_years: parseInt(loanTermYears.value) || 20,
+                interest_rate_annual_pct: parseFloat(loanInterestPct.value) || 0,
+                other_fees_huf: parseCleanNumber(loanOtherFeesHuf.value),
+                monthly_payment_huf: manualPmt,
+                other_info: loanOtherInfo ? loanOtherInfo.value.trim() : ""
+            },
+            rent: {
+                monthly_rent_huf: parseCleanNumber(rentMonthlyHuf.value),
+                monthly_utilities_huf: parseCleanNumber(rentUtilitiesHuf.value),
+                other_info: rentOtherInfo ? rentOtherInfo.value.trim() : ""
+            },
+            investment: {
+                expected_return_annual_pct: parseFloat(invReturnPct.value) || 0,
+                other_info: invOtherInfo ? invOtherInfo.value.trim() : ""
+            }
+        };
+    }
+
+    // --- 7. Gemini AI Elemzés Renderelése ---
+    function renderGeminiAnalysis(analysis) {
+        if (!analysis || !cardGeminiAnalysis || !containerGeminiResults) return;
+
+        cardGeminiAnalysis.classList.remove('d-none');
+        if (badgeGeminiModel) {
+            badgeGeminiModel.textContent = analysis.model_used || 'Gemini AI';
+        }
+
+        const overall = analysis.overall_summary || 'A megadott egyedi információk sikeresen rögzítésre kerültek.';
+        const ev = analysis.evaluations || {};
+
+        const sections = [
+            {
+                key: 'property',
+                title: '1. Lakás & Ingatlan',
+                icon: 'bi-house-door-fill',
+                color: 'primary',
+                data: ev.property || {}
+            },
+            {
+                key: 'loan',
+                title: '2. Hitel & Finanszírozás',
+                icon: 'bi-bank2',
+                color: 'success',
+                data: ev.loan || {}
+            },
+            {
+                key: 'rent',
+                title: '3. Albérlet & Rezsi',
+                icon: 'bi-key-fill',
+                color: 'warning',
+                data: ev.rent || {}
+            },
+            {
+                key: 'investment',
+                title: '4. Befektetés & TBSZ',
+                icon: 'bi-piggy-bank-fill',
+                color: 'info',
+                data: ev.investment || {}
+            }
+        ];
+
+        function getRelevanceBadge(score) {
+            if (!score || score <= 0) {
+                return `<span class="badge bg-secondary p-1 px-2" style="font-size:0.75rem;">0/10 (Nincs adat)</span>`;
+            }
+            if (score >= 8) {
+                return `<span class="badge bg-danger p-1 px-2 fw-bold" style="font-size:0.75rem;"><i class="bi bi-exclamation-triangle-fill me-1"></i>${score}/10 - Kiemelt hatás</span>`;
+            }
+            if (score >= 5) {
+                return `<span class="badge bg-warning text-dark p-1 px-2 fw-bold" style="font-size:0.75rem;"><i class="bi bi-info-circle-fill me-1"></i>${score}/10 - Közepes hatás</span>`;
+            }
+            return `<span class="badge bg-info text-dark p-1 px-2 fw-bold" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>${score}/10 - Csekély hatás</span>`;
+        }
+
+        let cardsHtml = '';
+        sections.forEach(s => {
+            const item = s.data;
+            const score = item.relevance_score || 0;
+            const category = item.category || 'Standard tényező';
+            const impact = item.impact_analysis || 'Alapértelmezett modell érvényesül.';
+            const rec = item.quantitative_recommendation || 'Nincs szükség korrekcióra.';
+            const isProvided = item.provided !== false && score > 0;
+
+            cardsHtml += `
+                <div class="col-md-6">
+                    <div class="card h-100 border ${isProvided ? 'border-secondary-subtle' : 'border-light bg-light-subtle'} shadow-sm">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center py-2">
+                            <span class="fw-bold text-${s.color} small">
+                                <i class="bi ${s.icon} me-1"></i>${s.title}
+                            </span>
+                            ${getRelevanceBadge(score)}
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="mb-2">
+                                <span class="badge bg-secondary-subtle text-dark border small">${category}</span>
+                            </div>
+                            <div class="mb-3">
+                                <div class="small fw-bold text-dark mb-1">
+                                    <i class="bi bi-graph-up-arrow me-1 text-primary"></i>Hogyan szól bele a számolásba:
+                                </div>
+                                <p class="small mb-0 text-muted" style="line-height: 1.45; font-size: 0.82rem;">
+                                    ${impact}
+                                </p>
+                            </div>
+                            <div class="p-2 bg-light rounded border border-info-subtle">
+                                <div class="small fw-bold text-info mb-1">
+                                    <i class="bi bi-calculator me-1"></i>Kvantitatív korrekciós javaslat:
+                                </div>
+                                <p class="small mb-0 text-dark" style="line-height: 1.4; font-size: 0.8rem;">
+                                    ${rec}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        containerGeminiResults.innerHTML = `
+            <div class="alert alert-dark border-secondary p-3 mb-4 shadow-sm">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="fs-2 text-warning lh-1 mt-1">
+                        <i class="bi bi-stars"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-white mb-1">
+                            <i class="bi bi-robot me-1 text-warning"></i>Átfogó Kvantitatív Szakértői Értékelés (Gemini AI)
+                        </h6>
+                        <p class="mb-0 text-light small" style="line-height: 1.5; font-size: 0.85rem;">
+                            ${overall}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                ${cardsHtml}
+            </div>
+        `;
+    }
+
+    // --- 8. Szerver Adatmentés (POST /api/inputs) ---
+    async function saveInputsToServer() {
+        const payload = collectFormData();
+
+        // UI töltési állapot kijelzés
+        const originalTopHtml = btnSaveTop.innerHTML;
+        const originalBottomHtml = btnSaveBottom.innerHTML;
+        btnSaveTop.disabled = true;
+        btnSaveBottom.disabled = true;
+        btnSaveTop.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> Elemzés...';
+        btnSaveBottom.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> Gemini AI elemzés futtatása...';
+
+        // Gemini kártya megjelenítése és spinner
+        if (cardGeminiAnalysis && containerGeminiResults) {
+            cardGeminiAnalysis.classList.remove('d-none');
+            containerGeminiResults.innerHTML = `
+                <div class="text-center py-4 text-muted">
+                    <div class="spinner-border text-warning me-2" role="status"></div>
+                    <span class="fw-bold text-dark">Gemini AI szakértői elemzés folyamatban...</span>
+                    <p class="small text-muted mt-2 mb-0">A 4 kiegészítő információ relevanciájának és DCF modellbeli kihatásának vizsgálata</p>
+                </div>
+            `;
+            cardGeminiAnalysis.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        try {
+            const response = await fetch('/api/inputs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                showAlert('Sikeres mentés & AI elemzés!', 'A bemeneti paraméterek és a Gemini szakértői értékelés rögzítésre kerültek.', 'success');
+                if (result.gemini_analysis) {
+                    renderGeminiAnalysis(result.gemini_analysis);
+                }
+                if (result.gemini_analysis && result.gemini_analysis.evaluations) {
+                    currentAiEvaluations = result.gemini_analysis.evaluations;
+                }
+                if (result.ai_adjusted_suggestions) {
+                    applyAiAdjustedSuggestionsToUI(result.ai_adjusted_suggestions);
+                }
+            } else {
+                showAlert('Hiba a mentés során!', result.message || 'Ismeretlen hiba történt.', 'danger');
+            }
+        } catch (err) {
+            showAlert('Hálózati hiba!', 'Nem sikerült elérni a Flask backend szervert.', 'danger');
+            console.error(err);
+        } finally {
+            btnSaveTop.disabled = false;
+            btnSaveBottom.disabled = false;
+            btnSaveTop.innerHTML = originalTopHtml;
+            btnSaveBottom.innerHTML = originalBottomHtml;
+        }
+    }
+
+    async function loadInputsFromServer() {
+        try {
+            const response = await fetch('/api/inputs');
+            if (response.ok) {
+                const res = await response.json();
+                const data = res.data;
+                const inputs = data.inputs || data;
+
+                populateForm(inputs);
+
+                // Ha van korábbi mentett elemzés az adatrekordban
+                if (data.gemini_analysis) {
+                    renderGeminiAnalysis(data.gemini_analysis);
+                }
+                if (data.gemini_analysis && data.gemini_analysis.evaluations) {
+                    currentAiEvaluations = data.gemini_analysis.evaluations;
+                }
+                if (data.ai_adjusted_suggestions) {
+                    applyAiAdjustedSuggestionsToUI(data.ai_adjusted_suggestions);
+                }
+            }
+        } catch (err) {
+            console.error("Nem sikerült lekérni a mentett adatokat:", err);
+        }
+    }
+
+    function populateForm(data) {
+        if (!data) return;
+
+        if (data.property) {
+            if (data.property.city) propCity.value = data.property.city;
+            if (data.property.district) propDistrict.value = data.property.district;
+            propType.value = data.property.property_type || propType.value;
+            propSizeSqm.value = data.property.size_sqm ?? propSizeSqm.value;
+            propRooms.value = (data.property.room_count ?? propRooms.value).toFixed(1);
+            propPriceTotal.value = formatWithDots(data.property.price_total_huf ?? 80600000);
+            propPriceSqm.value = formatWithDots(data.property.price_per_sqm_huf ?? 1550000);
+            propLawyerPct.value = data.property.lawyer_fee_pct ?? 1.0;
+            propLawyerHuf.value = formatWithDots(data.property.lawyer_fee_huf ?? 806000);
+
+            if (data.property.furnishing_cost_huf !== undefined) {
+                propFurnishingHuf.value = formatWithDots(data.property.furnishing_cost_huf);
+            }
+            if (data.property.other_info && propOtherInfo) {
+                propOtherInfo.value = data.property.other_info;
+            }
+        }
+
+        if (data.loan) {
+            loanDownPaymentPct.value = data.loan.down_payment_pct ?? 25;
+            loanDownPaymentHuf.value = formatWithDots(data.loan.down_payment_huf ?? 20150000);
+            rngDownPayment.value = Math.round(data.loan.down_payment_pct ?? 25);
+            loanAmountHuf.value = formatWithDots(data.loan.loan_amount_huf ?? 60450000);
+            loanTermYears.value = data.loan.loan_term_years ?? 20;
+            loanInterestPct.value = data.loan.interest_rate_annual_pct ?? 6.5;
+            loanOtherFeesHuf.value = formatWithDots(data.loan.other_fees_huf ?? 120000);
+            loanMonthlyPayment.value = data.loan.monthly_payment_huf ? formatWithDots(data.loan.monthly_payment_huf) : '';
+
+            btnTerms.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.term === String(data.loan.loan_term_years));
+            });
+
+            if (data.loan.other_info && loanOtherInfo) {
+                loanOtherInfo.value = data.loan.other_info;
+            }
+        }
+
+        if (data.rent) {
+            if (data.rent.monthly_rent_huf !== undefined) {
+                rentMonthlyHuf.value = formatWithDots(data.rent.monthly_rent_huf);
+            }
+            if (data.rent.monthly_utilities_huf !== undefined) {
+                rentUtilitiesHuf.value = formatWithDots(data.rent.monthly_utilities_huf);
+            }
+            if (data.rent.other_info && rentOtherInfo) {
+                rentOtherInfo.value = data.rent.other_info;
+            }
+        }
+
+        if (data.investment) {
+            invReturnPct.value = data.investment.expected_return_annual_pct ?? 7.0;
+            rngInvReturn.value = invReturnPct.value;
+            lblInvReturnBadge.textContent = `${invReturnPct.value}%`;
+            if (data.investment.other_info && invOtherInfo) {
+                invOtherInfo.value = data.investment.other_info;
+            }
+        }
+
+        runPythonCalculations();
+    }
+
+    function showAlert(title, message, type = 'success') {
+        statusAlertTitle.textContent = title;
+        statusAlertMessage.textContent = message;
+        statusAlert.className = `alert alert-${type} alert-dismissible fade show mb-3 shadow-sm`;
+        statusAlert.classList.remove('d-none');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    btnCloseAlert.addEventListener('click', () => {
+        statusAlert.classList.add('d-none');
+    });
+
+    btnSaveTop.addEventListener('click', saveInputsToServer);
+    btnSaveBottom.addEventListener('click', saveInputsToServer);
+
+    btnResetDefaults.addEventListener('click', () => {
+        if (confirm('Biztosan visszaállítod az eredeti alapértékeket?')) {
+            window.location.reload();
+        }
+    });
+
+    // Kezdeti indítás
+    loadInputsFromServer();
+    runPythonCalculations();
+});

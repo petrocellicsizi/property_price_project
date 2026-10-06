@@ -1,0 +1,100 @@
+{
+  "updated_at": "2026-10-07T00:07:32.030094",
+  "inputs": {
+    "property": {
+      "city": "Budapest",
+      "district": "VIII. kerület",
+      "location": "Budapest, VIII. kerület",
+      "property_type": "Újépítésű társasház (AA+)",
+      "size_sqm": 52,
+      "room_count": 2,
+      "price_total_huf": 80600000,
+      "price_per_sqm_huf": 1550000,
+      "lawyer_fee_pct": 1,
+      "lawyer_fee_huf": 806000,
+      "furnishing_cost_huf": 2850000,
+      "other_info": ""
+    },
+    "loan": {
+      "down_payment_pct": 25,
+      "down_payment_huf": 20150000,
+      "loan_amount_huf": 60450000,
+      "loan_term_years": 20,
+      "interest_rate_annual_pct": 6.5,
+      "other_fees_huf": 120000,
+      "monthly_payment_huf": null,
+      "other_info": ""
+    },
+    "rent": {
+      "monthly_rent_huf": 270000,
+      "monthly_utilities_huf": 34000,
+      "other_info": ""
+    },
+    "investment": {
+      "expected_return_annual_pct": 7,
+      "other_info": ""
+    }
+  },
+  "gemini_analysis": {
+    "status": "empty",
+    "model_used": "N/A (üres bemenet)",
+    "overall_summary": "Nem lett megadva egyéni kiegészítő információ. A pénzügyi modell a standard piaci átlagok és törlesztési szabályok alapján kalkulál.",
+    "evaluations": {
+      "property": {
+        "provided": false,
+        "relevance_score": 0,
+        "category": "Alapértelmezett piaci modell",
+        "impact_analysis": "Nincs egyedi ingatlantulajdonság rögzítve. Standard amortizációs és felértékelődési ráta érvényesül.",
+        "quantitative_recommendation": "Nincs szükség korrekcióra.",
+        "furnishing_adjustment_huf": 0,
+        "rent_adjustment_pct": 0.0,
+        "utilities_adjustment_pct": 0.0
+      },
+      "loan": {
+        "provided": false,
+        "relevance_score": 0,
+        "category": "Standard banki hiteltermék",
+        "impact_analysis": "Standard annuitásos törlesztőrészlet és kamatfelár kerül modellezésre.",
+        "quantitative_recommendation": "Nincs szükség korrekcióra.",
+        "furnishing_adjustment_huf": 0,
+        "rent_adjustment_pct": 0.0,
+        "utilities_adjustment_pct": 0.0
+      },
+      "rent": {
+        "provided": false,
+        "relevance_score": 0,
+        "category": "Piaci átlagos bérleti feltételek",
+        "impact_analysis": "Átlagos bérleti indexálás és üresedési ráta (vacancy rate) feltételezett.",
+        "quantitative_recommendation": "Nincs szükség korrekcióra.",
+        "furnishing_adjustment_huf": 0,
+        "rent_adjustment_pct": 0.0,
+        "utilities_adjustment_pct": 0.0
+      },
+      "investment": {
+        "provided": false,
+        "relevance_score": 0,
+        "category": "Standard alternatív hozam",
+        "impact_analysis": "Standard elvárt piaci hozam, egyedi adózási vagy likviditási prémium nélkül.",
+        "quantitative_recommendation": "Nincs szükség korrekcióra.",
+        "furnishing_adjustment_huf": 0,
+        "rent_adjustment_pct": 0.0,
+        "utilities_adjustment_pct": 0.0
+      }
+    }
+  },
+  "ai_adjusted_suggestions": {
+    "suggested_furnishing_huf": 3050000,
+    "suggested_rent_huf": 270000,
+    "suggested_utilities_huf": 34000,
+    "adjustments_applied": {
+      "furnishing_adjustment_huf": 0,
+      "rent_adjustment_pct": 0.0,
+      "utilities_adjustment_pct": 0.0
+    },
+    "formatted": {
+      "suggested_furnishing": "3.050.000 Ft",
+      "suggested_rent": "270.000 Ft",
+      "suggested_utilities": "34.000 Ft"
+    }
+  }
+}
