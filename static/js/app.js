@@ -1168,6 +1168,156 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = html;
     }
 
+    // --- Új: Dinamikus AI Chat Asszisztens ---
+    const btnChatOpen = document.getElementById('btnChatOpen');
+    const aiChatWidget = document.getElementById('aiChatWidget');
+    const btnChatClose = document.getElementById('btnChatClose');
+    const chatWidgetHeader = document.getElementById('chatWidgetHeader');
+    const chatInput = document.getElementById('chatInput');
+    const btnChatSend = document.getElementById('btnChatSend');
+    const chatMessages = document.getElementById('chatMessages');
+
+    let chatHistory = [];
+
+    if (btnChatOpen && aiChatWidget) {
+        const toggleChat = () => {
+            if (aiChatWidget.style.display === 'none') {
+                aiChatWidget.style.display = 'flex';
+                btnChatOpen.style.display = 'none';
+                chatInput.focus();
+            } else {
+                aiChatWidget.style.display = 'none';
+                btnChatOpen.style.display = 'block';
+            }
+        };
+
+        btnChatOpen.addEventListener('click', toggleChat);
+        btnChatClose.addEventListener('click', toggleChat);
+        chatWidgetHeader.addEventListener('click', toggleChat);
+
+        const addMessage = (text, sender) => {
+            const isUser = sender === 'user';
+            const align = isUser ? 'text-end' : 'text-start';
+            const bgClass = isUser ? 'bg-primary text-white' : 'bg-white text-dark border';
+            const msgHtml = `
+                <div class="mb-2 ${align}">
+                    <span class="d-inline-block ${bgClass} p-2 rounded shadow-sm small" style="max-width: 85%;">
+                        ${text}
+                    </span>
+                </div>
+            `;
+            chatMessages.insertAdjacentHTML('beforeend', msgHtml);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
+        const applyAiUpdates = (updates) => {
+            if (!updates || Object.keys(updates).length === 0) return;
+            
+            let changed = false;
+            if (updates.price_total_huf !== undefined) {
+                document.getElementById('prop_price_total_huf').value = formatWithDots(updates.price_total_huf);
+                userCustomPrice = true;
+                changed = true;
+            }
+            if (updates.down_payment_pct !== undefined) {
+                document.getElementById('loan_down_payment_pct').value = formatWithDots(updates.down_payment_pct);
+                document.getElementById('rngDownPayment').value = updates.down_payment_pct;
+                changed = true;
+            }
+            if (updates.loan_term_years !== undefined) {
+                document.getElementById('loan_term_years').value = updates.loan_term_years;
+                document.querySelectorAll('.btn-term').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.term === String(updates.loan_term_years));
+                });
+                changed = true;
+            }
+            if (updates.interest_rate_annual_pct !== undefined) {
+                document.getElementById('loan_interest_rate_annual_pct').value = formatWithDots(updates.interest_rate_annual_pct);
+                document.getElementById('rngInterestRate').value = updates.interest_rate_annual_pct;
+                changed = true;
+            }
+            if (updates.monthly_rent_huf !== undefined) {
+                document.getElementById('rent_monthly_huf').value = formatWithDots(updates.monthly_rent_huf);
+                userCustomRent = true;
+                changed = true;
+            }
+            if (updates.expected_return_annual_pct !== undefined) {
+                document.getElementById('inv_return_pct').value = updates.expected_return_annual_pct;
+                document.getElementById('rngInvReturn').value = updates.expected_return_annual_pct;
+                document.getElementById('lblInvReturnBadge').textContent = `${updates.expected_return_annual_pct}%`;
+                changed = true;
+            }
+            if (updates.property_growth_pct !== undefined) {
+                document.getElementById('rngPropGrowth').value = updates.property_growth_pct;
+                document.getElementById('lblPropGrowthBadge').textContent = `${updates.property_growth_pct}%`;
+                changed = true;
+            }
+
+            if (changed) {
+                triggerPythonCalculations();
+            }
+        };
+
+        const sendMessage = async () => {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, 'user');
+            chatHistory.push({ role: 'user', content: text });
+            chatInput.value = '';
+            
+            // Show typing indicator
+            const typingId = 'typing-' + Date.now();
+            chatMessages.insertAdjacentHTML('beforeend', `
+                <div class="mb-2 text-start" id="${typingId}">
+                    <span class="d-inline-block bg-white p-2 rounded shadow-sm small text-muted border">
+                        <span class="spinner-grow spinner-grow-sm" role="status"></span> Gépel...
+                    </span>
+                </div>
+            `);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const currentParams = collectFormData();
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: text,
+                        history: chatHistory,
+                        current_params: currentParams
+                    })
+                });
+
+                document.getElementById(typingId).remove();
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data.updates && Object.keys(data.updates).length > 0) {
+                        applyAiUpdates(data.updates);
+                    }
+                    
+                    if (data.text) {
+                        addMessage(data.text, 'model');
+                        chatHistory.push({ role: 'model', content: data.text });
+                    }
+                } else {
+                    addMessage('Hiba történt a szerver elérésekor.', 'model');
+                }
+            } catch (err) {
+                document.getElementById(typingId).remove();
+                addMessage('Hálózati hiba.', 'model');
+                console.error(err);
+            }
+        };
+
+        btnChatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    }
+
     // Kezdeti indítás
     loadInputsFromServer();
     runPythonCalculations();

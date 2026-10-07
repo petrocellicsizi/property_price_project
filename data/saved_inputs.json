@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T20:37:30.910996",
+  "updated_at": "2026-10-07T23:03:19.863186",
   "inputs": {
     "property": {
       "city": "Budapest",
@@ -17,7 +17,7 @@
       "other_info": ""
     },
     "loan": {
-      "down_payment_pct": 27.4,
+      "down_payment_pct": 30,
       "down_payment_huf": 18900000,
       "loan_amount_huf": 50000000,
       "loan_term_years": 21,

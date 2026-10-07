@@ -291,5 +291,25 @@ def generate_summary():
     summary_text = gemini_service.generate_simulation_summary(sim_results, inputs)
     return jsonify({"summary_text": summary_text}), 200
 
+@app.route("/api/chat", methods=["POST"])
+def chat_endpoint():
+    """
+    Kezeli az AI Chat Asszisztens kéréseit.
+    Várja a felhasználó üzenetét, a chat előzményeket és az aktuális bemeneteket.
+    """
+    payload = request.get_json(silent=True)
+    if not payload:
+        return jsonify({"status": "error", "message": "Hiányzó adatok"}), 400
+
+    user_message = payload.get("message", "")
+    history = payload.get("history", [])
+    current_params = payload.get("current_params", {})
+
+    if not user_message:
+        return jsonify({"status": "error", "message": "Üres üzenet"}), 400
+
+    ai_response = gemini_service.chat_with_assistant(user_message, current_params, history)
+    return jsonify(ai_response), 200
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

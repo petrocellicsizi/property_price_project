@@ -414,5 +414,78 @@ Magyarázd el, hogy az ETF magasabb kamatos kamata, vagy az ingatlan tőkeátté
             logging.getLogger(__name__).error(f"Gemini API hiba a szimuláció összefoglalása közben: {str(e)}")
             return "Nem sikerült az AI összefoglalót generálni hálózati hiba miatt."
 
+    def chat_with_assistant(self, user_message: str, current_params: dict, history_dicts: list) -> dict:
+        """
+        Dinamikus chat asszisztens function calling támogatással.
+        """
+        if not self.client:
+            return {"text": "A Gemini API nem elérhető.", "updates": {}}
+
+        from google.genai import types
+        
+        captured_args = {}
+
+        def update_simulation_params(
+            price_total_huf: int = None,
+            down_payment_pct: float = None,
+            loan_term_years: int = None,
+            interest_rate_annual_pct: float = None,
+            monthly_rent_huf: int = None,
+            expected_return_annual_pct: float = None,
+            property_growth_pct: float = None
+        ) -> str:
+            """
+            Frissíti a szimuláció csúszkáit és bemeneti paramétereit a megadott értékekkel.
+            Csak azokat a paramétereket add meg, amiket a felhasználó kifejezetten meg akar változtatni!
+            A többi maradjon None.
+            """
+            nonlocal captured_args
+            captured_args = {
+                k: v for k, v in locals().items() 
+                if k != 'captured_args' and v is not None
+            }
+            return f"Paraméterek frissítve: {captured_args}"
+
+        # Konvertáljuk a dictionary history-t a GenAI types.Content objektumokká
+        converted_history = []
+        for msg in history_dicts:
+            role = 'user' if msg['role'] == 'user' else 'model'
+            converted_history.append(
+                types.Content(role=role, parts=[types.Part.from_text(text=msg['content'])])
+            )
+
+        sys_prompt = f"""Te egy pénzügyi AI asszisztens vagy egy 'Saját lakás vs Bérlés' szimulátor weboldalon.
+A felhasználó a chaten keresztül kérdezhet, vagy megkérhet, hogy állítsd át a kalkulátor csúszkáit (pl. 'Mi lenne ha 30% lenne az önerő?').
+Ilyenkor HÍVD MEG az `update_simulation_params` függvényt az új értékekkel! Fontos: A vételárat Ft-ban add meg, a %-okat számként (pl. 30).
+
+Jelenlegi beállított paraméterek:
+{json.dumps(current_params, indent=2, ensure_ascii=False)}
+
+Válaszolj röviden, barátságosan, magyarul! Ha módosítottad a paramétereket, említsd meg a válaszban!
+"""
+
+        try:
+            chat = self.client.chats.create(
+                model=self.primary_model,
+                config={
+                    "tools": [update_simulation_params],
+                    "system_instruction": sys_prompt,
+                    "temperature": 0.7
+                },
+                history=converted_history
+            )
+            
+            response = chat.send_message(user_message)
+            
+            return {
+                "text": response.text.strip(),
+                "updates": captured_args
+            }
+        except Exception as e:
+            logger.error(f"Chat API hiba: {str(e)}")
+            return {"text": "Hiba történt az üzenet feldolgozása közben.", "updates": {}}
+
+
+
 # Egyke (Singleton) példány
 gemini_service = GeminiEvaluationService()
