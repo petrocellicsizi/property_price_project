@@ -484,7 +484,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const badgeSimYears = document.getElementById('badgeSimYears');
     if (rngSimYears && badgeSimYears) {
         rngSimYears.addEventListener('input', (e) => {
-            badgeSimYears.textContent = `${e.target.value} év`;
+            const newVal = e.target.value;
+            badgeSimYears.textContent = `${newVal} év`;
+            
+            // Update all dynamic-year elements in the UI
+            const dynamicYears = document.querySelectorAll('.dynamic-year');
+            dynamicYears.forEach(el => el.textContent = newVal);
+            
             triggerPythonCalculations();
         });
     }
@@ -882,6 +888,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const badgeSimYears = document.getElementById('badgeSimYears');
                 if (rngSimYears) rngSimYears.value = data.investment.simulation_years;
                 if (badgeSimYears) badgeSimYears.textContent = `${data.investment.simulation_years} év`;
+                
+                const dynamicYears = document.querySelectorAll('.dynamic-year');
+                dynamicYears.forEach(el => el.textContent = data.investment.simulation_years);
             }
         }
 

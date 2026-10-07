@@ -72,9 +72,10 @@ const ChartsModule = {
             });
         }
 
+        const simLength = Math.max(...years);
         const layout = {
             title: {
-                text: '<b>Kumulált Nettó Vagyon Időbeli Alakulása (30 év)</b>',
+                text: `<b>Kumulált Nettó Vagyon Időbeli Alakulása (${simLength} év)</b>`,
                 font: { size: 16, color: '#212529' }
             },
             xaxis: {
