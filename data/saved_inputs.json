@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T01:55:56.691767",
+  "updated_at": "2026-10-07T20:37:30.910996",
   "inputs": {
     "property": {
       "city": "Budapest",
@@ -32,7 +32,7 @@
       "other_info": ""
     },
     "investment": {
-      "expected_return_annual_pct": 10.25,
+      "expected_return_annual_pct": 10,
       "tbsz_enabled": true,
       "property_growth_pct": 5,
       "rent_inflation_pct": 4,
