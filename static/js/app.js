@@ -480,6 +480,15 @@ document.addEventListener('DOMContentLoaded', () => {
         triggerPythonCalculations();
     });
 
+    const rngSimYears = document.getElementById('rngSimYears');
+    const badgeSimYears = document.getElementById('badgeSimYears');
+    if (rngSimYears && badgeSimYears) {
+        rngSimYears.addEventListener('input', (e) => {
+            badgeSimYears.textContent = `${e.target.value} év`;
+            triggerPythonCalculations();
+        });
+    }
+
     const chkTbsz = document.getElementById('chk_tbsz_enabled');
     if (chkTbsz) chkTbsz.addEventListener('change', triggerPythonCalculations);
 
@@ -557,7 +566,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 tbsz_enabled: document.getElementById('chk_tbsz_enabled') ? document.getElementById('chk_tbsz_enabled').checked : true,
                 property_growth_pct: parseFloat(rngPropGrowth ? rngPropGrowth.value : 5.0),
                 rent_inflation_pct: parseFloat(rngRentInflation ? rngRentInflation.value : 4.0),
-                other_info: invOtherInfo ? invOtherInfo.value.trim() : ""
+                other_info: invOtherInfo ? invOtherInfo.value.trim() : "",
+                simulation_years: parseInt(document.getElementById('rngSimYears') ? document.getElementById('rngSimYears').value : 30)
             }
         };
     }
@@ -867,6 +877,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (invOtherInfo) {
                 invOtherInfo.value = data.investment.other_info || "";
             }
+            if (data.investment.simulation_years !== undefined) {
+                const rngSimYears = document.getElementById('rngSimYears');
+                const badgeSimYears = document.getElementById('badgeSimYears');
+                if (rngSimYears) rngSimYears.value = data.investment.simulation_years;
+                if (badgeSimYears) badgeSimYears.textContent = `${data.investment.simulation_years} év`;
+            }
         }
 
         runPythonCalculations();
@@ -1050,6 +1066,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let wealthChartInstance = null;
     let cashflowChartInstance = null;
     let equityChartInstance = null;
+    let deadMoneyChartInstance = null;
+    let ltvChartInstance = null;
     
     // Frissítjük a grafikonokat, amikor átváltunk a tabra (Chart.js hidden hiba megelőzése)
     const resultsTabEl = document.getElementById('tab-btn-results');
@@ -1058,6 +1076,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (wealthChartInstance) wealthChartInstance.resize();
             if (cashflowChartInstance) cashflowChartInstance.resize();
             if (equityChartInstance) equityChartInstance.resize();
+            if (deadMoneyChartInstance) deadMoneyChartInstance.resize();
+            if (ltvChartInstance) ltvChartInstance.resize();
         });
     }
 
@@ -1079,15 +1099,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 badgeBreakEven.className = "badge bg-danger fs-6 py-2";
             }
         }
+        
+        // --- ÚJ Mutatók Kártyáinak Frissítése ---
+        const elRoe = document.getElementById('valRoe');
+        if (elRoe && summary.cagr_equity_pct !== undefined) {
+            elRoe.textContent = `${summary.cagr_equity_pct}%`;
+        }
+        
+        const elPriceToRent = document.getElementById('valPriceToRent');
+        if (elPriceToRent && summary.price_to_rent_ratio !== undefined) {
+            elPriceToRent.textContent = summary.price_to_rent_ratio.toFixed(1);
+        }
+        
+        const elGrossYield = document.getElementById('valGrossYield');
+        if (elGrossYield && summary.gross_yield_pct !== undefined) {
+            elGrossYield.textContent = `${summary.gross_yield_pct}%`;
+        }
+        
+        const elRealBuy = document.getElementById('valRealBuy');
+        if (elRealBuy && summary.terminal_real_buy_net_worth !== undefined) {
+            elRealBuy.textContent = formatWithDots(summary.terminal_real_buy_net_worth) + ' Ft';
+        }
+        
+        const elRealRent = document.getElementById('valRealRent');
+        if (elRealRent && summary.terminal_real_rent_net_worth !== undefined) {
+            elRealRent.textContent = formatWithDots(summary.terminal_real_rent_net_worth) + ' Ft';
+        }
 
         const ctxWealth = document.getElementById('wealthChart');
         const ctxCashflow = document.getElementById('cashflowChart');
         const ctxEquity = document.getElementById('equityChart');
+        const ctxDeadMoney = document.getElementById('deadMoneyChart');
+        const ctxLtv = document.getElementById('ltvChart');
 
         // Pusztítsuk el a régi grafikonokat
         if (wealthChartInstance) wealthChartInstance.destroy();
         if (cashflowChartInstance) cashflowChartInstance.destroy();
         if (equityChartInstance) equityChartInstance.destroy();
+        if (deadMoneyChartInstance) deadMoneyChartInstance.destroy();
+        if (ltvChartInstance) ltvChartInstance.destroy();
 
         // Közös opciók
         const commonOptions = {
@@ -1128,6 +1178,16 @@ document.addEventListener('DOMContentLoaded', () => {
                             label: 'Bérlés + ETF (Nettó Vagyon)', data: traj.rent_net_worth,
                             borderColor: '#ffc107', backgroundColor: 'rgba(255, 193, 7, 0.1)',
                             borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                        },
+                        {
+                            label: 'Befektetési célú vásárlás (BTL)', data: traj.btl_net_worth,
+                            borderColor: '#20c997', backgroundColor: 'rgba(32, 201, 151, 0.1)',
+                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                        },
+                        {
+                            label: 'Saját Lakás (Reálvagyon)', data: traj.real_buy_net_worth,
+                            borderColor: '#0dcaf0', backgroundColor: 'transparent',
+                            borderWidth: 1.5, borderDash: [5, 5], pointRadius: 0, pointHitRadius: 10, fill: false, tension: 0.1, hidden: true
                         }
                     ]
                 },
@@ -1193,6 +1253,73 @@ document.addEventListener('DOMContentLoaded', () => {
                         y: Object.assign({}, commonOptions.scales.y, { title: { display: true, text: 'HUF' } })
                     }
                 })
+            });
+        }
+
+        // 4. Dead Money Pie Chart
+        if (ctxDeadMoney) {
+            deadMoneyChartInstance = new Chart(ctxDeadMoney, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Saját lakás "Halott Pénz"', 'Bérlés "Halott Pénz"'],
+                    datasets: [{
+                        data: [summary.total_buy_dead_money, summary.total_rent_dead_money],
+                        backgroundColor: ['#dc3545', '#ffc107'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 0 },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + formatHUF(context.parsed);
+                                }
+                            }
+                        },
+                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
+                    }
+                }
+            });
+        }
+        
+        // 5. LTV Chart
+        if (ctxLtv) {
+            ltvChartInstance = new Chart(ctxLtv, {
+                type: 'line',
+                data: {
+                    labels: traj.year,
+                    datasets: [
+                        {
+                            label: 'LTV (Loan-to-Value) %', 
+                            data: traj.ltv.map(v => v * 100),
+                            borderColor: '#6f42c1', backgroundColor: 'rgba(111, 66, 193, 0.1)',
+                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 0 },
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) { return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%'; },
+                                title: function(context) { return context[0].label + '. év'; }
+                            }
+                        },
+                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
+                    },
+                    scales: {
+                        x: { ticks: { maxTicksLimit: 15 } },
+                        y: { ticks: { callback: function(value) { return value + '%'; } } }
+                    }
+                }
             });
         }
     }

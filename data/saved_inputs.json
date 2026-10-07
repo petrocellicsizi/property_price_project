@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T23:16:33.284100",
+  "updated_at": "2026-10-08T00:27:38.768434",
   "inputs": {
     "property": {
       "city": "Budapest",
@@ -36,7 +36,8 @@
       "tbsz_enabled": true,
       "property_growth_pct": 5,
       "rent_inflation_pct": 4,
-      "other_info": ""
+      "other_info": "",
+      "simulation_years": 30
     }
   },
   "gemini_analysis": {

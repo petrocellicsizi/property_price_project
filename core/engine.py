@@ -125,14 +125,46 @@ class QuantitativeSimulationEngine:
             
         r_opp_m = (1.0 + r_opp_annual)**(1.0 / 12.0) - 1.0
         
-        # Havi cash flow különbség: (Vásárló havi kiadása) - (Bérlő havi kiadása)
-        cf_diff = monthly_buy_outflow - monthly_rent_outflow
+        # Közös költségvetés: A havi maximális kiadás a kettő közül
+        budget_m = np.maximum(monthly_buy_outflow, monthly_rent_outflow)
+        
+        # Befektetésre szánt havi összegek az alapesetekben:
+        rent_investment_monthly = budget_m - monthly_rent_outflow
+        buy_investment_monthly = budget_m - monthly_buy_outflow
+        
+        # 3. Szcenárió: Befektetési célú lakásvásárlás (Buy-to-Let / BTL)
+        # Felhasználói kérés: nem számoljuk bele a saját lakhatás (albérlet) költségét, tisztán befektetésként nézzük.
+        # Adózás a bérleti díj után: 15% SZJA a bevétel 90%-a után (10% költséghányad) -> effektív 13.5% adó
+        tax_on_rent_rate = 0.135 
+        rent_traj_net = rent_traj * (1.0 - tax_on_rent_rate)
+        
+        # BTL befektetési egyenleg = Rendelkezésre álló büdzsé + Nettó bérleti díj - Hitel - Karbantartás
+        btl_investment_monthly = budget_m + rent_traj_net - monthly_buy_pmt - maintenance_traj
         
         rent_portfolio = np.zeros(self.total_months)
-        wealth_acc = initial_equity_needed
+        buy_portfolio = np.zeros(self.total_months)
+        btl_portfolio = np.zeros(self.total_months)
+        
+        rent_wealth = initial_equity_needed
+        buy_wealth = 0.0
+        btl_wealth = 0.0
+        
         for m in range(self.total_months):
-            wealth_acc = wealth_acc * (1.0 + r_opp_m) + cf_diff[m]
-            rent_portfolio[m] = wealth_acc
+            rent_wealth = rent_wealth * (1.0 + r_opp_m) + rent_investment_monthly[m]
+            rent_portfolio[m] = rent_wealth
+            
+            buy_wealth = buy_wealth * (1.0 + r_opp_m) + buy_investment_monthly[m]
+            buy_portfolio[m] = buy_wealth
+            
+            btl_wealth = btl_wealth * (1.0 + r_opp_m) + btl_investment_monthly[m]
+            btl_portfolio[m] = btl_wealth
+
+        # Ingatlan tőkeértéke (eladási költséggel és hitellel csökkentve)
+        property_equity = buy_net_worth # Ezt korábban így neveztük el
+        
+        # Hozzáadjuk a felhalmozott értékpapír portfóliókat a lakásvagyonhoz
+        buy_net_worth = property_equity + buy_portfolio
+        btl_net_worth = property_equity + btl_portfolio
 
         # 6. Break-Even Point (Fordulópont) keresése
         wealth_delta = buy_net_worth - rent_portfolio
@@ -153,14 +185,40 @@ class QuantitativeSimulationEngine:
         r_disc_m = (1.0 + discount_annual)**(1.0 / 12.0) - 1.0
         discount_factors = 1.0 / ((1.0 + r_disc_m)**self.t)
         
+        # DCF-hez a teljes havi cash-outflow-t vesszük figyelembe (kiadás + befektetett összeg)
+        total_outflow_buy = monthly_buy_outflow + buy_investment_monthly
+        total_outflow_rent = monthly_rent_outflow + rent_investment_monthly
+        
         # NPV profilok
-        dcf_buy = np.cumsum(-monthly_buy_outflow * discount_factors) - initial_equity_needed + (buy_net_worth * discount_factors)
-        dcf_rent = np.cumsum(-monthly_rent_outflow * discount_factors) - 0.0 + (rent_portfolio * discount_factors)
+        dcf_buy = np.cumsum(-total_outflow_buy * discount_factors) - initial_equity_needed + (buy_net_worth * discount_factors)
+        dcf_rent = np.cumsum(-total_outflow_rent * discount_factors) - 0.0 + (rent_portfolio * discount_factors)
 
         # Összegző metrikák
         total_interest = float(np.sum(loan_interest_paid))
         total_rent_paid = float(np.sum(rent_traj))
         total_maintenance_paid = float(np.sum(maintenance_traj + common_cost_traj))
+
+        # 8. Új kimutatások: Dead Money, LTV, Real Wealth, ROE, Price-to-Rent
+        # Halott pénz (Dead Money)
+        total_buy_dead_money = float(initial_upfront_fees) + float(total_interest) + float(total_maintenance_paid)
+        total_rent_dead_money = float(total_rent_paid)
+        
+        # Tőkearányos megtérülés (ROE / CAGR of Equity)
+        cagr_equity = 0.0
+        if initial_equity_needed > 0:
+            cagr_equity = (buy_net_worth[-1] / initial_equity_needed) ** (1.0 / self.sim_years) - 1.0
+            
+        # LTV (Loan-to-Value) pálya
+        ltv_traj = loan_balance / property_value_traj
+        
+        # Infláció-korrigált reálvagyon pálya (bérletidíj-növekedést használva inflációs proxy-ként)
+        real_buy_net_worth = buy_net_worth / ((1.0 + g_rent_m)**self.t)
+        real_rent_net_worth = rent_portfolio / ((1.0 + g_rent_m)**self.t)
+        
+        # Price-to-Rent Ratio és Bruttó Hozam
+        annual_rent = rent_initial_monthly * 12.0
+        price_to_rent = property_val_0 / annual_rent if annual_rent > 0 else 0.0
+        gross_yield = annual_rent / property_val_0 if property_val_0 > 0 else 0.0
 
         # Éves mintavételezés a grafikonokhoz (hogy a JSON válasz kompakt és gyors maradjon)
         sample_step = 1  # 360 adatpont havi felbontásban teljesen jól kezelhető a kliensen
@@ -185,19 +243,32 @@ class QuantitativeSimulationEngine:
                 "wealth_delta_10y": round(float(wealth_delta[min(119, self.total_months - 1)]), 0),
                 "wealth_delta_20y": round(float(wealth_delta[min(239, self.total_months - 1)]), 0),
                 "wealth_delta_30y": round(float(wealth_delta[-1]), 0),
+                # Új metrikák:
+                "total_buy_dead_money": round(total_buy_dead_money, 0),
+                "total_rent_dead_money": round(total_rent_dead_money, 0),
+                "cagr_equity_pct": round(cagr_equity * 100.0, 2),
+                "price_to_rent_ratio": round(price_to_rent, 2),
+                "gross_yield_pct": round(gross_yield * 100.0, 2),
+                "terminal_real_buy_net_worth": round(float(real_buy_net_worth[-1]), 0),
+                "terminal_real_rent_net_worth": round(float(real_rent_net_worth[-1]), 0),
             },
             "trajectories": {
                 "month": self.t[sampled_indices].tolist(),
                 "year": (self.t[sampled_indices] / 12.0).round(2).tolist(),
                 "buy_net_worth": buy_net_worth[sampled_indices].round(0).tolist(),
                 "rent_net_worth": rent_portfolio[sampled_indices].round(0).tolist(),
+                "btl_net_worth": btl_net_worth[sampled_indices].round(0).tolist(),
                 "wealth_delta": wealth_delta[sampled_indices].round(0).tolist(),
                 "property_market_value": property_value_traj[sampled_indices].round(0).tolist(),
                 "remaining_loan_balance": loan_balance[sampled_indices].round(0).tolist(),
                 "monthly_buy_outflow": monthly_buy_outflow[sampled_indices].round(0).tolist(),
                 "monthly_rent_outflow": monthly_rent_outflow[sampled_indices].round(0).tolist(),
                 "dcf_buy": dcf_buy[sampled_indices].round(0).tolist(),
-                "dcf_rent": dcf_rent[sampled_indices].round(0).tolist()
+                "dcf_rent": dcf_rent[sampled_indices].round(0).tolist(),
+                # Új pályák:
+                "ltv": ltv_traj[sampled_indices].round(4).tolist(),
+                "real_buy_net_worth": real_buy_net_worth[sampled_indices].round(0).tolist(),
+                "real_rent_net_worth": real_rent_net_worth[sampled_indices].round(0).tolist(),
             }
         }
 

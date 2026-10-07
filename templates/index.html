@@ -553,7 +553,23 @@
         <div class="tab-pane fade" id="tab-results" role="tabpanel" aria-labelledby="tab-btn-results">
             <!-- EREDMÉNYEK SZEKCIÓ -->
             <div id="resultsSection">
-
+            
+            <!-- ÚJ: Szimuláció időtávja -->
+            <div class="card border-0 shadow-sm mt-4 bg-light">
+                <div class="card-body p-3">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold mb-0"><i class="bi bi-clock-history text-secondary me-2"></i>Szimuláció időtávja:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="range" class="form-range" id="rngSimYears" min="5" max="50" step="1" value="30">
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <span class="badge bg-secondary fs-6" id="badgeSimYears">30 év</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- 30 Éves Vagyonfelhalmozási Szimuláció (Chart.js) -->
             <div class="card border-0 shadow-sm mt-4">
                 <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
@@ -569,10 +585,63 @@
                     </div>
                 </div>
             </div>
-            
             <div class="row mt-4 g-4">
+                <!-- ÚJ KÁRTYÁK A FŐBB PÉNZÜGYI MUTATÓKHOZ -->
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-uppercase fw-bold text-white-50 mb-1 small">Önerő Megtérülése (ROE)</h6>
+                            <h3 class="mb-0 fw-bold" id="valRoe">-- %</h3>
+                            <small class="text-white-50">Évesített hozam (CAGR)</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-uppercase fw-bold text-white-50 mb-1 small">Ár/Bérlet Mutató</h6>
+                            <h3 class="mb-0 fw-bold" id="valPriceToRent">--</h3>
+                            <small class="text-white-50">Bruttó hozam: <span id="valGrossYield">-- %</span></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-uppercase fw-bold text-white-50 mb-1 small">Reálvagyon 30 év múlva (Saját)</h6>
+                            <h3 class="mb-0 fw-bold" id="valRealBuy">-- Ft</h3>
+                            <small class="text-white-50">Mai vásárlóértéken</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-dark border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="text-uppercase fw-bold text-dark-50 mb-1 small">Reálvagyon 30 év múlva (Bérlet)</h6>
+                            <h3 class="mb-0 fw-bold" id="valRealRent">-- Ft</h3>
+                            <small class="text-dark-50">Mai vásárlóértéken</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4 g-4">
+                <!-- ÚJ: Dead Money Chart -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white py-3 border-bottom">
+                            <h6 class="card-title mb-0 fw-bold"><i class="bi bi-pie-chart text-danger me-2"></i>"Halott Pénz" 30 év alatt</h6>
+                        </div>
+                        <div class="card-body p-3 bg-light d-flex justify-content-center align-items-center">
+                            <div class="bg-white p-3 rounded border w-100" style="height: 300px; position: relative;">
+                                <canvas id="deadMoneyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Cash-Flow Chart -->
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="card border-0 shadow-sm h-100">
                         <div class="card-header bg-white py-3 border-bottom">
                             <h6 class="card-title mb-0 fw-bold"><i class="bi bi-cash-stack text-success me-2"></i>Havi Kiadások Alakulása</h6>
@@ -585,15 +654,15 @@
                     </div>
                 </div>
                 
-                <!-- Equity vs Debt Chart -->
-                <div class="col-lg-6">
+                <!-- ÚJ: LTV Chart -->
+                <div class="col-lg-4">
                     <div class="card border-0 shadow-sm h-100">
                         <div class="card-header bg-white py-3 border-bottom">
-                            <h6 class="card-title mb-0 fw-bold"><i class="bi bi-pie-chart text-info me-2"></i>Ingatlan Érték vs. Tartozás (Saját Lakás)</h6>
+                            <h6 class="card-title mb-0 fw-bold"><i class="bi bi-shield-exclamation text-info me-2"></i>LTV (Hitelfedezeti) Pálya</h6>
                         </div>
                         <div class="card-body p-3 bg-light">
                             <div class="bg-white p-3 rounded border" style="height: 300px; position: relative;">
-                                <canvas id="equityChart"></canvas>
+                                <canvas id="ltvChart"></canvas>
                             </div>
                         </div>
                     </div>

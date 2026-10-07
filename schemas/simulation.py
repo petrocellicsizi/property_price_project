@@ -111,8 +111,8 @@ class SimulationInputSchema(BaseModel):
     )
     simulation_years: int = Field(
         default=30, 
-        ge=10, 
-        le=35, 
+        ge=5, 
+        le=50, 
         description="A szimulációs horizont hossza években"
     )
 

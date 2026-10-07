@@ -176,7 +176,7 @@ def calculate_metrics():
     
     # Engine paraméterek felépítése
     sim_params = {
-        "simulation_years": 30,
+        "simulation_years": int(parse_clean_number(inv.get("simulation_years", 30))),
         "loan_term_years": term_years,
         "property_size_sqm": size,
         "price_per_sqm": int(prop.get("price_per_sqm_huf", suggested_price_per_sqm)),
