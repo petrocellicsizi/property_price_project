@@ -889,19 +889,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnSaveTop.addEventListener('click', () => {
         saveInputsToServer();
-        resultsSection.classList.remove('d-none');
+        const resultsTabBtn = document.getElementById('tab-btn-results');
+        if (resultsTabBtn) {
+            const tab = new bootstrap.Tab(resultsTabBtn);
+            tab.show();
+        }
     });
     
     if (btnRunSimulation) {
         btnRunSimulation.addEventListener('click', () => {
             saveInputsToServer();
-            resultsSection.classList.remove('d-none');
             if (cardAiSummary) cardAiSummary.classList.remove('d-none');
             
-            // Finom görgetés az eredményekhez egy kis késleltetéssel
-            setTimeout(() => {
-                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+            // Bootstrap Tab váltás JS-ből
+            const resultsTabBtn = document.getElementById('tab-btn-results');
+            if (resultsTabBtn) {
+                const tab = new bootstrap.Tab(resultsTabBtn);
+                tab.show();
+            }
+            
+            // Finom görgetés a tetejére (mivel a tab váltás után a tartalom átrendeződik)
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
@@ -967,11 +975,92 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- ÚJ: AI Lokáció Elemzés ---
+    const btnAnalyzeLocation = document.getElementById('btnAnalyzeLocation');
+    const propAddress = document.getElementById('propAddress');
+    const locationAiResult = document.getElementById('locationAiResult');
+
+    if (btnAnalyzeLocation && propAddress) {
+        btnAnalyzeLocation.addEventListener('click', async () => {
+            const address = propAddress.value.trim();
+            if (!address) {
+                alert("Kérlek adj meg egy pontos címet az elemzéshez!");
+                return;
+            }
+            
+            const originalHtml = btnAnalyzeLocation.innerHTML;
+            btnAnalyzeLocation.disabled = true;
+            btnAnalyzeLocation.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Elemzés...';
+            locationAiResult.classList.add('d-none');
+            
+            try {
+                const res = await fetch('/api/analyze_location', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ address: address })
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    
+                    // Update slider (Befektetés Tab)
+                    if (data.recommended_growth_pct !== undefined) {
+                        const growthSlider = document.getElementById('rngPropGrowth');
+                        const growthBadge = document.getElementById('lblPropGrowthBadge');
+                        if (growthSlider) {
+                            growthSlider.value = data.recommended_growth_pct;
+                            if (growthBadge) growthBadge.textContent = `${data.recommended_growth_pct}%`;
+                        }
+                    }
+                    
+                    // Display text
+                    locationAiResult.classList.remove('d-none');
+                    locationAiResult.classList.remove('alert-info', 'alert-danger');
+                    locationAiResult.classList.add('alert-success');
+                    
+                    let catHtml = data.category ? `<strong><i class="bi bi-robot me-1"></i>Lokációs Szakértő (${data.category}):</strong><br>` : `<strong><i class="bi bi-robot me-1"></i>Lokációs Szakértő:</strong><br>`;
+                    let confHtml = data.confidence_score ? `<span class="badge bg-secondary mt-2 ms-1">Magabiztosság: ${data.confidence_score}/10</span>` : '';
+                    
+                    locationAiResult.innerHTML = `
+                        ${catHtml}
+                        ${data.location_analysis || 'Sikeres elemzés.'}<br>
+                        <span class="badge bg-success mt-2">Javasolt értéknövekedés: ${data.recommended_growth_pct}%</span>
+                        ${confHtml}
+                    `;
+                    
+                    triggerPythonCalculations();
+                } else {
+                    const errData = await res.json();
+                    throw new Error(errData.message || 'Szerver hiba');
+                }
+            } catch (err) {
+                console.error(err);
+                locationAiResult.classList.remove('d-none');
+                locationAiResult.classList.remove('alert-info', 'alert-success');
+                locationAiResult.classList.add('alert-danger');
+                locationAiResult.innerHTML = `<i class="bi bi-exclamation-triangle"></i> ${err.message || 'Hiba történt a lokáció elemzésekor.'}`;
+            } finally {
+                btnAnalyzeLocation.disabled = false;
+                btnAnalyzeLocation.innerHTML = originalHtml;
+            }
+        });
+    }
+
     // --- 9. Vagyonfelhalmozási Chart.js Rajzolás ---
     let wealthChartInstance = null;
     let cashflowChartInstance = null;
     let equityChartInstance = null;
     
+    // Frissítjük a grafikonokat, amikor átváltunk a tabra (Chart.js hidden hiba megelőzése)
+    const resultsTabEl = document.getElementById('tab-btn-results');
+    if (resultsTabEl) {
+        resultsTabEl.addEventListener('shown.bs.tab', function (event) {
+            if (wealthChartInstance) wealthChartInstance.resize();
+            if (cashflowChartInstance) cashflowChartInstance.resize();
+            if (equityChartInstance) equityChartInstance.resize();
+        });
+    }
+
     const badgeBreakEven = document.getElementById('badgeBreakEven');
 
     function renderWealthChart(simulation) {

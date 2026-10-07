@@ -331,5 +331,24 @@ def chat_endpoint():
         
     return jsonify(ai_response), 200
 
+@app.route("/api/analyze_location", methods=["POST"])
+def analyze_location():
+    """
+    AI mikrolokációs elemzés a megadott pontos cím alapján.
+    """
+    payload = request.get_json(silent=True)
+    if not payload or not payload.get("address"):
+        logger.warning("analyze_location hívás hiányzó címmel.")
+        return jsonify({"status": "error", "message": "Hiányzó cím"}), 400
+
+    address = payload.get("address")
+    logger.info(f"AI Lokáció elemzés indul: {address}")
+    
+    result = gemini_service.analyze_location(address)
+    if "error" in result:
+        return jsonify({"status": "error", "message": result["error"]}), 500
+
+    return jsonify(result), 200
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

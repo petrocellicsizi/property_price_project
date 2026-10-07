@@ -490,7 +490,46 @@ Válaszolj röviden, barátságosan, magyarul! Ha módosítottad a paramétereke
                     logger.error("Minden modell próbálkozás sikertelen.")
                     return {"text": "Sajnos a szerver jelenleg túlterhelt, kérlek próbáld újra pár másodperc múlva! (503 High Demand)", "updates": {}}
 
+    def analyze_location(self, address: str) -> Dict[str, Any]:
+        """
+        Lokációs Szakértő / Dzsentrifikációs Elemző funkció.
+        A megadott cím alapján mikrolokációs elemzést készít és értéknövekedést becsül.
+        """
+        if not self.client or not address:
+            return {"error": "A Gemini API nem elérhető vagy hiányzik a cím."}
 
+        sys_prompt = """Te egy szenior magyar ingatlanpiaci és mikrolokációs elemző AI vagy (Lokációs Szakértő / Dzsentrifikációs Elemző).
+A felhasználó megadott egy pontos címet egy ingatlanbefektetési szimulátorban.
+
+A feladatod:
+1. Elemezd a megadott mikrolokációt (utca/környék szintjén) Magyarország kontextusában.
+2. Vedd figyelembe az infrastruktúrát (tömegközlekedés, egyetemek, irodák, parkok, bűnözés, dzsentrifikáció).
+3. Határozd meg, hogy az országos átlagos éves értéknövekedéshez (kb. 5.0%) képest ez a lokáció felülteljesítő, átlagos, vagy alulteljesítő lesz-e hosszútávon (10-20 év).
+4. Adj egy konkrét százalékos javaslatot a jövőbeli éves értéknövekedésre (pl. 4.5% vagy 6.2%). SOHA NE írj abszurd nagy számot, maradj a realitások talaján (3-9% között)!
+
+KIZÁRÓLAG egy érvényes JSON formátumban válaszolj, Markdown kódblokk (```json) nélkül!
+Struktúra:
+{
+  "location_analysis": "Rövid, 3-4 mondatos szakmai elemzés a mikrolokációról...",
+  "recommended_growth_pct": 6.5,
+  "confidence_score": 8,
+  "category": "Felülteljesítő prémium lokáció"
+}"""
+
+        try:
+            chat = self.client.chats.create(
+                model=self.primary_model,
+                config={
+                    "system_instruction": sys_prompt,
+                    "temperature": 0.4,
+                    "response_mime_type": "application/json"
+                }
+            )
+            response = chat.send_message(f"Kérlek elemezd ezt a címet: {address}")
+            return json.loads(response.text.strip())
+        except Exception as e:
+            logger.error(f"Lokáció elemzés hiba: {str(e)}")
+            return {"error": "Nem sikerült a lokációs elemzés. Próbáld újra később!"}
 
 # Egyke (Singleton) példány
 gemini_service = GeminiEvaluationService()

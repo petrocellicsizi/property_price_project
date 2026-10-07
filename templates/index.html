@@ -43,9 +43,26 @@
     </div>
 
     <form id="dashboardForm">
-        <div class="row g-4">
-            
-            <!-- 1. OSZLOP: Lakás és Ingatlan Paraméterek -->
+        <!-- TABS NAVIGÁCIÓ -->
+        <ul class="nav nav-tabs mb-4" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold fs-5 px-4" id="tab-btn-inputs" data-bs-toggle="tab" data-bs-target="#tab-inputs" type="button" role="tab" aria-controls="tab-inputs" aria-selected="true">
+                    <i class="bi bi-sliders me-2"></i>Bemeneti Paraméterek
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold fs-5 px-4" id="tab-btn-results" data-bs-toggle="tab" data-bs-target="#tab-results" type="button" role="tab" aria-controls="tab-results" aria-selected="false">
+                    <i class="bi bi-bar-chart-fill me-2"></i>Szimulációs Eredmények
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="mainTabsContent">
+            <!-- 1. TAB: INPUTS -->
+            <div class="tab-pane fade show active" id="tab-inputs" role="tabpanel" aria-labelledby="tab-btn-inputs">
+                <div class="row g-4">
+                    
+                    <!-- 1. OSZLOP: Lakás és Ingatlan Paraméterek -->
             <div class="col-lg-4">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-header bg-white py-3 border-bottom d-flex align-items-center gap-2">
@@ -95,6 +112,22 @@
                             <small class="text-muted d-block mt-2" style="font-size: 0.73rem;">
                                 Alapértelmezett: <strong>Budapest VIII. kerület</strong>. A lakat ikonra kattintva a mezők feloldhatók és tetszőleges város / kerület begépelhető.
                             </small>
+
+                            <!-- ÚJ: Pontos Cím (Mikrolokáció) -->
+                            <div class="mt-3 border-top pt-3">
+                                <label class="form-label small fw-semibold text-dark mb-1">Pontos cím (opcionális mikrolokáció)</label>
+                                <div class="input-group input-group-sm mb-2">
+                                    <span class="input-group-text bg-white"><i class="bi bi-signpost-split"></i></span>
+                                    <input type="text" id="propAddress" class="form-control" placeholder="pl. 1082 Budapest, Corvin sétány 4.">
+                                    <button class="btn btn-outline-primary fw-bold" type="button" id="btnAnalyzeLocation">
+                                        <i class="bi bi-stars me-1"></i> AI Elemzés
+                                    </button>
+                                </div>
+                                <!-- AI Válasz Konténer -->
+                                <div id="locationAiResult" class="d-none alert alert-info p-2 mb-0" style="font-size: 0.8rem;">
+                                    <!-- Ide jön az elemzés -->
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Ingatlantípus és Állapot -->
@@ -506,19 +539,25 @@
             </div>
         </div>
 
-        <!-- Futtatás Gomb (Középen, a kártyák alatt) -->
-        <div class="row mt-2 mb-5 justify-content-center">
-            <div class="col-lg-6">
-                <div class="d-grid">
-                    <button type="button" class="btn btn-primary btn-lg fw-bold shadow" id="btnRunSimulation">
-                        <i class="bi bi-play-fill me-1 fs-5"></i> Szimuláció és AI Elemzés Futtatása
-                    </button>
+            </div> <!-- end of row g-4 -->
+            
+            <!-- Futtatás Gomb a Tab-1 alján -->
+            <div class="row mt-4 mb-2 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-primary btn-lg fw-bold shadow" id="btnRunSimulation">
+                            <i class="bi bi-play-fill me-1 fs-5"></i> Szimuláció Futtatása & Eredmények Megtekintése <i class="bi bi-arrow-right ms-1"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- EREDMÉNYEK SZEKCIÓ (Alapból rejtve) -->
-        <div id="resultsSection" class="d-none">
+        </div> <!-- end of tab-inputs -->
+
+        <!-- 2. TAB: RESULTS -->
+        <div class="tab-pane fade" id="tab-results" role="tabpanel" aria-labelledby="tab-btn-results">
+            <!-- EREDMÉNYEK SZEKCIÓ -->
+            <div id="resultsSection">
 
             <!-- 30 Éves Vagyonfelhalmozási Szimuláció (Chart.js) -->
             <div class="card border-0 shadow-sm mt-4">
@@ -609,6 +648,9 @@
                 </div>
             </div>
         </div>
+            </div> <!-- end of resultsSection -->
+        </div> <!-- end of tab-results -->
+        </div> <!-- end of tab-content -->
     </form>
 </main>
 
