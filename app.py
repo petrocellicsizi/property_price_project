@@ -25,6 +25,7 @@ from utils.finance import (
     calculate_lawyer_fee_metrics,
     calculate_down_payment_metrics,
 )
+from core.defaults import SCENARIOS
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
@@ -139,17 +140,26 @@ def calculate_metrics():
         adjustments_info = {}
 
     # 3. Pénzügyi és törlesztési számítások
-    price_total = parse_clean_number(prop.get("price_total_huf", 80600000))
-    loan_amount = parse_clean_number(loan.get("loan_amount_huf", 60450000))
-    interest_pct = parse_clean_number(loan.get("interest_rate_annual_pct", 6.5))
-    term_years = int(parse_clean_number(loan.get("loan_term_years", 20)))
+    base_params = SCENARIOS["base"]["params"]
+    price_total = parse_clean_number(prop.get("price_total_huf", suggested_price_total))
+    
+    # Calculate fallback loan amount based on base scenario's down payment ratio
+    default_down_payment_ratio = base_params.get("down_payment_ratio", 0.25)
+    default_down_payment = price_total * default_down_payment_ratio
+    default_loan_amount = price_total - default_down_payment
+    
+    loan_amount = parse_clean_number(loan.get("loan_amount_huf", default_loan_amount))
+    interest_pct = parse_clean_number(loan.get("interest_rate_annual_pct", base_params.get("loan_interest_rate_annual", 0.065) * 100))
+    term_years = int(parse_clean_number(loan.get("loan_term_years", base_params.get("loan_term_years", 20))))
 
     # Hitel annuitásos törlesztő
     monthly_installment = calculate_monthly_installment(loan_amount, interest_pct, term_years)
 
     # Induló tőkeigény
-    down_payment = parse_clean_number(loan.get("down_payment_huf", 20150000))
-    lawyer_fee = parse_clean_number(prop.get("lawyer_fee_huf", 806000))
+    down_payment = parse_clean_number(loan.get("down_payment_huf", default_down_payment))
+    
+    default_lawyer_fee = price_total * base_params.get("legal_fee_rate", 0.01)
+    lawyer_fee = parse_clean_number(prop.get("lawyer_fee_huf", default_lawyer_fee))
     other_fees = parse_clean_number(loan.get("other_fees_huf", 120000))
     furnishing = parse_clean_number(prop.get("furnishing_cost_huf", suggested_furnishing))
 
@@ -159,11 +169,11 @@ def calculate_metrics():
         other_fees_huf=other_fees,
         furnishing_cost_huf=furnishing,
         price_total_huf=price_total,
-        transfer_tax_rate=0.04
+        transfer_tax_rate=base_params.get("transfer_tax_rate", 0.04)
     )
 
     # Befektetési havi ráta
-    inv_return_pct = parse_clean_number(inv.get("expected_return_annual_pct", 7.0))
+    inv_return_pct = parse_clean_number(inv.get("expected_return_annual_pct", base_params.get("opportunity_cost_rate_annual", 0.07) * 100))
     monthly_return_rate = calculate_monthly_return_rate(inv_return_pct)
 
     # Bérlői havi összes kiadás
@@ -180,19 +190,19 @@ def calculate_metrics():
         "loan_term_years": term_years,
         "property_size_sqm": size,
         "price_per_sqm": int(prop.get("price_per_sqm_huf", suggested_price_per_sqm)),
-        "down_payment_ratio": parse_clean_number(loan.get("down_payment_pct", 25)) / 100.0,
-        "transfer_tax_rate": 0.04,  # alapértelmezett illeték
-        "legal_fee_rate": parse_clean_number(prop.get("lawyer_fee_pct", 1.0)) / 100.0,
+        "down_payment_ratio": parse_clean_number(loan.get("down_payment_pct", base_params.get("down_payment_ratio", 0.25) * 100)) / 100.0,
+        "transfer_tax_rate": base_params.get("transfer_tax_rate", 0.04),
+        "legal_fee_rate": parse_clean_number(prop.get("lawyer_fee_pct", base_params.get("legal_fee_rate", 0.01) * 100)) / 100.0,
         "renovation_cost_initial": parse_clean_number(prop.get("furnishing_cost_huf", suggested_furnishing)),
-        "loan_interest_rate_annual": parse_clean_number(loan.get("interest_rate_annual_pct", 6.5)) / 100.0,
-        "property_growth_rate_annual": parse_clean_number(inv.get("property_growth_pct", 5.0)) / 100.0,
-        "maintenance_rate_annual": 0.01,
+        "loan_interest_rate_annual": parse_clean_number(loan.get("interest_rate_annual_pct", base_params.get("loan_interest_rate_annual", 0.065) * 100)) / 100.0,
+        "property_growth_rate_annual": parse_clean_number(inv.get("property_growth_pct", base_params.get("property_growth_rate_annual", 0.055) * 100)) / 100.0,
+        "maintenance_rate_annual": base_params.get("maintenance_rate_annual", 0.01),
         "common_cost_monthly": rent_utilities,
-        "rent_growth_rate_annual": parse_clean_number(inv.get("rent_inflation_pct", 4.0)) / 100.0,
+        "rent_growth_rate_annual": parse_clean_number(inv.get("rent_inflation_pct", base_params.get("rent_growth_rate_annual", 0.045) * 100)) / 100.0,
         "initial_rent_monthly": rent_monthly,
         "opportunity_cost_rate_annual": inv_return_pct / 100.0,
         "tbsz_enabled": inv.get("tbsz_enabled", True),
-        "discount_rate_annual": 0.06
+        "discount_rate_annual": inv_return_pct / 100.0  # Align discount rate with opportunity cost
     }
     
     engine = QuantitativeSimulationEngine(sim_params)
