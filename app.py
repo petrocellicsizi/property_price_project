@@ -8,6 +8,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 
 from core.gemini_service import gemini_service
+from core.logger import logger
 from utils.formatters import format_huf, format_with_dots, parse_clean_number
 from utils.algorithms import (
     calculate_suggested_furnishing,
@@ -26,6 +27,11 @@ from utils.finance import (
 )
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
+
+@app.before_request
+def log_request_info():
+    if request.path.startswith('/api/'):
+        logger.debug(f"API Kérés: {request.method} {request.path}")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -84,6 +90,10 @@ def calculate_metrics():
     Támogatja a Gemini AI által meghatározott felárak/diszkontok érvényesítését is.
     """
     data = request.get_json(silent=True) or {}
+    
+    logger.info("Szimulációs kalkuláció indítása...")
+    logger.debug(f"Kalkulációs payload: {data}")
+    
     prop = data.get("property", {})
     loan = data.get("loan", {})
     rent = data.get("rent", {})
@@ -283,12 +293,15 @@ def generate_summary():
     """
     payload = request.get_json(silent=True)
     if not payload:
+        logger.warning("generate_summary hívás hiányzó payload-dal.")
         return jsonify({"status": "error", "message": "Hiányzó adatok"}), 400
 
+    logger.info("AI Összefoglaló generálása indult...")
     sim_results = payload.get("simulation", {})
     inputs = payload.get("inputs", {})
 
     summary_text = gemini_service.generate_simulation_summary(sim_results, inputs)
+    logger.info("AI Összefoglaló generálása kész.")
     return jsonify({"summary_text": summary_text}), 200
 
 @app.route("/api/chat", methods=["POST"])
@@ -299,6 +312,7 @@ def chat_endpoint():
     """
     payload = request.get_json(silent=True)
     if not payload:
+        logger.warning("chat_endpoint hívás hiányzó payload-dal.")
         return jsonify({"status": "error", "message": "Hiányzó adatok"}), 400
 
     user_message = payload.get("message", "")
@@ -306,9 +320,15 @@ def chat_endpoint():
     current_params = payload.get("current_params", {})
 
     if not user_message:
+        logger.warning("chat_endpoint hívás üres üzenettel.")
         return jsonify({"status": "error", "message": "Üres üzenet"}), 400
 
+    logger.info(f"AI Chat kérés érkezett. Üzenet: '{user_message[:50]}...' (Előzmények hossza: {len(history)})")
     ai_response = gemini_service.chat_with_assistant(user_message, current_params, history)
+    
+    if ai_response.get("updates"):
+        logger.info(f"AI módosította a csúszkákat: {ai_response['updates']}")
+        
     return jsonify(ai_response), 200
 
 if __name__ == "__main__":

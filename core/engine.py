@@ -5,6 +5,7 @@ Diszkontált Cash-Flow (DCF), Francia annuitás, tőkeáttétel és vagyonegyenl
 from typing import Dict, Any, List, Optional
 import numpy as np
 
+from core.logger import logger
 
 class QuantitativeSimulationEngine:
     """
@@ -27,6 +28,7 @@ class QuantitativeSimulationEngine:
         """
         Lefuttatja a teljes 30 éves havi szimulációt vektorizált NumPy műveletekkel.
         """
+        logger.debug(f"Szimulációs motor indítása: {self.sim_years} év, {self.params.get('property_size_sqm', 0)} m2, Vételár/m2: {self.params.get('price_per_sqm', 0)}")
         # 1. Ingatlan alapadatok és kezdeti tőkeszükséglet (t = 0)
         size = float(self.params["property_size_sqm"])
         price_sqm = float(self.params["price_per_sqm"])
@@ -163,6 +165,8 @@ class QuantitativeSimulationEngine:
         # Éves mintavételezés a grafikonokhoz (hogy a JSON válasz kompakt és gyors maradjon)
         sample_step = 1  # 360 adatpont havi felbontásban teljesen jól kezelhető a kliensen
         sampled_indices = np.arange(0, self.total_months, sample_step)
+        
+        logger.debug(f"Szimuláció véget ért. Break-Even év: {bep_year}, NPV(Buy): {dcf_buy[-1]:.0f}, NPV(Rent): {dcf_rent[-1]:.0f}")
         
         return {
             "summary": {

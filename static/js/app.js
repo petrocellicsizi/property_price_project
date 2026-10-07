@@ -1180,8 +1180,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let chatHistory = [];
 
     if (btnChatOpen && aiChatWidget) {
-        const toggleChat = () => {
-            if (aiChatWidget.style.display === 'none') {
+        const toggleChat = (e) => {
+            if (e) e.stopPropagation();
+            if (aiChatWidget.style.display === 'none' || aiChatWidget.style.display === '') {
                 aiChatWidget.style.display = 'flex';
                 btnChatOpen.style.display = 'none';
                 chatInput.focus();
@@ -1214,43 +1215,68 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!updates || Object.keys(updates).length === 0) return;
             
             let changed = false;
-            if (updates.price_total_huf !== undefined) {
-                document.getElementById('prop_price_total_huf').value = formatWithDots(updates.price_total_huf);
-                userCustomPrice = true;
-                changed = true;
+            try {
+                if (updates.price_total_huf !== undefined) {
+                    const el = document.getElementById('prop_price_total');
+                    if (el) el.value = formatWithDots(updates.price_total_huf);
+                    userCustomPrice = true;
+                    changed = true;
+                }
+                if (updates.property_size_sqm !== undefined) {
+                    const el = document.getElementById('prop_size_sqm');
+                    if (el) el.value = updates.property_size_sqm;
+                    changed = true;
+                }
+                if (updates.down_payment_pct !== undefined) {
+                    const el1 = document.getElementById('loan_down_payment_pct');
+                    const el2 = document.getElementById('rngDownPayment');
+                    if (el1) el1.value = formatWithDots(updates.down_payment_pct);
+                    if (el2) el2.value = updates.down_payment_pct;
+                    changed = true;
+                }
+                if (updates.loan_term_years !== undefined) {
+                    const el = document.getElementById('loan_term_years');
+                    if (el) el.value = updates.loan_term_years;
+                    document.querySelectorAll('.btn-term').forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.term === String(updates.loan_term_years));
+                    });
+                    changed = true;
+                }
+                if (updates.interest_rate_annual_pct !== undefined) {
+                    const el1 = document.getElementById('loan_interest_pct');
+                    const el2 = document.getElementById('rngInterestRate');
+                    if (el1) el1.value = formatWithDots(updates.interest_rate_annual_pct);
+                    if (el2) el2.value = updates.interest_rate_annual_pct;
+                    changed = true;
+                }
+            } catch (err) {
+                console.error("Hiba az adatok frissítésekor:", err);
             }
-            if (updates.down_payment_pct !== undefined) {
-                document.getElementById('loan_down_payment_pct').value = formatWithDots(updates.down_payment_pct);
-                document.getElementById('rngDownPayment').value = updates.down_payment_pct;
-                changed = true;
-            }
-            if (updates.loan_term_years !== undefined) {
-                document.getElementById('loan_term_years').value = updates.loan_term_years;
-                document.querySelectorAll('.btn-term').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.term === String(updates.loan_term_years));
-                });
-                changed = true;
-            }
-            if (updates.interest_rate_annual_pct !== undefined) {
-                document.getElementById('loan_interest_rate_annual_pct').value = formatWithDots(updates.interest_rate_annual_pct);
-                document.getElementById('rngInterestRate').value = updates.interest_rate_annual_pct;
-                changed = true;
-            }
-            if (updates.monthly_rent_huf !== undefined) {
-                document.getElementById('rent_monthly_huf').value = formatWithDots(updates.monthly_rent_huf);
-                userCustomRent = true;
-                changed = true;
-            }
-            if (updates.expected_return_annual_pct !== undefined) {
-                document.getElementById('inv_return_pct').value = updates.expected_return_annual_pct;
-                document.getElementById('rngInvReturn').value = updates.expected_return_annual_pct;
-                document.getElementById('lblInvReturnBadge').textContent = `${updates.expected_return_annual_pct}%`;
-                changed = true;
-            }
-            if (updates.property_growth_pct !== undefined) {
-                document.getElementById('rngPropGrowth').value = updates.property_growth_pct;
-                document.getElementById('lblPropGrowthBadge').textContent = `${updates.property_growth_pct}%`;
-                changed = true;
+            try {
+                if (updates.monthly_rent_huf !== undefined) {
+                    const el = document.getElementById('rent_monthly_huf');
+                    if (el) el.value = formatWithDots(updates.monthly_rent_huf);
+                    userCustomRent = true;
+                    changed = true;
+                }
+                if (updates.expected_return_annual_pct !== undefined) {
+                    const el1 = document.getElementById('inv_return_pct');
+                    const el2 = document.getElementById('rngInvReturn');
+                    const el3 = document.getElementById('lblInvReturnBadge');
+                    if (el1) el1.value = updates.expected_return_annual_pct;
+                    if (el2) el2.value = updates.expected_return_annual_pct;
+                    if (el3) el3.textContent = `${updates.expected_return_annual_pct}%`;
+                    changed = true;
+                }
+                if (updates.property_growth_pct !== undefined) {
+                    const el1 = document.getElementById('rngPropGrowth');
+                    const el2 = document.getElementById('lblPropGrowthBadge');
+                    if (el1) el1.value = updates.property_growth_pct;
+                    if (el2) el2.textContent = `${updates.property_growth_pct}%`;
+                    changed = true;
+                }
+            } catch (err) {
+                console.error("Hiba az adatok frissítésekor:", err);
             }
 
             if (changed) {

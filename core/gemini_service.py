@@ -7,15 +7,13 @@ Közvetlen számszerű javaslat-korrekciókat (rent_adjustment_pct, furnishing_a
 import os
 import re
 import json
-import logging
 from typing import Dict, Any
 from dotenv import load_dotenv
 from google import genai
+from core.logger import logger
 
 # Környezeti változók (.env) betöltése
 load_dotenv()
-
-logger = logging.getLogger(__name__)
 
 
 class GeminiEvaluationService:
@@ -410,8 +408,7 @@ Magyarázd el, hogy az ETF magasabb kamatos kamata, vagy az ingatlan tőkeátté
             )
             return response.text.strip()
         except Exception as e:
-            import logging
-            logging.getLogger(__name__).error(f"Gemini API hiba a szimuláció összefoglalása közben: {str(e)}")
+            logger.error(f"Gemini API hiba a szimuláció összefoglalása közben: {str(e)}")
             return "Nem sikerült az AI összefoglalót generálni hálózati hiba miatt."
 
     def chat_with_assistant(self, user_message: str, current_params: dict, history_dicts: list) -> dict:
@@ -427,6 +424,7 @@ Magyarázd el, hogy az ETF magasabb kamatos kamata, vagy az ingatlan tőkeátté
 
         def update_simulation_params(
             price_total_huf: int = None,
+            property_size_sqm: float = None,
             down_payment_pct: float = None,
             loan_term_years: int = None,
             interest_rate_annual_pct: float = None,
@@ -457,6 +455,7 @@ Magyarázd el, hogy az ETF magasabb kamatos kamata, vagy az ingatlan tőkeátté
         sys_prompt = f"""Te egy pénzügyi AI asszisztens vagy egy 'Saját lakás vs Bérlés' szimulátor weboldalon.
 A felhasználó a chaten keresztül kérdezhet, vagy megkérhet, hogy állítsd át a kalkulátor csúszkáit (pl. 'Mi lenne ha 30% lenne az önerő?').
 Ilyenkor HÍVD MEG az `update_simulation_params` függvényt az új értékekkel! Fontos: A vételárat Ft-ban add meg, a %-okat számként (pl. 30).
+Az alapterületet (property_size_sqm) is be tudod állítani!
 
 Jelenlegi beállított paraméterek:
 {json.dumps(current_params, indent=2, ensure_ascii=False)}
@@ -464,26 +463,32 @@ Jelenlegi beállított paraméterek:
 Válaszolj röviden, barátságosan, magyarul! Ha módosítottad a paramétereket, említsd meg a válaszban!
 """
 
-        try:
-            chat = self.client.chats.create(
-                model=self.primary_model,
-                config={
-                    "tools": [update_simulation_params],
-                    "system_instruction": sys_prompt,
-                    "temperature": 0.7
-                },
-                history=converted_history
-            )
-            
-            response = chat.send_message(user_message)
-            
-            return {
-                "text": response.text.strip(),
-                "updates": captured_args
-            }
-        except Exception as e:
-            logger.error(f"Chat API hiba: {str(e)}")
-            return {"text": "Hiba történt az üzenet feldolgozása közben.", "updates": {}}
+        # Automatikus Retry logikával (Fallback)
+        models_to_try = [self.primary_model, self.secondary_model]
+        
+        for idx, model_name in enumerate(models_to_try):
+            try:
+                chat = self.client.chats.create(
+                    model=model_name,
+                    config={
+                        "tools": [update_simulation_params],
+                        "system_instruction": sys_prompt,
+                        "temperature": 0.7
+                    },
+                    history=converted_history
+                )
+                
+                response = chat.send_message(user_message)
+                
+                return {
+                    "text": response.text.strip(),
+                    "updates": captured_args
+                }
+            except Exception as e:
+                logger.warning(f"Kísérlet a(z) {model_name} modellel sikertelen: {str(e)}")
+                if idx == len(models_to_try) - 1:
+                    logger.error("Minden modell próbálkozás sikertelen.")
+                    return {"text": "Sajnos a szerver jelenleg túlterhelt, kérlek próbáld újra pár másodperc múlva! (503 High Demand)", "updates": {}}
 
 
 
