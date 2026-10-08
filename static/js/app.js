@@ -1272,11 +1272,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                             label: 'Befektetési célú vásárlás (BTL)', data: traj.btl_net_worth,
                             borderColor: '#20c997', backgroundColor: 'rgba(32, 201, 151, 0.1)',
-                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                            borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1, hidden: true
                         },
                         {
                             label: 'Saját Lakás (Reálvagyon)', data: traj.real_buy_net_worth,
                             borderColor: '#0dcaf0', backgroundColor: 'transparent',
+                            borderWidth: 1.5, borderDash: [5, 5], pointRadius: 0, pointHitRadius: 10, fill: false, tension: 0.1, hidden: true
+                        },
+                        {
+                            label: 'Bérlés + ETF (Reálvagyon)', data: traj.real_rent_net_worth,
+                            borderColor: '#fd7e14', backgroundColor: 'transparent',
                             borderWidth: 1.5, borderDash: [5, 5], pointRadius: 0, pointHitRadius: 10, fill: false, tension: 0.1, hidden: true
                         }
                     ]
