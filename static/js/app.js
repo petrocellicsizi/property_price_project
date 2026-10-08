@@ -718,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 8. Szerver Adatmentés (POST /api/inputs) ---
-    async function saveInputsToServer() {
+    async function saveInputsToServer(profileName) {
         const payload = collectFormData();
 
         // UI töltési állapot kijelzés
@@ -755,7 +755,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             if (response.ok) {
-                showAlert('Sikeres mentés & AI elemzés!', 'A bemeneti paraméterek és a Gemini szakértői értékelés rögzítésre kerültek.', 'success');
+                showAlert('Sikeres mentés & AI elemzés!', `A(z) "${profileName}" profil sikeresen mentve.`, 'success');
                 if (result.gemini_analysis) {
                     renderGeminiAnalysis(result.gemini_analysis);
                 }
@@ -765,6 +765,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (result.ai_adjusted_suggestions) {
                     applyAiAdjustedSuggestionsToUI(result.ai_adjusted_suggestions);
                 }
+                
+                // Mentsük el LocalStorage-be
+                saveProfileToLocal(profileName, payload, result.gemini_analysis, result.ai_adjusted_suggestions);
+                
             } else {
                 showAlert('Hiba a mentés során!', result.message || 'Ismeretlen hiba történt.', 'danger');
             }
@@ -780,6 +784,81 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
+    function saveProfileToLocal(name, payload, geminiAnalysis, aiAdjustments) {
+        let profiles = JSON.parse(localStorage.getItem('calcProfiles') || '{}');
+        profiles[name] = {
+            timestamp: new Date().toISOString(),
+            inputs: payload,
+            gemini_analysis: geminiAnalysis,
+            ai_adjusted_suggestions: aiAdjustments
+        };
+        localStorage.setItem('calcProfiles', JSON.stringify(profiles));
+        renderProfileDropdown();
+    }
+
+    function renderProfileDropdown() {
+        const dropdown = document.getElementById('loadProfileDropdown');
+        if (!dropdown) return;
+        const noProfiles = document.getElementById('noProfilesMessage');
+        const profiles = JSON.parse(localStorage.getItem('calcProfiles') || '{}');
+        
+        dropdown.querySelectorAll('.profile-item').forEach(el => el.remove());
+        
+        if (Object.keys(profiles).length === 0) {
+            if (noProfiles) noProfiles.style.display = 'block';
+        } else {
+            if (noProfiles) noProfiles.style.display = 'none';
+            
+            for (const [name, data] of Object.entries(profiles)) {
+                const li = document.createElement('li');
+                li.className = 'profile-item';
+                
+                const a = document.createElement('a');
+                a.className = 'dropdown-item d-flex justify-content-between align-items-center';
+                a.href = '#';
+                a.innerHTML = `<span><i class="bi bi-file-earmark-text me-2"></i>${name}</span>
+                               <button class="btn btn-sm btn-link text-danger p-0 ms-2 delete-profile-btn" data-name="${name}">
+                                   <i class="bi bi-trash"></i>
+                               </button>`;
+                
+                a.addEventListener('click', (e) => {
+                    if (e.target.closest('.delete-profile-btn')) return;
+                    e.preventDefault();
+                    
+                    // Adatok betöltése
+                    populateForm(data.inputs);
+                    if (data.gemini_analysis) {
+                        renderGeminiAnalysis(data.gemini_analysis);
+                        if (data.gemini_analysis.evaluations) {
+                            currentAiEvaluations = data.gemini_analysis.evaluations;
+                        }
+                    }
+                    if (data.ai_adjusted_suggestions) {
+                        applyAiAdjustedSuggestionsToUI(data.ai_adjusted_suggestions);
+                    }
+                    showAlert('Profil betöltve', `A(z) "${name}" profil sikeresen betöltve.`, 'info');
+                });
+                
+                const delBtn = a.querySelector('.delete-profile-btn');
+                delBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    delete profiles[name];
+                    localStorage.setItem('calcProfiles', JSON.stringify(profiles));
+                    renderProfileDropdown();
+                });
+                
+                li.appendChild(a);
+                dropdown.appendChild(li);
+            }
+        }
+    }
+
+    // Inicializáláskor futtassuk le a legördülő menü frissítését
+    document.addEventListener('DOMContentLoaded', () => {
+        renderProfileDropdown();
+    });
 
     async function loadInputsFromServer() {
         try {
@@ -913,7 +992,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsSection = document.getElementById('resultsSection');
 
     btnSaveTop.addEventListener('click', () => {
-        saveInputsToServer();
+        const profileName = prompt("Add meg a mentendő profil nevét:", "Saját szimuláció");
+        if (!profileName || profileName.trim() === "") return;
+        saveInputsToServer(profileName.trim());
         const resultsTabBtn = document.getElementById('tab-btn-results');
         if (resultsTabBtn) {
             const tab = new bootstrap.Tab(resultsTabBtn);
