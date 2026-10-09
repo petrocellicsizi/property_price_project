@@ -897,12 +897,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.property.city) propCity.value = data.property.city;
             if (data.property.district) propDistrict.value = data.property.district;
             propType.value = data.property.property_type || propType.value;
-            propSizeSqm.value = data.property.size_sqm ?? propSizeSqm.value;
-            propRooms.value = (data.property.room_count ?? propRooms.value).toFixed(1);
-            propPriceTotal.value = formatWithDots(data.property.price_total_huf ?? 80600000);
-            propPriceSqm.value = formatWithDots(data.property.price_per_sqm_huf ?? 1550000);
-            propLawyerPct.value = data.property.lawyer_fee_pct ?? 1.0;
-            propLawyerHuf.value = formatWithDots(data.property.lawyer_fee_huf ?? 806000);
+            propSizeSqm.value = data.property.size_sqm ?? '';
+            propRooms.value = data.property.room_count ? data.property.room_count.toFixed(1) : '';
+            propPriceTotal.value = formatWithDots(data.property.price_total_huf ?? '');
+            propPriceSqm.value = formatWithDots(data.property.price_per_sqm_huf ?? '');
+            propLawyerPct.value = data.property.lawyer_fee_pct ?? '';
+            propLawyerHuf.value = formatWithDots(data.property.lawyer_fee_huf ?? '');
 
             if (data.property.furnishing_cost_huf !== undefined) {
                 propFurnishingHuf.value = formatWithDots(data.property.furnishing_cost_huf);
@@ -913,13 +913,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (data.loan) {
-            loanDownPaymentPct.value = data.loan.down_payment_pct ?? 25;
-            loanDownPaymentHuf.value = formatWithDots(data.loan.down_payment_huf ?? 20150000);
-            rngDownPayment.value = Math.round(data.loan.down_payment_pct ?? 25);
-            loanAmountHuf.value = formatWithDots(data.loan.loan_amount_huf ?? 60450000);
-            loanTermYears.value = data.loan.loan_term_years ?? 20;
-            loanInterestPct.value = data.loan.interest_rate_annual_pct ?? 6.5;
-            loanOtherFeesHuf.value = formatWithDots(data.loan.other_fees_huf ?? 120000);
+            loanDownPaymentPct.value = data.loan.down_payment_pct ?? '';
+            loanDownPaymentHuf.value = formatWithDots(data.loan.down_payment_huf ?? '');
+            rngDownPayment.value = Math.round(data.loan.down_payment_pct ?? '');
+            loanAmountHuf.value = formatWithDots(data.loan.loan_amount_huf ?? '');
+            loanTermYears.value = data.loan.loan_term_years ?? '';
+            loanInterestPct.value = data.loan.interest_rate_annual_pct ?? '';
+            loanOtherFeesHuf.value = formatWithDots(data.loan.other_fees_huf ?? '');
             loanMonthlyPayment.value = data.loan.monthly_payment_huf ? formatWithDots(data.loan.monthly_payment_huf) : '';
 
             btnTerms.forEach(btn => {
@@ -944,7 +944,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (data.investment) {
-            invReturnPct.value = data.investment.expected_return_annual_pct ?? 7.0;
+            invReturnPct.value = data.investment.expected_return_annual_pct ?? '';
             rngInvReturn.value = invReturnPct.value;
             lblInvReturnBadge.textContent = `${parseFloat(invReturnPct.value).toFixed(2)}%`;
             
