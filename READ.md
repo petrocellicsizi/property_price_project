@@ -1,1 +1,0 @@
-A »Saját lakás vs. Bérlés« dilemma időbeli fordulópontjának (Break-Even) modellezése: Historikus adatokra épülő Python webalkalmazás a VIII. kerületi újépítésű ingatlanpiacon
