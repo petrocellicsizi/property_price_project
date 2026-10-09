@@ -14,9 +14,9 @@ def gemini_mock(mocker):
     return service
 
 def test_evaluate_all_notes(gemini_mock):
-    interaction_mock = MagicMock()
-    interaction_mock.output_text = '{"overall_summary": "ok", "evaluations": {}}'
-    gemini_mock.client.interactions.create.return_value = interaction_mock
+    resp_mock = MagicMock()
+    resp_mock.text = '{"overall_summary": "ok", "evaluations": {}}'
+    gemini_mock.client.models.generate_content.return_value = resp_mock
     res = gemini_mock.evaluate_all_notes({"property": {"notes": "test"}})
     assert "evaluations" in res
 

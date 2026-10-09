@@ -305,12 +305,12 @@ MINTA JSON:
 
         for model in models_to_try:
             try:
-                interaction = self.client.interactions.create(
+                response = self.client.models.generate_content(
                     model=model,
-                    input=prompt,
-                    generation_config={"response_mime_type": "application/json"}
+                    contents=prompt,
+                    config={"response_mime_type": "application/json"}
                 )
-                raw_text = (interaction.output_text or "").strip()
+                raw_text = (response.text or "").strip()
                 parsed = self._clean_and_parse_json(raw_text)
                 parsed["status"] = "success"
                 parsed["model_used"] = model

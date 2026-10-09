@@ -1,108 +1,89 @@
 {
-  "updated_at": "2026-10-09T02:33:06.629476",
+  "updated_at": "2026-10-09T02:36:13.988468",
   "inputs": {
-    "property": {
-      "city": "Budapest",
-      "district": "VIII. kerület",
-      "location": "Budapest, VIII. kerület",
-      "property_type": "Újépítésű társasház (AA+)",
-      "condition": "Újszerű / Prémium",
-      "size_sqm": 46,
-      "room_count": 2,
-      "price_total_huf": 68900000,
-      "price_per_sqm_huf": 1497826,
-      "lawyer_fee_pct": 0.5,
-      "lawyer_fee_huf": 344500,
-      "furnishing_cost_huf": 3000000,
+    "investment": {
       "other_info": ""
     },
     "loan": {
-      "down_payment_pct": 27.4,
-      "down_payment_huf": 18900000,
-      "loan_amount_huf": 50000000,
-      "loan_term_years": 21,
-      "interest_rate_annual_pct": 3,
-      "other_fees_huf": 120000,
-      "monthly_payment_huf": null,
       "other_info": ""
+    },
+    "property": {
+      "city": "Budapest",
+      "district": "VIII. kerület",
+      "other_info": "Prémium felújított belső tér",
+      "price_total_huf": 80600000,
+      "property_type": "Újépítésű társasház (AA+)",
+      "room_count": 2,
+      "size_sqm": 52
     },
     "rent": {
-      "monthly_rent_huf": 250000,
-      "monthly_utilities_huf": 30000,
-      "other_info": ""
-    },
-    "investment": {
-      "expected_return_annual_pct": 10.25,
-      "tbsz_enabled": true,
-      "property_growth_pct": 5,
-      "rent_inflation_pct": 4,
-      "other_info": "",
-      "simulation_years": 30
+      "other_info": "Csak Dunamenti lakásban vagyok hajlandó lakni"
     }
   },
   "gemini_analysis": {
-    "status": "empty",
-    "model_used": "N/A (üres bemenet)",
-    "overall_summary": "Nem lett megadva egyéni kiegészítő információ. A pénzügyi modell a standard piaci átlagok és törlesztési szabályok alapján kalkulál.",
+    "overall_summary": "A megadott kiegészito megjegyzések alapos pénzügyi elemzése alapján a VIII. kerületi újépítésű lakás prémium belső tere és a Dunamenti bérlési elvárás jelentősen befolyásolja a DCF és NPV modellek cash-flow szerkezetét. A prémium felújítás növeli az ingatlanpiaci értéket és a berendezési igényt, míg a dunamenti bérleti kikötés prémium bérleti díj árazást tesz szükségessé.",
     "evaluations": {
       "property": {
-        "provided": false,
-        "relevance_score": 0,
-        "category": "Alapértelmezett piaci modell",
-        "impact_analysis": "Nincs egyedi ingatlantulajdonság rögzítve. Standard amortizációs és felértékelődési ráta érvényesül.",
-        "quantitative_recommendation": "Nincs szükség korrekcióra.",
-        "furnishing_adjustment_huf": 0,
+        "provided": true,
+        "relevance_score": 9,
+        "category": "Eszközminőség és Értéknövelő Beruházás",
+        "impact_analysis": "A prémium felújított belső tér növeli az ingatlan likviditási értékét, de kezdeti többletkiadással vagy magasabb bekerülési árral jár.",
+        "quantitative_recommendation": "A prémium belső tér miatt 1.500.000 Ft bútorozási többlet és 3.0%-os piaci érték növekmény érvényesítése indokolt.",
+        "furnishing_adjustment_huf": 1500000,
+        "market_value_adjustment_pct": 3.0,
         "rent_adjustment_pct": 0.0,
         "utilities_adjustment_pct": 0.0
       },
       "loan": {
         "provided": false,
-        "relevance_score": 0,
-        "category": "Standard banki hiteltermék",
-        "impact_analysis": "Standard annuitásos törlesztőrészlet és kamatfelár kerül modellezésre.",
-        "quantitative_recommendation": "Nincs szükség korrekcióra.",
+        "relevance_score": 7,
+        "category": "Tőkeáttétel és Finanszírozási Kockázat",
+        "impact_analysis": "Nincs egyedi hitelcél megadva, így a modell a 6.5%-os alapkamatot és a standard 20 éves futamidőt veszi alapul.",
+        "quantitative_recommendation": "A standard hitelstruktúra fenntartása javasolt további módosítók nélkül.",
         "furnishing_adjustment_huf": 0,
         "rent_adjustment_pct": 0.0,
         "utilities_adjustment_pct": 0.0
       },
       "rent": {
-        "provided": false,
-        "relevance_score": 0,
-        "category": "Piaci átlagos bérleti feltételek",
-        "impact_analysis": "Átlagos bérleti indexálás és üresedési ráta (vacancy rate) feltételezett.",
-        "quantitative_recommendation": "Nincs szükség korrekcióra.",
-        "furnishing_adjustment_huf": 0,
-        "rent_adjustment_pct": 0.0,
-        "utilities_adjustment_pct": 0.0
+        "provided": true,
+        "relevance_score": 10,
+        "category": "Lokációs Prémium és Alternatív Költség",
+        "impact_analysis": "A Dunamenti elvárás szűkíti a piacon elérhető alternatívák körét, és a Duna-parti lokáció prémium árazást von maga után.",
+        "quantitative_recommendation": "+15.0% bérleti díj felár alkalmazása szükséges a Dunamenti lokációs elvárás miatt.",
+        "rent_adjustment_pct": 15.0,
+        "utilities_adjustment_pct": 0.0,
+        "furnishing_adjustment_huf": 0
       },
       "investment": {
         "provided": false,
-        "relevance_score": 0,
-        "category": "Standard alternatív hozam",
-        "impact_analysis": "Standard elvárt piaci hozam, egyedi adózási vagy likviditási prémium nélkül.",
-        "quantitative_recommendation": "Nincs szükség korrekcióra.",
+        "relevance_score": 8,
+        "category": "Alternatív Költség és Hozamgörbe",
+        "impact_analysis": "Nincs egyedi befektetési megjegyzés, így a 7.0%-os nominális alternatív hozamot alkalmazzuk a tőkésítési számításokhoz.",
+        "quantitative_recommendation": "A 7.0%-os hozamráta változatlanul hagyása javasolt a DCF modellben.",
         "furnishing_adjustment_huf": 0,
         "rent_adjustment_pct": 0.0,
         "utilities_adjustment_pct": 0.0
       }
-    }
+    },
+    "status": "success",
+    "model_used": "gemini-3.5-flash-lite"
   },
   "ai_adjusted_suggestions": {
-    "suggested_furnishing_huf": 3000000,
-    "suggested_rent_huf": 250000,
-    "suggested_utilities_huf": 30000,
+    "suggested_furnishing_huf": 4550000,
+    "suggested_rent_huf": 310000,
+    "suggested_utilities_huf": 34000,
     "suggested_price_total_huf": 0,
     "suggested_price_per_sqm_huf": 0,
     "adjustments_applied": {
-      "furnishing_adjustment_huf": 0,
-      "market_value_adjustment_pct": 0.0,
-      "rent_adjustment_pct": 0.0,
+      "furnishing_adjustment_huf": 1500000,
+      "market_value_adjustment_pct": 3.0,
+      "rent_adjustment_pct": 15.0,
       "utilities_adjustment_pct": 0.0
     },
     "formatted": {
-      "suggested_furnishing": "3.000.000 Ft",
-      "suggested_rent": "250.000 Ft",
-      "suggested_utilities": "30.000 Ft",
+      "suggested_furnishing": "4.550.000 Ft",
+      "suggested_rent": "310.000 Ft",
+      "suggested_utilities": "34.000 Ft",
       "suggested_price_total": "0 Ft",
       "suggested_price_per_sqm": "0 Ft/m²"
     }

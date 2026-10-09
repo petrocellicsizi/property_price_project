@@ -115,6 +115,10 @@ class SimulationInputSchema(BaseModel):
         le=50, 
         description="A szimulációs horizont hossza években"
     )
+    tbsz_enabled: bool = Field(
+        default=True,
+        description="Tartós Befektetési Számla (TBSZ) használata, ami adómentessé teszi az alternatív hozamot"
+    )
 
     @field_validator("down_payment_ratio")
     @classmethod

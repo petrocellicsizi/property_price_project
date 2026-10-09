@@ -28251,3 +28251,1238 @@
 2026-10-09 02:33:07,166 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.67, NPV(Buy): -26662943, NPV(Rent): -19174465
 2026-10-09 02:33:07,169 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
 2026-10-09 02:33:07,176 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.83, NPV(Buy): -33117479, NPV(Rent): -15327106
+2026-10-09 02:33:14,867 | DEBUG    | app:35 | API Kérés: POST /api/historical_simulation
+2026-10-09 02:34:56,912 | DEBUG    | app:35 | API Kérés: GET /api/inputs
+2026-10-09 02:34:56,919 | DEBUG    | app:35 | API Kérés: POST /api/calculate
+2026-10-09 02:34:56,920 | INFO     | app:95 | Szimulációs kalkuláció indítása...
+2026-10-09 02:34:56,921 | DEBUG    | app:96 | Kalkulációs payload: {'investment': {'expected_return_annual_pct': 7.0}, 'loan': {'down_payment_huf': 20150000, 'interest_rate_annual_pct': 6.5, 'loan_amount_huf': 60450000, 'loan_term_years': 20, 'other_fees_huf': 120000}, 'property': {'furnishing_cost_huf': 2800000, 'lawyer_fee_huf': 806000, 'price_total_huf': 80600000, 'property_type': 'Újépítésű társasház (AA+)', 'room_count': 2, 'size_sqm': 52}, 'rent': {'monthly_rent_huf': 270000, 'monthly_utilities_huf': 34000}}
+2026-10-09 02:34:56,922 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,925 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 20.58, NPV(Buy): -77108892, NPV(Rent): -42903046
+2026-10-09 02:34:56,926 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,927 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -125257651, NPV(Rent): -66540917
+2026-10-09 02:34:56,927 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,927 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -124032103, NPV(Rent): -53593444
+2026-10-09 02:34:56,927 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,932 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -121724462, NPV(Rent): -42903046
+2026-10-09 02:34:56,932 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,934 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -118769391, NPV(Rent): -34018727
+2026-10-09 02:34:56,934 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,936 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -115464824, NPV(Rent): -26587536
+2026-10-09 02:34:56,938 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,939 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -112012478, NPV(Rent): -20331921
+2026-10-09 02:34:56,940 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,941 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -108546541, NPV(Rent): -15032562
+2026-10-09 02:34:56,943 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,945 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -105153983, NPV(Rent): -10515318
+2026-10-09 02:34:56,946 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,946 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -110002458, NPV(Rent): -66540917
+2026-10-09 02:34:56,946 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,946 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -112552662, NPV(Rent): -53593444
+2026-10-09 02:34:56,946 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,951 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -113063156, NPV(Rent): -42903046
+2026-10-09 02:34:56,951 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,953 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -112217239, NPV(Rent): -34018727
+2026-10-09 02:34:56,955 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,957 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -110495449, NPV(Rent): -26587536
+2026-10-09 02:34:56,957 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,961 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -108234006, NPV(Rent): -20331921
+2026-10-09 02:34:56,962 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,964 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -105666442, NPV(Rent): -15032562
+2026-10-09 02:34:56,965 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,967 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -102953307, NPV(Rent): -10515318
+2026-10-09 02:34:56,969 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,969 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 19.0, NPV(Buy): -89787683, NPV(Rent): -66540917
+2026-10-09 02:34:56,971 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,972 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -97341166, NPV(Rent): -53593444
+2026-10-09 02:34:56,973 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,973 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -101585993, NPV(Rent): -42903046
+2026-10-09 02:34:56,975 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,976 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -103534930, NPV(Rent): -34018727
+2026-10-09 02:34:56,978 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,979 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -103910492, NPV(Rent): -26587536
+2026-10-09 02:34:56,980 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,983 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -103227125, NPV(Rent): -20331921
+2026-10-09 02:34:56,984 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,985 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -101850002, NPV(Rent): -15032562
+2026-10-09 02:34:56,986 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,987 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -100037175, NPV(Rent): -10515318
+2026-10-09 02:34:56,987 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,987 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.58, NPV(Buy): -63073303, NPV(Rent): -66540917
+2026-10-09 02:34:56,987 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,991 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 14.0, NPV(Buy): -77238757, NPV(Rent): -53593444
+2026-10-09 02:34:56,991 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,993 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -86418607, NPV(Rent): -42903046
+2026-10-09 02:34:56,993 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,995 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -92061021, NPV(Rent): -34018727
+2026-10-09 02:34:56,995 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,996 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -95208291, NPV(Rent): -26587536
+2026-10-09 02:34:56,997 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:56,997 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -96610393, NPV(Rent): -20331921
+2026-10-09 02:34:56,997 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,000 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -96806471, NPV(Rent): -15032562
+2026-10-09 02:34:57,000 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,003 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -96183426, NPV(Rent): -10515318
+2026-10-09 02:34:57,003 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,005 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.83, NPV(Buy): -27863089, NPV(Rent): -66540917
+2026-10-09 02:34:57,005 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,006 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.0, NPV(Buy): -50743284, NPV(Rent): -53593444
+2026-10-09 02:34:57,007 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,008 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.75, NPV(Buy): -66427617, NPV(Rent): -42903046
+2026-10-09 02:34:57,008 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,009 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76938125, NPV(Rent): -34018727
+2026-10-09 02:34:57,010 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,010 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83738574, NPV(Rent): -26587536
+2026-10-09 02:34:57,012 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,013 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -87889377, NPV(Rent): -20331921
+2026-10-09 02:34:57,014 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,015 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -90158972, NPV(Rent): -15032562
+2026-10-09 02:34:57,015 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,017 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -91104090, NPV(Rent): -10515318
+2026-10-09 02:34:57,018 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,019 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.25, NPV(Buy): 18424154, NPV(Rent): -66540917
+2026-10-09 02:34:57,019 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,020 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.75, NPV(Buy): -15912413, NPV(Rent): -53593444
+2026-10-09 02:34:57,020 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,022 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.5, NPV(Buy): -40147520, NPV(Rent): -42903046
+2026-10-09 02:34:57,023 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,024 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.75, NPV(Buy): -57057610, NPV(Rent): -34018727
+2026-10-09 02:34:57,025 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,025 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 11.25, NPV(Buy): -68660518, NPV(Rent): -26587536
+2026-10-09 02:34:57,025 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,025 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76424755, NPV(Rent): -20331921
+2026-10-09 02:34:57,028 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,030 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -81420189, NPV(Rent): -15032562
+2026-10-09 02:34:57,030 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,032 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -84426810, NPV(Rent): -10515318
+2026-10-09 02:34:57,032 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,032 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.5, NPV(Buy): 79117936, NPV(Rent): -66540917
+2026-10-09 02:34:57,035 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,036 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.75, NPV(Buy): 29759291, NPV(Rent): -53593444
+2026-10-09 02:34:57,037 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,038 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.0, NPV(Buy): -5687951, NPV(Rent): -42903046
+2026-10-09 02:34:57,038 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,038 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.5, NPV(Buy): -30989442, NPV(Rent): -34018727
+2026-10-09 02:34:57,038 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,041 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.17, NPV(Buy): -48889536, NPV(Rent): -26587536
+2026-10-09 02:34:57,041 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,043 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.42, NPV(Buy): -61391861, NPV(Rent): -20331921
+2026-10-09 02:34:57,044 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,045 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -69961530, NPV(Rent): -15032562
+2026-10-09 02:34:57,046 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,046 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -75671279, NPV(Rent): -10515318
+2026-10-09 02:34:57,046 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,049 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.0, NPV(Buy): 158502826, NPV(Rent): -66540917
+2026-10-09 02:34:57,050 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,052 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.17, NPV(Buy): 89495940, NPV(Rent): -53593444
+2026-10-09 02:34:57,053 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,053 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.33, NPV(Buy): 39383702, NPV(Rent): -42903046
+2026-10-09 02:34:57,056 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,057 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.58, NPV(Buy): 3106614, NPV(Rent): -34018727
+2026-10-09 02:34:57,058 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,059 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.83, NPV(Buy): -23029932, NPV(Rent): -26587536
+2026-10-09 02:34:57,060 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,060 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.25, NPV(Buy): -41729472, NPV(Rent): -20331921
+2026-10-09 02:34:57,062 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,063 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.83, NPV(Buy): -54974090, NPV(Rent): -15032562
+2026-10-09 02:34:57,064 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,065 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.25, NPV(Buy): -64219416, NPV(Rent): -10515318
+2026-10-09 02:34:57,074 | DEBUG    | app:35 | API Kérés: POST /api/inputs
+2026-10-09 02:34:57,080 | DEBUG    | app:35 | API Kérés: POST /api/calculate
+2026-10-09 02:34:57,081 | INFO     | app:95 | Szimulációs kalkuláció indítása...
+2026-10-09 02:34:57,081 | DEBUG    | app:96 | Kalkulációs payload: {'ai_evaluations': {'property': {'furnishing_adjustment_huf': 300000}, 'rent': {'rent_adjustment_pct': 15.0, 'utilities_adjustment_pct': 5.0}}, 'investment': {}, 'loan': {'down_payment_huf': 20150000, 'interest_rate_annual_pct': 6.5, 'loan_amount_huf': 60450000, 'loan_term_years': 20}, 'property': {'price_total_huf': 80600000, 'property_type': 'Újépítésű társasház (AA+)', 'room_count': 2, 'size_sqm': 52}, 'rent': {}}
+2026-10-09 02:34:57,081 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,083 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 9.58, NPV(Buy): -78174070, NPV(Rent): -53171783
+2026-10-09 02:34:57,084 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,085 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -126478342, NPV(Rent): -80075412
+2026-10-09 02:34:57,086 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,087 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -125167613, NPV(Rent): -65339144
+2026-10-09 02:34:57,088 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,089 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -122789640, NPV(Rent): -53171783
+2026-10-09 02:34:57,089 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,091 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -119776120, NPV(Rent): -43060025
+2026-10-09 02:34:57,092 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,093 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -116422663, NPV(Rent): -34602157
+2026-10-09 02:34:57,095 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,096 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -112929161, NPV(Rent): -27482279
+2026-10-09 02:34:57,096 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,098 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -109428360, NPV(Rent): -21450772
+2026-10-09 02:34:57,099 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,101 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -106006084, NPV(Rent): -16309435
+2026-10-09 02:34:57,102 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,102 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 25.67, NPV(Buy): -111223148, NPV(Rent): -80075412
+2026-10-09 02:34:57,102 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,105 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -113688172, NPV(Rent): -65339144
+2026-10-09 02:34:57,105 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,106 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -114128334, NPV(Rent): -53171783
+2026-10-09 02:34:57,107 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,108 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -113223967, NPV(Rent): -43060025
+2026-10-09 02:34:57,108 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,108 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -111453288, NPV(Rent): -34602157
+2026-10-09 02:34:57,108 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,111 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -109150690, NPV(Rent): -27482279
+2026-10-09 02:34:57,112 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,113 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -106548262, NPV(Rent): -21450772
+2026-10-09 02:34:57,114 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,116 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -103805408, NPV(Rent): -16309435
+2026-10-09 02:34:57,116 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,116 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 13.08, NPV(Buy): -91008373, NPV(Rent): -80075412
+2026-10-09 02:34:57,118 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,119 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 25.08, NPV(Buy): -98476676, NPV(Rent): -65339144
+2026-10-09 02:34:57,120 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,120 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -102651171, NPV(Rent): -53171783
+2026-10-09 02:34:57,122 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,123 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -104541658, NPV(Rent): -43060025
+2026-10-09 02:34:57,123 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,123 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -104868331, NPV(Rent): -34602157
+2026-10-09 02:34:57,125 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,125 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -104143808, NPV(Rent): -27482279
+2026-10-09 02:34:57,125 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,128 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -102731821, NPV(Rent): -21450772
+2026-10-09 02:34:57,128 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,128 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -100889276, NPV(Rent): -16309435
+2026-10-09 02:34:57,128 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,132 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.67, NPV(Buy): -64293993, NPV(Rent): -80075412
+2026-10-09 02:34:57,132 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,134 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 9.25, NPV(Buy): -78374266, NPV(Rent): -65339144
+2026-10-09 02:34:57,135 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,136 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 21.42, NPV(Buy): -87483785, NPV(Rent): -53171783
+2026-10-09 02:34:57,136 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,136 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -93067749, NPV(Rent): -43060025
+2026-10-09 02:34:57,139 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,140 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -96166130, NPV(Rent): -34602157
+2026-10-09 02:34:57,142 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,143 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -97527077, NPV(Rent): -27482279
+2026-10-09 02:34:57,143 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,143 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -97688290, NPV(Rent): -21450772
+2026-10-09 02:34:57,145 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,146 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -97035527, NPV(Rent): -16309435
+2026-10-09 02:34:57,146 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,147 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.17, NPV(Buy): -29083779, NPV(Rent): -80075412
+2026-10-09 02:34:57,148 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,149 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.0, NPV(Buy): -51878793, NPV(Rent): -65339144
+2026-10-09 02:34:57,149 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,151 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.42, NPV(Buy): -67492795, NPV(Rent): -53171783
+2026-10-09 02:34:57,151 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,153 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 10.5, NPV(Buy): -77944853, NPV(Rent): -43060025
+2026-10-09 02:34:57,154 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,155 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -84696413, NPV(Rent): -34602157
+2026-10-09 02:34:57,156 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,157 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -88806061, NPV(Rent): -27482279
+2026-10-09 02:34:57,157 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,160 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -91040791, NPV(Rent): -21450772
+2026-10-09 02:34:57,160 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,162 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -91956191, NPV(Rent): -16309435
+2026-10-09 02:34:57,163 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,163 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.0, NPV(Buy): 17203464, NPV(Rent): -80075412
+2026-10-09 02:34:57,175 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,178 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.42, NPV(Buy): -17047923, NPV(Rent): -65339144
+2026-10-09 02:34:57,179 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,179 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.92, NPV(Buy): -41212698, NPV(Rent): -53171783
+2026-10-09 02:34:57,181 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,182 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.67, NPV(Buy): -58064338, NPV(Rent): -43060025
+2026-10-09 02:34:57,183 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,184 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.17, NPV(Buy): -69618357, NPV(Rent): -34602157
+2026-10-09 02:34:57,184 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,185 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -77341439, NPV(Rent): -27482279
+2026-10-09 02:34:57,185 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,185 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -82302009, NPV(Rent): -21450772
+2026-10-09 02:34:57,188 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,190 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -85278911, NPV(Rent): -16309435
+2026-10-09 02:34:57,191 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,192 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.33, NPV(Buy): 77897246, NPV(Rent): -80075412
+2026-10-09 02:34:57,192 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,192 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.58, NPV(Buy): 28623781, NPV(Rent): -65339144
+2026-10-09 02:34:57,192 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,195 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.83, NPV(Buy): -6753129, NPV(Rent): -53171783
+2026-10-09 02:34:57,196 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,198 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.17, NPV(Buy): -31996171, NPV(Rent): -43060025
+2026-10-09 02:34:57,199 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,199 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.67, NPV(Buy): -49847375, NPV(Rent): -34602157
+2026-10-09 02:34:57,202 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,203 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.42, NPV(Buy): -62308544, NPV(Rent): -27482279
+2026-10-09 02:34:57,204 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,205 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.17, NPV(Buy): -70843350, NPV(Rent): -21450772
+2026-10-09 02:34:57,206 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,206 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76523380, NPV(Rent): -16309435
+2026-10-09 02:34:57,206 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,206 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.92, NPV(Buy): 157282136, NPV(Rent): -80075412
+2026-10-09 02:34:57,206 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,210 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): 88360431, NPV(Rent): -65339144
+2026-10-09 02:34:57,210 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,212 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.25, NPV(Buy): 38318524, NPV(Rent): -53171783
+2026-10-09 02:34:57,213 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,213 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.42, NPV(Buy): 2099886, NPV(Rent): -43060025
+2026-10-09 02:34:57,215 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,216 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.67, NPV(Buy): -23987771, NPV(Rent): -34602157
+2026-10-09 02:34:57,217 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,218 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.92, NPV(Buy): -42646156, NPV(Rent): -27482279
+2026-10-09 02:34:57,219 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,219 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.42, NPV(Buy): -55855910, NPV(Rent): -21450772
+2026-10-09 02:34:57,219 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:34:57,221 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.08, NPV(Buy): -65071517, NPV(Rent): -16309435
+2026-10-09 02:34:57,229 | DEBUG    | app:35 | API Kérés: POST /api/inputs
+2026-10-09 02:35:04,017 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,019 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.83, NPV(Buy): -57141862, NPV(Rent): -48896603
+2026-10-09 02:35:04,056 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,059 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 24.83, NPV(Buy): -92709120, NPV(Rent): -71710259
+2026-10-09 02:35:04,060 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,061 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -91877535, NPV(Rent): -59214244
+2026-10-09 02:35:04,063 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,065 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -90229963, NPV(Rent): -48896603
+2026-10-09 02:35:04,066 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,067 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -88091456, NPV(Rent): -40322066
+2026-10-09 02:35:04,069 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,070 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -85685075, NPV(Rent): -33149989
+2026-10-09 02:35:04,073 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,075 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83162077, NPV(Rent): -27112498
+2026-10-09 02:35:04,076 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,077 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -80623290, NPV(Rent): -21997919
+2026-10-09 02:35:04,079 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,080 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -78134253, NPV(Rent): -17638184
+2026-10-09 02:35:04,082 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,083 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 15.5, NPV(Buy): -81395460, NPV(Rent): -71710259
+2026-10-09 02:35:04,084 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,085 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 25.92, NPV(Buy): -83364074, NPV(Rent): -59214244
+2026-10-09 02:35:04,086 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,087 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83806507, NPV(Rent): -48896603
+2026-10-09 02:35:04,088 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,090 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83232204, NPV(Rent): -40322066
+2026-10-09 02:35:04,091 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,094 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -81999653, NPV(Rent): -33149989
+2026-10-09 02:35:04,095 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,097 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -80359862, NPV(Rent): -27112498
+2026-10-09 02:35:04,098 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,100 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -78487332, NPV(Rent): -21997919
+2026-10-09 02:35:04,101 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,102 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76502173, NPV(Rent): -17638184
+2026-10-09 02:35:04,103 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,105 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.25, NPV(Buy): -66403641, NPV(Rent): -71710259
+2026-10-09 02:35:04,107 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,108 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 12.0, NPV(Buy): -72082821, NPV(Rent): -59214244
+2026-10-09 02:35:04,108 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,112 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 28.83, NPV(Buy): -75294735, NPV(Rent): -48896603
+2026-10-09 02:35:04,114 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,115 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76793171, NPV(Rent): -40322066
+2026-10-09 02:35:04,116 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,116 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -77116073, NPV(Rent): -33149989
+2026-10-09 02:35:04,119 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,121 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76646624, NPV(Rent): -27112498
+2026-10-09 02:35:04,122 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,124 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -75656958, NPV(Rent): -21997919
+2026-10-09 02:35:04,125 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,127 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -74339491, NPV(Rent): -17638184
+2026-10-09 02:35:04,128 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,130 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.92, NPV(Buy): -46591541, NPV(Rent): -71710259
+2026-10-09 02:35:04,130 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,132 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.0, NPV(Buy): -57174336, NPV(Rent): -59214244
+2026-10-09 02:35:04,133 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,136 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.25, NPV(Buy): -64046195, NPV(Rent): -48896603
+2026-10-09 02:35:04,137 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,138 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -68283813, NPV(Rent): -40322066
+2026-10-09 02:35:04,139 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,140 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -70662287, NPV(Rent): -33149989
+2026-10-09 02:35:04,142 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,143 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -71739479, NPV(Rent): -27112498
+2026-10-09 02:35:04,145 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,147 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -71916540, NPV(Rent): -21997919
+2026-10-09 02:35:04,149 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,152 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -71481448, NPV(Rent): -17638184
+2026-10-09 02:35:04,152 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,153 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.42, NPV(Buy): -20478703, NPV(Rent): -71710259
+2026-10-09 02:35:04,153 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,153 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.83, NPV(Buy): -37524583, NPV(Rent): -59214244
+2026-10-09 02:35:04,153 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,153 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.58, NPV(Buy): -49220342, NPV(Rent): -48896603
+2026-10-09 02:35:04,160 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,162 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.75, NPV(Buy): -57068268, NPV(Rent): -40322066
+2026-10-09 02:35:04,163 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,164 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 9.08, NPV(Buy): -62156038, NPV(Rent): -33149989
+2026-10-09 02:35:04,166 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,167 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -65271740, NPV(Rent): -27112498
+2026-10-09 02:35:04,169 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,170 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -66986576, NPV(Rent): -21997919
+2026-10-09 02:35:04,171 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,172 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -67714476, NPV(Rent): -17638184
+2026-10-09 02:35:04,174 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,176 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.58, NPV(Buy): 13849157, NPV(Rent): -71710259
+2026-10-09 02:35:04,178 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,178 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.83, NPV(Buy): -11693076, NPV(Rent): -59214244
+2026-10-09 02:35:04,183 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,184 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.17, NPV(Buy): -29730318, NPV(Rent): -48896603
+2026-10-09 02:35:04,185 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,186 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.58, NPV(Buy): -42324345, NPV(Rent): -40322066
+2026-10-09 02:35:04,187 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,189 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.25, NPV(Buy): -50973747, NPV(Rent): -33149989
+2026-10-09 02:35:04,190 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,191 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.42, NPV(Buy): -56769269, NPV(Rent): -27112498
+2026-10-09 02:35:04,191 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,192 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -60505661, NPV(Rent): -21997919
+2026-10-09 02:35:04,193 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,196 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -62762426, NPV(Rent): -17638184
+2026-10-09 02:35:04,197 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,198 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): 58861292, NPV(Rent): -71710259
+2026-10-09 02:35:04,199 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,200 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.25, NPV(Buy): 22178283, NPV(Rent): -59214244
+2026-10-09 02:35:04,201 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,202 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.42, NPV(Buy): -4174178, NPV(Rent): -48896603
+2026-10-09 02:35:04,204 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,205 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.67, NPV(Buy): -22991493, NPV(Rent): -40322066
+2026-10-09 02:35:04,206 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,207 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.92, NPV(Buy): -36311058, NPV(Rent): -33149989
+2026-10-09 02:35:04,208 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,209 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.33, NPV(Buy): -45620471, NPV(Rent): -27112498
+2026-10-09 02:35:04,210 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,213 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.0, NPV(Buy): -52007612, NPV(Rent): -21997919
+2026-10-09 02:35:04,214 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,216 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.25, NPV(Buy): -56269090, NPV(Rent): -17638184
+2026-10-09 02:35:04,216 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,217 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.75, NPV(Buy): 117735253, NPV(Rent): -71710259
+2026-10-09 02:35:04,218 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,219 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.83, NPV(Buy): 66480583, NPV(Rent): -59214244
+2026-10-09 02:35:04,220 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,220 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.0, NPV(Buy): 29252168, NPV(Rent): -48896603
+2026-10-09 02:35:04,222 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,223 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): 2295056, NPV(Rent): -40322066
+2026-10-09 02:35:04,225 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,226 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.25, NPV(Buy): -17132882, NPV(Rent): -33149989
+2026-10-09 02:35:04,226 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,228 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.5, NPV(Buy): -31038317, NPV(Rent): -27112498
+2026-10-09 02:35:04,228 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,230 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.75, NPV(Buy): -40892525, NPV(Rent): -21997919
+2026-10-09 02:35:04,230 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,231 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.17, NPV(Buy): -47776081, NPV(Rent): -17638184
+2026-10-09 02:35:04,236 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,238 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.83, NPV(Buy): -57141862, NPV(Rent): -48896603
+2026-10-09 02:35:04,241 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,242 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.58, NPV(Buy): -58479518, NPV(Rent): 11553397
+2026-10-09 02:35:04,246 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,248 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.58, NPV(Buy): -31064699, NPV(Rent): -48896603
+2026-10-09 02:35:04,251 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,252 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 15.5, NPV(Buy): -81395460, NPV(Rent): -71710259
+2026-10-09 02:35:04,254 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,255 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83806507, NPV(Rent): -48896603
+2026-10-09 02:35:04,256 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,258 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.42, NPV(Buy): -20478703, NPV(Rent): -71710259
+2026-10-09 02:35:04,259 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:35:04,260 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.58, NPV(Buy): -49220342, NPV(Rent): -48896603
+2026-10-09 02:36:10,483 | DEBUG    | app:35 | API Kérés: GET /api/inputs
+2026-10-09 02:36:10,493 | DEBUG    | app:35 | API Kérés: POST /api/calculate
+2026-10-09 02:36:10,493 | INFO     | app:95 | Szimulációs kalkuláció indítása...
+2026-10-09 02:36:10,496 | DEBUG    | app:96 | Kalkulációs payload: {'investment': {'expected_return_annual_pct': 7.0}, 'loan': {'down_payment_huf': 20150000, 'interest_rate_annual_pct': 6.5, 'loan_amount_huf': 60450000, 'loan_term_years': 20, 'other_fees_huf': 120000}, 'property': {'furnishing_cost_huf': 2800000, 'lawyer_fee_huf': 806000, 'price_total_huf': 80600000, 'property_type': 'Újépítésű társasház (AA+)', 'room_count': 2, 'size_sqm': 52}, 'rent': {'monthly_rent_huf': 270000, 'monthly_utilities_huf': 34000}}
+2026-10-09 02:36:10,496 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,500 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 20.58, NPV(Buy): -77108892, NPV(Rent): -42903046
+2026-10-09 02:36:10,501 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,503 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -125257651, NPV(Rent): -66540917
+2026-10-09 02:36:10,505 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,507 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -124032103, NPV(Rent): -53593444
+2026-10-09 02:36:10,511 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,513 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -121724462, NPV(Rent): -42903046
+2026-10-09 02:36:10,516 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,519 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -118769391, NPV(Rent): -34018727
+2026-10-09 02:36:10,521 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,522 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -115464824, NPV(Rent): -26587536
+2026-10-09 02:36:10,524 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,526 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -112012478, NPV(Rent): -20331921
+2026-10-09 02:36:10,529 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,530 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -108546541, NPV(Rent): -15032562
+2026-10-09 02:36:10,531 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,534 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -105153983, NPV(Rent): -10515318
+2026-10-09 02:36:10,535 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,538 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -110002458, NPV(Rent): -66540917
+2026-10-09 02:36:10,539 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,542 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -112552662, NPV(Rent): -53593444
+2026-10-09 02:36:10,546 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,552 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -113063156, NPV(Rent): -42903046
+2026-10-09 02:36:10,554 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,557 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -112217239, NPV(Rent): -34018727
+2026-10-09 02:36:10,557 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,559 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -110495449, NPV(Rent): -26587536
+2026-10-09 02:36:10,561 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,566 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -108234006, NPV(Rent): -20331921
+2026-10-09 02:36:10,568 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,570 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -105666442, NPV(Rent): -15032562
+2026-10-09 02:36:10,573 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,575 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -102953307, NPV(Rent): -10515318
+2026-10-09 02:36:10,577 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,578 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 19.0, NPV(Buy): -89787683, NPV(Rent): -66540917
+2026-10-09 02:36:10,581 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,583 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -97341166, NPV(Rent): -53593444
+2026-10-09 02:36:10,584 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,587 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -101585993, NPV(Rent): -42903046
+2026-10-09 02:36:10,588 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,596 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -103534930, NPV(Rent): -34018727
+2026-10-09 02:36:10,599 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,601 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -103910492, NPV(Rent): -26587536
+2026-10-09 02:36:10,603 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,607 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -103227125, NPV(Rent): -20331921
+2026-10-09 02:36:10,609 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,611 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -101850002, NPV(Rent): -15032562
+2026-10-09 02:36:10,612 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,613 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -100037175, NPV(Rent): -10515318
+2026-10-09 02:36:10,616 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,618 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.58, NPV(Buy): -63073303, NPV(Rent): -66540917
+2026-10-09 02:36:10,620 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,621 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 14.0, NPV(Buy): -77238757, NPV(Rent): -53593444
+2026-10-09 02:36:10,623 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,626 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -86418607, NPV(Rent): -42903046
+2026-10-09 02:36:10,628 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,629 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -92061021, NPV(Rent): -34018727
+2026-10-09 02:36:10,630 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,633 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -95208291, NPV(Rent): -26587536
+2026-10-09 02:36:10,643 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,645 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -96610393, NPV(Rent): -20331921
+2026-10-09 02:36:10,647 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,649 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -96806471, NPV(Rent): -15032562
+2026-10-09 02:36:10,650 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,653 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -96183426, NPV(Rent): -10515318
+2026-10-09 02:36:10,654 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,657 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.83, NPV(Buy): -27863089, NPV(Rent): -66540917
+2026-10-09 02:36:10,658 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,660 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.0, NPV(Buy): -50743284, NPV(Rent): -53593444
+2026-10-09 02:36:10,663 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,667 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.75, NPV(Buy): -66427617, NPV(Rent): -42903046
+2026-10-09 02:36:10,668 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,671 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76938125, NPV(Rent): -34018727
+2026-10-09 02:36:10,672 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,676 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83738574, NPV(Rent): -26587536
+2026-10-09 02:36:10,677 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,679 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -87889377, NPV(Rent): -20331921
+2026-10-09 02:36:10,680 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,686 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -90158972, NPV(Rent): -15032562
+2026-10-09 02:36:10,690 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,692 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -91104090, NPV(Rent): -10515318
+2026-10-09 02:36:10,697 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,700 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.25, NPV(Buy): 18424154, NPV(Rent): -66540917
+2026-10-09 02:36:10,701 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,703 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.75, NPV(Buy): -15912413, NPV(Rent): -53593444
+2026-10-09 02:36:10,705 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,707 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.5, NPV(Buy): -40147520, NPV(Rent): -42903046
+2026-10-09 02:36:10,708 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,710 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.75, NPV(Buy): -57057610, NPV(Rent): -34018727
+2026-10-09 02:36:10,712 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,714 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 11.25, NPV(Buy): -68660518, NPV(Rent): -26587536
+2026-10-09 02:36:10,716 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,718 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76424755, NPV(Rent): -20331921
+2026-10-09 02:36:10,720 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,722 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -81420189, NPV(Rent): -15032562
+2026-10-09 02:36:10,723 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,725 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -84426810, NPV(Rent): -10515318
+2026-10-09 02:36:10,726 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,728 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.5, NPV(Buy): 79117936, NPV(Rent): -66540917
+2026-10-09 02:36:10,729 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,732 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.75, NPV(Buy): 29759291, NPV(Rent): -53593444
+2026-10-09 02:36:10,733 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,735 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.0, NPV(Buy): -5687951, NPV(Rent): -42903046
+2026-10-09 02:36:10,736 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,740 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.5, NPV(Buy): -30989442, NPV(Rent): -34018727
+2026-10-09 02:36:10,741 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,743 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.17, NPV(Buy): -48889536, NPV(Rent): -26587536
+2026-10-09 02:36:10,745 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,747 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.42, NPV(Buy): -61391861, NPV(Rent): -20331921
+2026-10-09 02:36:10,747 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,749 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -69961530, NPV(Rent): -15032562
+2026-10-09 02:36:10,750 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,751 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -75671279, NPV(Rent): -10515318
+2026-10-09 02:36:10,753 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,754 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.0, NPV(Buy): 158502826, NPV(Rent): -66540917
+2026-10-09 02:36:10,756 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,759 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.17, NPV(Buy): 89495940, NPV(Rent): -53593444
+2026-10-09 02:36:10,760 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,765 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.33, NPV(Buy): 39383702, NPV(Rent): -42903046
+2026-10-09 02:36:10,766 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,769 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.58, NPV(Buy): 3106614, NPV(Rent): -34018727
+2026-10-09 02:36:10,769 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,773 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.83, NPV(Buy): -23029932, NPV(Rent): -26587536
+2026-10-09 02:36:10,774 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,776 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.25, NPV(Buy): -41729472, NPV(Rent): -20331921
+2026-10-09 02:36:10,779 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,782 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.83, NPV(Buy): -54974090, NPV(Rent): -15032562
+2026-10-09 02:36:10,783 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,786 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.25, NPV(Buy): -64219416, NPV(Rent): -10515318
+2026-10-09 02:36:10,799 | DEBUG    | app:35 | API Kérés: POST /api/inputs
+2026-10-09 02:36:10,813 | DEBUG    | app:35 | API Kérés: POST /api/calculate
+2026-10-09 02:36:10,815 | INFO     | app:95 | Szimulációs kalkuláció indítása...
+2026-10-09 02:36:10,817 | DEBUG    | app:96 | Kalkulációs payload: {'ai_evaluations': {'property': {'furnishing_adjustment_huf': 300000}, 'rent': {'rent_adjustment_pct': 15.0, 'utilities_adjustment_pct': 5.0}}, 'investment': {}, 'loan': {'down_payment_huf': 20150000, 'interest_rate_annual_pct': 6.5, 'loan_amount_huf': 60450000, 'loan_term_years': 20}, 'property': {'price_total_huf': 80600000, 'property_type': 'Újépítésű társasház (AA+)', 'room_count': 2, 'size_sqm': 52}, 'rent': {}}
+2026-10-09 02:36:10,818 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,819 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 9.58, NPV(Buy): -78174070, NPV(Rent): -53171783
+2026-10-09 02:36:10,821 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,823 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -126478342, NPV(Rent): -80075412
+2026-10-09 02:36:10,824 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,826 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -125167613, NPV(Rent): -65339144
+2026-10-09 02:36:10,828 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,830 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -122789640, NPV(Rent): -53171783
+2026-10-09 02:36:10,831 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,835 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -119776120, NPV(Rent): -43060025
+2026-10-09 02:36:10,836 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,838 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -116422663, NPV(Rent): -34602157
+2026-10-09 02:36:10,840 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,841 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -112929161, NPV(Rent): -27482279
+2026-10-09 02:36:10,843 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,845 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -109428360, NPV(Rent): -21450772
+2026-10-09 02:36:10,847 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,849 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -106006084, NPV(Rent): -16309435
+2026-10-09 02:36:10,851 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,853 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 25.67, NPV(Buy): -111223148, NPV(Rent): -80075412
+2026-10-09 02:36:10,853 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,855 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -113688172, NPV(Rent): -65339144
+2026-10-09 02:36:10,855 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,857 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -114128334, NPV(Rent): -53171783
+2026-10-09 02:36:10,857 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,857 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -113223967, NPV(Rent): -43060025
+2026-10-09 02:36:10,857 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,862 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -111453288, NPV(Rent): -34602157
+2026-10-09 02:36:10,863 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,865 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -109150690, NPV(Rent): -27482279
+2026-10-09 02:36:10,866 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,868 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -106548262, NPV(Rent): -21450772
+2026-10-09 02:36:10,870 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,872 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -103805408, NPV(Rent): -16309435
+2026-10-09 02:36:10,874 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,877 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 13.08, NPV(Buy): -91008373, NPV(Rent): -80075412
+2026-10-09 02:36:10,878 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,880 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 25.08, NPV(Buy): -98476676, NPV(Rent): -65339144
+2026-10-09 02:36:10,882 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,885 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -102651171, NPV(Rent): -53171783
+2026-10-09 02:36:10,886 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,888 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -104541658, NPV(Rent): -43060025
+2026-10-09 02:36:10,889 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,890 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -104868331, NPV(Rent): -34602157
+2026-10-09 02:36:10,893 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,893 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -104143808, NPV(Rent): -27482279
+2026-10-09 02:36:10,895 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,897 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -102731821, NPV(Rent): -21450772
+2026-10-09 02:36:10,899 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,901 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -100889276, NPV(Rent): -16309435
+2026-10-09 02:36:10,903 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,905 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.67, NPV(Buy): -64293993, NPV(Rent): -80075412
+2026-10-09 02:36:10,907 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,910 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 9.25, NPV(Buy): -78374266, NPV(Rent): -65339144
+2026-10-09 02:36:10,911 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,913 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 21.42, NPV(Buy): -87483785, NPV(Rent): -53171783
+2026-10-09 02:36:10,915 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,915 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -93067749, NPV(Rent): -43060025
+2026-10-09 02:36:10,918 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,920 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -96166130, NPV(Rent): -34602157
+2026-10-09 02:36:10,921 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,924 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -97527077, NPV(Rent): -27482279
+2026-10-09 02:36:10,925 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,927 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -97688290, NPV(Rent): -21450772
+2026-10-09 02:36:10,929 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,930 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -97035527, NPV(Rent): -16309435
+2026-10-09 02:36:10,932 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,934 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.17, NPV(Buy): -29083779, NPV(Rent): -80075412
+2026-10-09 02:36:10,935 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,936 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.0, NPV(Buy): -51878793, NPV(Rent): -65339144
+2026-10-09 02:36:10,937 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,940 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.42, NPV(Buy): -67492795, NPV(Rent): -53171783
+2026-10-09 02:36:10,941 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,942 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 10.5, NPV(Buy): -77944853, NPV(Rent): -43060025
+2026-10-09 02:36:10,942 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,945 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -84696413, NPV(Rent): -34602157
+2026-10-09 02:36:10,946 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,948 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -88806061, NPV(Rent): -27482279
+2026-10-09 02:36:10,949 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,951 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -91040791, NPV(Rent): -21450772
+2026-10-09 02:36:10,952 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,954 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -91956191, NPV(Rent): -16309435
+2026-10-09 02:36:10,955 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,957 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.0, NPV(Buy): 17203464, NPV(Rent): -80075412
+2026-10-09 02:36:10,958 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,960 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.42, NPV(Buy): -17047923, NPV(Rent): -65339144
+2026-10-09 02:36:10,962 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,963 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.92, NPV(Buy): -41212698, NPV(Rent): -53171783
+2026-10-09 02:36:10,963 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,965 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.67, NPV(Buy): -58064338, NPV(Rent): -43060025
+2026-10-09 02:36:10,966 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,967 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.17, NPV(Buy): -69618357, NPV(Rent): -34602157
+2026-10-09 02:36:10,968 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,970 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -77341439, NPV(Rent): -27482279
+2026-10-09 02:36:10,971 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,972 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -82302009, NPV(Rent): -21450772
+2026-10-09 02:36:10,974 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,975 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -85278911, NPV(Rent): -16309435
+2026-10-09 02:36:10,976 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,977 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.33, NPV(Buy): 77897246, NPV(Rent): -80075412
+2026-10-09 02:36:10,978 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,978 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.58, NPV(Buy): 28623781, NPV(Rent): -65339144
+2026-10-09 02:36:10,978 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,982 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.83, NPV(Buy): -6753129, NPV(Rent): -53171783
+2026-10-09 02:36:10,983 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,985 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.17, NPV(Buy): -31996171, NPV(Rent): -43060025
+2026-10-09 02:36:10,987 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,990 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.67, NPV(Buy): -49847375, NPV(Rent): -34602157
+2026-10-09 02:36:10,991 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,993 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.42, NPV(Buy): -62308544, NPV(Rent): -27482279
+2026-10-09 02:36:10,994 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,996 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.17, NPV(Buy): -70843350, NPV(Rent): -21450772
+2026-10-09 02:36:10,996 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:10,997 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76523380, NPV(Rent): -16309435
+2026-10-09 02:36:10,999 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:11,000 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.92, NPV(Buy): 157282136, NPV(Rent): -80075412
+2026-10-09 02:36:11,002 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:11,004 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): 88360431, NPV(Rent): -65339144
+2026-10-09 02:36:11,004 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:11,006 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.25, NPV(Buy): 38318524, NPV(Rent): -53171783
+2026-10-09 02:36:11,008 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:11,009 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.42, NPV(Buy): 2099886, NPV(Rent): -43060025
+2026-10-09 02:36:11,010 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:11,012 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.67, NPV(Buy): -23987771, NPV(Rent): -34602157
+2026-10-09 02:36:11,014 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:11,016 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.92, NPV(Buy): -42646156, NPV(Rent): -27482279
+2026-10-09 02:36:11,017 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:11,018 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.42, NPV(Buy): -55855910, NPV(Rent): -21450772
+2026-10-09 02:36:11,018 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 2090000
+2026-10-09 02:36:11,021 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.08, NPV(Buy): -65071517, NPV(Rent): -16309435
+2026-10-09 02:36:11,034 | DEBUG    | app:35 | API Kérés: POST /api/inputs
+2026-10-09 02:36:14,046 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,049 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.83, NPV(Buy): -57141862, NPV(Rent): -48896603
+2026-10-09 02:36:14,100 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,105 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 24.83, NPV(Buy): -92709120, NPV(Rent): -71710259
+2026-10-09 02:36:14,107 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,111 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -91877535, NPV(Rent): -59214244
+2026-10-09 02:36:14,113 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,114 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -90229963, NPV(Rent): -48896603
+2026-10-09 02:36:14,115 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,117 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -88091456, NPV(Rent): -40322066
+2026-10-09 02:36:14,118 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,121 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -85685075, NPV(Rent): -33149989
+2026-10-09 02:36:14,122 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,125 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83162077, NPV(Rent): -27112498
+2026-10-09 02:36:14,126 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,128 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -80623290, NPV(Rent): -21997919
+2026-10-09 02:36:14,129 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,131 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -78134253, NPV(Rent): -17638184
+2026-10-09 02:36:14,133 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,135 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 15.5, NPV(Buy): -81395460, NPV(Rent): -71710259
+2026-10-09 02:36:14,135 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,137 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 25.92, NPV(Buy): -83364074, NPV(Rent): -59214244
+2026-10-09 02:36:14,140 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,142 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83806507, NPV(Rent): -48896603
+2026-10-09 02:36:14,144 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,146 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83232204, NPV(Rent): -40322066
+2026-10-09 02:36:14,147 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,149 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -81999653, NPV(Rent): -33149989
+2026-10-09 02:36:14,149 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,151 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -80359862, NPV(Rent): -27112498
+2026-10-09 02:36:14,153 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,155 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -78487332, NPV(Rent): -21997919
+2026-10-09 02:36:14,156 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,157 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76502173, NPV(Rent): -17638184
+2026-10-09 02:36:14,159 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,162 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.25, NPV(Buy): -66403641, NPV(Rent): -71710259
+2026-10-09 02:36:14,163 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,165 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 12.0, NPV(Buy): -72082821, NPV(Rent): -59214244
+2026-10-09 02:36:14,167 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,167 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 28.83, NPV(Buy): -75294735, NPV(Rent): -48896603
+2026-10-09 02:36:14,169 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,171 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76793171, NPV(Rent): -40322066
+2026-10-09 02:36:14,171 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,171 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -77116073, NPV(Rent): -33149989
+2026-10-09 02:36:14,174 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,176 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76646624, NPV(Rent): -27112498
+2026-10-09 02:36:14,177 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,179 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -75656958, NPV(Rent): -21997919
+2026-10-09 02:36:14,179 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,181 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -74339491, NPV(Rent): -17638184
+2026-10-09 02:36:14,183 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,184 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.92, NPV(Buy): -46591541, NPV(Rent): -71710259
+2026-10-09 02:36:14,186 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,187 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.0, NPV(Buy): -57174336, NPV(Rent): -59214244
+2026-10-09 02:36:14,188 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,188 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.25, NPV(Buy): -64046195, NPV(Rent): -48896603
+2026-10-09 02:36:14,191 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,191 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -68283813, NPV(Rent): -40322066
+2026-10-09 02:36:14,191 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,194 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -70662287, NPV(Rent): -33149989
+2026-10-09 02:36:14,195 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,197 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -71739479, NPV(Rent): -27112498
+2026-10-09 02:36:14,198 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,199 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -71916540, NPV(Rent): -21997919
+2026-10-09 02:36:14,200 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,203 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -71481448, NPV(Rent): -17638184
+2026-10-09 02:36:14,204 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,205 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.42, NPV(Buy): -20478703, NPV(Rent): -71710259
+2026-10-09 02:36:14,207 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,209 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.83, NPV(Buy): -37524583, NPV(Rent): -59214244
+2026-10-09 02:36:14,210 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,211 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.58, NPV(Buy): -49220342, NPV(Rent): -48896603
+2026-10-09 02:36:14,212 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,213 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.75, NPV(Buy): -57068268, NPV(Rent): -40322066
+2026-10-09 02:36:14,214 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,216 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 9.08, NPV(Buy): -62156038, NPV(Rent): -33149989
+2026-10-09 02:36:14,217 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,218 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -65271740, NPV(Rent): -27112498
+2026-10-09 02:36:14,219 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,219 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -66986576, NPV(Rent): -21997919
+2026-10-09 02:36:14,222 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,225 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -67714476, NPV(Rent): -17638184
+2026-10-09 02:36:14,226 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,228 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.58, NPV(Buy): 13849157, NPV(Rent): -71710259
+2026-10-09 02:36:14,229 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,230 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.83, NPV(Buy): -11693076, NPV(Rent): -59214244
+2026-10-09 02:36:14,231 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,232 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.17, NPV(Buy): -29730318, NPV(Rent): -48896603
+2026-10-09 02:36:14,233 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,234 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.58, NPV(Buy): -42324345, NPV(Rent): -40322066
+2026-10-09 02:36:14,235 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,236 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.25, NPV(Buy): -50973747, NPV(Rent): -33149989
+2026-10-09 02:36:14,237 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,239 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.42, NPV(Buy): -56769269, NPV(Rent): -27112498
+2026-10-09 02:36:14,239 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,241 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -60505661, NPV(Rent): -21997919
+2026-10-09 02:36:14,241 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,244 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -62762426, NPV(Rent): -17638184
+2026-10-09 02:36:14,246 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,247 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): 58861292, NPV(Rent): -71710259
+2026-10-09 02:36:14,249 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,251 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.25, NPV(Buy): 22178283, NPV(Rent): -59214244
+2026-10-09 02:36:14,252 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,254 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.42, NPV(Buy): -4174178, NPV(Rent): -48896603
+2026-10-09 02:36:14,254 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,254 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.67, NPV(Buy): -22991493, NPV(Rent): -40322066
+2026-10-09 02:36:14,257 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,258 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.92, NPV(Buy): -36311058, NPV(Rent): -33149989
+2026-10-09 02:36:14,260 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,261 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.33, NPV(Buy): -45620471, NPV(Rent): -27112498
+2026-10-09 02:36:14,261 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,264 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.0, NPV(Buy): -52007612, NPV(Rent): -21997919
+2026-10-09 02:36:14,265 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,268 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.25, NPV(Buy): -56269090, NPV(Rent): -17638184
+2026-10-09 02:36:14,269 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,270 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.75, NPV(Buy): 117735253, NPV(Rent): -71710259
+2026-10-09 02:36:14,271 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,272 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.83, NPV(Buy): 66480583, NPV(Rent): -59214244
+2026-10-09 02:36:14,273 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,273 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.0, NPV(Buy): 29252168, NPV(Rent): -48896603
+2026-10-09 02:36:14,273 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,278 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): 2295056, NPV(Rent): -40322066
+2026-10-09 02:36:14,279 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,280 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.25, NPV(Buy): -17132882, NPV(Rent): -33149989
+2026-10-09 02:36:14,281 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,283 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.5, NPV(Buy): -31038317, NPV(Rent): -27112498
+2026-10-09 02:36:14,286 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,288 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.75, NPV(Buy): -40892525, NPV(Rent): -21997919
+2026-10-09 02:36:14,290 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,291 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.17, NPV(Buy): -47776081, NPV(Rent): -17638184
+2026-10-09 02:36:14,296 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,297 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.83, NPV(Buy): -57141862, NPV(Rent): -48896603
+2026-10-09 02:36:14,301 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,303 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.58, NPV(Buy): -58479518, NPV(Rent): 11553397
+2026-10-09 02:36:14,309 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,310 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.58, NPV(Buy): -31064699, NPV(Rent): -48896603
+2026-10-09 02:36:14,316 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,318 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 15.5, NPV(Buy): -81395460, NPV(Rent): -71710259
+2026-10-09 02:36:14,319 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,321 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83806507, NPV(Rent): -48896603
+2026-10-09 02:36:14,323 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,324 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.42, NPV(Buy): -20478703, NPV(Rent): -71710259
+2026-10-09 02:36:14,327 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000.0
+2026-10-09 02:36:14,331 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.58, NPV(Buy): -49220342, NPV(Rent): -48896603
+2026-10-09 02:40:23,384 | DEBUG    | app:35 | API Kérés: GET /api/inputs
+2026-10-09 02:40:23,394 | DEBUG    | app:35 | API Kérés: POST /api/calculate
+2026-10-09 02:40:23,399 | INFO     | app:95 | Szimulációs kalkuláció indítása...
+2026-10-09 02:40:23,406 | DEBUG    | app:96 | Kalkulációs payload: {'property': {'city': 'Budapest', 'district': 'VIII. kerület', 'location': 'Budapest, VIII. kerület', 'property_type': 'Újépítésű társasház (AA+)', 'condition': 'Újszerű / Prémium', 'size_sqm': 46, 'room_count': 2, 'price_total_huf': 68900000, 'price_per_sqm_huf': 1497826, 'lawyer_fee_pct': 0.5, 'lawyer_fee_huf': 344500, 'furnishing_cost_huf': 3000000, 'other_info': ''}, 'loan': {'down_payment_pct': 27.4, 'down_payment_huf': 18900000, 'loan_amount_huf': 50000000, 'loan_term_years': 21, 'interest_rate_annual_pct': 3, 'other_fees_huf': 120000, 'monthly_payment_huf': None, 'other_info': ''}, 'rent': {'monthly_rent_huf': 250000, 'monthly_utilities_huf': 30000, 'other_info': ''}, 'investment': {'expected_return_annual_pct': 10.25, 'tbsz_enabled': True, 'property_growth_pct': 5, 'rent_inflation_pct': 4, 'other_info': '', 'simulation_years': 30}}
+2026-10-09 02:40:23,410 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,412 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.5, NPV(Buy): -52665799, NPV(Rent): -22482378
+2026-10-09 02:40:23,414 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,416 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.17, NPV(Buy): -66016325, NPV(Rent): -62607633
+2026-10-09 02:40:23,417 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,420 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.25, NPV(Buy): -66360258, NPV(Rent): -51743099
+2026-10-09 02:40:23,421 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,424 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 16.83, NPV(Buy): -65898290, NPV(Rent): -42750899
+2026-10-09 02:40:23,426 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,428 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -64921441, NPV(Rent): -35259525
+2026-10-09 02:40:23,431 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,432 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -63631782, NPV(Rent): -28977851
+2026-10-09 02:40:23,434 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,436 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -62168490, NPV(Rent): -23676632
+2026-10-09 02:40:23,437 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,439 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -60626337, NPV(Rent): -19174465
+2026-10-09 02:40:23,440 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,442 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -59068818, NPV(Rent): -15327106
+2026-10-09 02:40:23,444 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,446 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.0, NPV(Buy): -56344971, NPV(Rent): -62607633
+2026-10-09 02:40:23,447 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,449 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.67, NPV(Buy): -59082622, NPV(Rent): -51743099
+2026-10-09 02:40:23,451 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,454 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.92, NPV(Buy): -60407271, NPV(Rent): -42750899
+2026-10-09 02:40:23,455 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,457 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 9.25, NPV(Buy): -60767565, NPV(Rent): -35259525
+2026-10-09 02:40:23,457 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,459 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -60481342, NPV(Rent): -28977851
+2026-10-09 02:40:23,460 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,462 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -59773048, NPV(Rent): -23676632
+2026-10-09 02:40:23,463 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,464 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -58800437, NPV(Rent): -19174465
+2026-10-09 02:40:23,465 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,467 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -57673653, NPV(Rent): -15327106
+2026-10-09 02:40:23,467 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,468 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.92, NPV(Buy): -43529385, NPV(Rent): -62607633
+2026-10-09 02:40:23,469 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,471 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.25, NPV(Buy): -49438971, NPV(Rent): -51743099
+2026-10-09 02:40:23,473 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,474 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.75, NPV(Buy): -53131080, NPV(Rent): -42750899
+2026-10-09 02:40:23,475 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,476 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.42, NPV(Buy): -55263231, NPV(Rent): -35259525
+2026-10-09 02:40:23,477 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,479 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.83, NPV(Buy): -56306668, NPV(Rent): -28977851
+2026-10-09 02:40:23,481 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,483 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -56598829, NPV(Rent): -23676632
+2026-10-09 02:40:23,485 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,487 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -56380924, NPV(Rent): -19174465
+2026-10-09 02:40:23,488 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,491 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -55824909, NPV(Rent): -15327106
+2026-10-09 02:40:23,492 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,493 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.33, NPV(Buy): -26593236, NPV(Rent): -62607633
+2026-10-09 02:40:23,494 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,495 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.5, NPV(Buy): -36694621, NPV(Rent): -51743099
+2026-10-09 02:40:23,496 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,498 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.75, NPV(Buy): -43515393, NPV(Rent): -42750899
+2026-10-09 02:40:23,499 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,501 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.08, NPV(Buy): -47989102, NPV(Rent): -35259525
+2026-10-09 02:40:23,502 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,503 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.5, NPV(Buy): -50789723, NPV(Rent): -28977851
+2026-10-09 02:40:23,504 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,505 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.25, NPV(Buy): -52404011, NPV(Rent): -23676632
+2026-10-09 02:40:23,507 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,508 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.83, NPV(Buy): -53183470, NPV(Rent): -19174465
+2026-10-09 02:40:23,509 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,509 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -53381743, NPV(Rent): -15327106
+2026-10-09 02:40:23,512 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,513 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.92, NPV(Buy): -4270972, NPV(Rent): -62607633
+2026-10-09 02:40:23,514 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,516 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): -19897253, NPV(Rent): -51743099
+2026-10-09 02:40:23,517 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,518 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.17, NPV(Buy): -30841680, NPV(Rent): -42750899
+2026-10-09 02:40:23,519 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,521 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.42, NPV(Buy): -38401621, NPV(Rent): -35259525
+2026-10-09 02:40:23,523 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,524 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.58, NPV(Buy): -43518252, NPV(Rent): -28977851
+2026-10-09 02:40:23,525 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,527 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.92, NPV(Buy): -46875138, NPV(Rent): -23676632
+2026-10-09 02:40:23,528 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,529 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.33, NPV(Buy): -48969147, NPV(Rent): -19174465
+2026-10-09 02:40:23,531 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,533 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.08, NPV(Buy): -50161590, NPV(Rent): -15327106
+2026-10-09 02:40:23,535 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,536 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.67, NPV(Buy): 25073809, NPV(Rent): -62607633
+2026-10-09 02:40:23,537 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,539 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.75, NPV(Buy): 2184518, NPV(Rent): -51743099
+2026-10-09 02:40:23,539 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,540 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.83, NPV(Buy): -14180854, NPV(Rent): -42750899
+2026-10-09 02:40:23,541 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,543 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.0, NPV(Buy): -25797946, NPV(Rent): -35259525
+2026-10-09 02:40:23,544 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,546 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): -33959198, NPV(Rent): -28977851
+2026-10-09 02:40:23,547 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,549 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.25, NPV(Buy): -39606897, NPV(Rent): -23676632
+2026-10-09 02:40:23,550 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,553 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.5, NPV(Buy): -43429010, NPV(Rent): -19174465
+2026-10-09 02:40:23,554 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,556 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.75, NPV(Buy): -45928386, NPV(Rent): -15327106
+2026-10-09 02:40:23,557 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,559 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.42, NPV(Buy): 63551922, NPV(Rent): -62607633
+2026-10-09 02:40:23,559 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,562 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.5, NPV(Buy): 31139065, NPV(Rent): -51743099
+2026-10-09 02:40:23,564 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,567 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.58, NPV(Buy): 7665522, NPV(Rent): -42750899
+2026-10-09 02:40:23,568 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,570 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.67, NPV(Buy): -9271477, NPV(Rent): -35259525
+2026-10-09 02:40:23,573 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,575 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.75, NPV(Buy): -21424964, NPV(Rent): -28977851
+2026-10-09 02:40:23,576 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,578 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.92, NPV(Buy): -30076474, NPV(Rent): -23676632
+2026-10-09 02:40:23,579 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,581 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.0, NPV(Buy): -36164549, NPV(Rent): -19174465
+2026-10-09 02:40:23,582 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,584 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.17, NPV(Buy): -40377631, NPV(Rent): -15327106
+2026-10-09 02:40:23,585 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,587 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.25, NPV(Buy): 113879661, NPV(Rent): -62607633
+2026-10-09 02:40:23,588 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,590 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.33, NPV(Buy): 69010384, NPV(Rent): -51743099
+2026-10-09 02:40:23,591 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,592 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.42, NPV(Buy): 36239655, NPV(Rent): -42750899
+2026-10-09 02:40:23,593 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,594 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.42, NPV(Buy): 12344443, NPV(Rent): -35259525
+2026-10-09 02:40:23,596 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,597 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.5, NPV(Buy): -5030718, NPV(Rent): -28977851
+2026-10-09 02:40:23,599 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,601 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.58, NPV(Buy): -17611085, NPV(Rent): -23676632
+2026-10-09 02:40:23,602 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,604 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.67, NPV(Buy): -26662943, NPV(Rent): -19174465
+2026-10-09 02:40:23,606 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 46.0 m2, Vételár/m2: 1497826
+2026-10-09 02:40:23,607 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.83, NPV(Buy): -33117479, NPV(Rent): -15327106
+2026-10-09 02:40:24,136 | DEBUG    | app:35 | API Kérés: POST /api/calculate
+2026-10-09 02:40:24,139 | INFO     | app:95 | Szimulációs kalkuláció indítása...
+2026-10-09 02:40:24,142 | DEBUG    | app:35 | API Kérés: POST /api/calculate
+2026-10-09 02:40:24,143 | INFO     | app:95 | Szimulációs kalkuláció indítása...
+2026-10-09 02:40:24,142 | DEBUG    | app:96 | Kalkulációs payload: {'property': {'city': 'Budapest', 'district': 'VIII. kerület', 'location': 'Budapest, VIII. kerület', 'property_type': 'Újépítésű társasház (AA+)', 'condition': 'Újszerű / Prémium', 'size_sqm': 52, 'room_count': 2, 'price_total_huf': 80600000, 'price_per_sqm_huf': 1550000, 'lawyer_fee_pct': 1, 'lawyer_fee_huf': 806000, 'furnishing_cost_huf': 3000000, 'other_info': 'Prémium felújított belső tér'}, 'loan': {'down_payment_pct': 25, 'down_payment_huf': 20150000, 'loan_amount_huf': 60450000, 'loan_term_years': 20, 'interest_rate_annual_pct': 6.5, 'other_fees_huf': 120000, 'monthly_payment_huf': None, 'other_info': ''}, 'rent': {'monthly_rent_huf': 250000, 'monthly_utilities_huf': 30000, 'other_info': 'Csak Dunamenti lakásban vagyok hajlandó lakni'}, 'investment': {'expected_return_annual_pct': 7, 'tbsz_enabled': True, 'property_growth_pct': 5, 'rent_inflation_pct': 4, 'other_info': '', 'simulation_years': 30}}
+2026-10-09 02:40:24,145 | DEBUG    | app:96 | Kalkulációs payload: {'property': {'city': 'Budapest', 'district': 'VIII. kerület', 'location': 'Budapest, VIII. kerület', 'property_type': 'Újépítésű társasház (AA+)', 'condition': 'Újszerű / Prémium', 'size_sqm': 52, 'room_count': 2, 'price_total_huf': 80600000, 'price_per_sqm_huf': 1550000, 'lawyer_fee_pct': 1, 'lawyer_fee_huf': 806000, 'furnishing_cost_huf': 4550000, 'other_info': 'Prémium felújított belső tér'}, 'loan': {'down_payment_pct': 25, 'down_payment_huf': 20150000, 'loan_amount_huf': 60450000, 'loan_term_years': 20, 'interest_rate_annual_pct': 6.5, 'other_fees_huf': 120000, 'monthly_payment_huf': None, 'other_info': ''}, 'rent': {'monthly_rent_huf': 310000, 'monthly_utilities_huf': 30000, 'other_info': 'Csak Dunamenti lakásban vagyok hajlandó lakni'}, 'investment': {'expected_return_annual_pct': 7, 'tbsz_enabled': True, 'property_growth_pct': 5, 'rent_inflation_pct': 4, 'other_info': '', 'simulation_years': 30}, 'ai_evaluations': {'investment': {'category': 'Alternatív Költség és Hozamgörbe', 'furnishing_adjustment_huf': 0, 'impact_analysis': 'Nincs egyedi befektetési megjegyzés, így a 7.0%-os nominális alternatív hozamot alkalmazzuk a tőkésítési számításokhoz.', 'provided': False, 'quantitative_recommendation': 'A 7.0%-os hozamráta változatlanul hagyása javasolt a DCF modellben.', 'relevance_score': 8, 'rent_adjustment_pct': 0, 'utilities_adjustment_pct': 0}, 'loan': {'category': 'Tőkeáttétel és Finanszírozási Kockázat', 'furnishing_adjustment_huf': 0, 'impact_analysis': 'Nincs egyedi hitelcél megadva, így a modell a 6.5%-os alapkamatot és a standard 20 éves futamidőt veszi alapul.', 'provided': False, 'quantitative_recommendation': 'A standard hitelstruktúra fenntartása javasolt további módosítók nélkül.', 'relevance_score': 7, 'rent_adjustment_pct': 0, 'utilities_adjustment_pct': 0}, 'property': {'category': 'Eszközminőség és Értéknövelő Beruházás', 'furnishing_adjustment_huf': 1500000, 'impact_analysis': 'A prémium felújított belső tér növeli az ingatlan likviditási értékét, de kezdeti többletkiadással vagy magasabb bekerülési árral jár.', 'market_value_adjustment_pct': 3, 'provided': True, 'quantitative_recommendation': 'A prémium belső tér miatt 1.500.000 Ft bútorozási többlet és 3.0%-os piaci érték növekmény érvényesítése indokolt.', 'relevance_score': 9, 'rent_adjustment_pct': 0, 'utilities_adjustment_pct': 0}, 'rent': {'category': 'Lokációs Prémium és Alternatív Költség', 'furnishing_adjustment_huf': 0, 'impact_analysis': 'A Dunamenti elvárás szűkíti a piacon elérhető alternatívák körét, és a Duna-parti lokáció prémium árazást von maga után.', 'provided': True, 'quantitative_recommendation': '+15.0% bérleti díj felár alkalmazása szükséges a Dunamenti lokációs elvárás miatt.', 'relevance_score': 10, 'rent_adjustment_pct': 15, 'utilities_adjustment_pct': 0}}}
+2026-10-09 02:40:24,146 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,147 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,149 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 14.33, NPV(Buy): -64721143, NPV(Rent): -40549998
+2026-10-09 02:40:24,153 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 7.25, NPV(Buy): -66271143, NPV(Rent): -53513569
+2026-10-09 02:40:24,155 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,155 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,157 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -93232711, NPV(Rent): -60406732
+2026-10-09 02:40:24,162 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,160 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 20.17, NPV(Buy): -94782711, NPV(Rent): -77625317
+2026-10-09 02:40:24,166 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -92488143, NPV(Rent): -49542198
+2026-10-09 02:40:24,167 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,168 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,170 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -94038143, NPV(Rent): -64432669
+2026-10-09 02:40:24,172 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -90904911, NPV(Rent): -40549998
+2026-10-09 02:40:24,174 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,175 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,177 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -92454911, NPV(Rent): -53513569
+2026-10-09 02:40:24,179 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -88813505, NPV(Rent): -33058624
+2026-10-09 02:40:24,181 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,183 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,184 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -90363505, NPV(Rent): -44416900
+2026-10-09 02:40:24,188 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,189 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -87991109, NPV(Rent): -36789153
+2026-10-09 02:40:24,191 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,193 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -85492114, NPV(Rent): -30351959
+2026-10-09 02:40:24,186 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -86441109, NPV(Rent): -26776950
+2026-10-09 02:40:24,196 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,198 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83942114, NPV(Rent): -21475731
+2026-10-09 02:40:24,199 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,194 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,200 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -81419736, NPV(Rent): -16973564
+2026-10-09 02:40:24,202 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -82969736, NPV(Rent): -24885042
+2026-10-09 02:40:24,204 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,206 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,208 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -78941335, NPV(Rent): -13126205
+2026-10-09 02:40:24,210 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -80491335, NPV(Rent): -20213249
+2026-10-09 02:40:24,211 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,212 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,214 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 22.83, NPV(Buy): -81919051, NPV(Rent): -60406732
+2026-10-09 02:40:24,218 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,217 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 12.42, NPV(Buy): -83469051, NPV(Rent): -77625317
+2026-10-09 02:40:24,222 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,221 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83974682, NPV(Rent): -49542198
+2026-10-09 02:40:24,224 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 19.08, NPV(Buy): -85524682, NPV(Rent): -64432669
+2026-10-09 02:40:24,225 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,226 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,229 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -84481455, NPV(Rent): -40549998
+2026-10-09 02:40:24,231 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -86031455, NPV(Rent): -53513569
+2026-10-09 02:40:24,234 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,232 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,236 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -85504253, NPV(Rent): -44416900
+2026-10-09 02:40:24,238 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -83954253, NPV(Rent): -33058624
+2026-10-09 02:40:24,239 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,241 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,244 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -84305688, NPV(Rent): -36789153
+2026-10-09 02:40:24,247 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -82755688, NPV(Rent): -26776950
+2026-10-09 02:40:24,249 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,250 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,253 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -82689899, NPV(Rent): -30351959
+2026-10-09 02:40:24,254 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -81139899, NPV(Rent): -21475731
+2026-10-09 02:40:24,256 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,257 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,259 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -80833778, NPV(Rent): -24885042
+2026-10-09 02:40:24,260 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -79283778, NPV(Rent): -16973564
+2026-10-09 02:40:24,262 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,265 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,268 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -78859256, NPV(Rent): -20213249
+2026-10-09 02:40:24,269 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -77309256, NPV(Rent): -13126205
+2026-10-09 02:40:24,272 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,273 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,274 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 7.33, NPV(Buy): -68477232, NPV(Rent): -77625317
+2026-10-09 02:40:24,275 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 11.33, NPV(Buy): -66927232, NPV(Rent): -60406732
+2026-10-09 02:40:24,276 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,278 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,279 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 9.67, NPV(Buy): -74243429, NPV(Rent): -64432669
+2026-10-09 02:40:24,281 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 20.5, NPV(Buy): -72693429, NPV(Rent): -49542198
+2026-10-09 02:40:24,282 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,283 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,285 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 16.25, NPV(Buy): -77519683, NPV(Rent): -53513569
+2026-10-09 02:40:24,287 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -75969683, NPV(Rent): -40549998
+2026-10-09 02:40:24,288 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,289 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,290 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -79065220, NPV(Rent): -44416900
+2026-10-09 02:40:24,292 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -77515220, NPV(Rent): -33058624
+2026-10-09 02:40:24,294 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,296 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -77872107, NPV(Rent): -26776950
+2026-10-09 02:40:24,293 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,298 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,301 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -79422107, NPV(Rent): -36789153
+2026-10-09 02:40:24,302 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -77426661, NPV(Rent): -21475731
+2026-10-09 02:40:24,303 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,304 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,306 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -78976661, NPV(Rent): -30351959
+2026-10-09 02:40:24,308 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76453403, NPV(Rent): -16973564
+2026-10-09 02:40:24,310 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,315 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -78003403, NPV(Rent): -24885042
+2026-10-09 02:40:24,312 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,321 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,324 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -75146574, NPV(Rent): -13126205
+2026-10-09 02:40:24,327 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -76696574, NPV(Rent): -20213249
+2026-10-09 02:40:24,329 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,332 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,334 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 6.08, NPV(Buy): -47115132, NPV(Rent): -60406732
+2026-10-09 02:40:24,336 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.83, NPV(Buy): -48665132, NPV(Rent): -77625317
+2026-10-09 02:40:24,338 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,339 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,342 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.08, NPV(Buy): -57784943, NPV(Rent): -49542198
+2026-10-09 02:40:24,345 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.75, NPV(Buy): -59334943, NPV(Rent): -64432669
+2026-10-09 02:40:24,347 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,349 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,352 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 14.33, NPV(Buy): -64721143, NPV(Rent): -40549998
+2026-10-09 02:40:24,354 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 7.25, NPV(Buy): -66271143, NPV(Rent): -53513569
+2026-10-09 02:40:24,357 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,358 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,360 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -69005862, NPV(Rent): -33058624
+2026-10-09 02:40:24,366 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 11.25, NPV(Buy): -70555862, NPV(Rent): -44416900
+2026-10-09 02:40:24,370 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,367 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,372 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -72968321, NPV(Rent): -36789153
+2026-10-09 02:40:24,375 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -71418321, NPV(Rent): -26776950
+2026-10-09 02:40:24,377 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,378 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,379 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -74069516, NPV(Rent): -30351959
+2026-10-09 02:40:24,382 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -72519516, NPV(Rent): -21475731
+2026-10-09 02:40:24,383 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,383 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,383 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -74262985, NPV(Rent): -24885042
+2026-10-09 02:40:24,388 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -72712985, NPV(Rent): -16973564
+2026-10-09 02:40:24,389 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,390 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,392 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -73838530, NPV(Rent): -20213249
+2026-10-09 02:40:24,393 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -72288530, NPV(Rent): -13126205
+2026-10-09 02:40:24,397 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,399 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,400 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.58, NPV(Buy): -22552294, NPV(Rent): -77625317
+2026-10-09 02:40:24,402 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.0, NPV(Buy): -21002294, NPV(Rent): -60406732
+2026-10-09 02:40:24,404 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,406 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,407 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.0, NPV(Buy): -39685191, NPV(Rent): -64432669
+2026-10-09 02:40:24,410 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.67, NPV(Buy): -38135191, NPV(Rent): -49542198
+2026-10-09 02:40:24,411 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,412 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,414 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.58, NPV(Buy): -51445289, NPV(Rent): -53513569
+2026-10-09 02:40:24,418 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,415 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.83, NPV(Buy): -49895289, NPV(Rent): -40549998
+2026-10-09 02:40:24,420 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.58, NPV(Buy): -59340317, NPV(Rent): -44416900
+2026-10-09 02:40:24,421 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,422 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,424 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.33, NPV(Buy): -57790317, NPV(Rent): -33058624
+2026-10-09 02:40:24,426 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 7.42, NPV(Buy): -64462072, NPV(Rent): -36789153
+2026-10-09 02:40:24,427 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,428 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,432 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -62912072, NPV(Rent): -26776950
+2026-10-09 02:40:24,434 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -67601777, NPV(Rent): -30351959
+2026-10-09 02:40:24,435 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,435 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,436 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -66051777, NPV(Rent): -21475731
+2026-10-09 02:40:24,439 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -69333022, NPV(Rent): -24885042
+2026-10-09 02:40:24,440 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,442 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,444 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -67783022, NPV(Rent): -16973564
+2026-10-09 02:40:24,446 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -70071559, NPV(Rent): -20213249
+2026-10-09 02:40:24,447 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,449 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,452 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -68521559, NPV(Rent): -13126205
+2026-10-09 02:40:24,455 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.83, NPV(Buy): 11775566, NPV(Rent): -77625317
+2026-10-09 02:40:24,456 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,458 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,460 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.92, NPV(Buy): 13325566, NPV(Rent): -60406732
+2026-10-09 02:40:24,462 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.08, NPV(Buy): -13853684, NPV(Rent): -64432669
+2026-10-09 02:40:24,463 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,464 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,466 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.25, NPV(Buy): -12303684, NPV(Rent): -49542198
+2026-10-09 02:40:24,467 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.42, NPV(Buy): -31955266, NPV(Rent): -53513569
+2026-10-09 02:40:24,468 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,469 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,477 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.83, NPV(Buy): -44596394, NPV(Rent): -44416900
+2026-10-09 02:40:24,473 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.75, NPV(Buy): -30405266, NPV(Rent): -40549998
+2026-10-09 02:40:24,482 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,484 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.42, NPV(Buy): -43046394, NPV(Rent): -33058624
+2026-10-09 02:40:24,486 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,488 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.58, NPV(Buy): -51729782, NPV(Rent): -26776950
+2026-10-09 02:40:24,489 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,479 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,493 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -57549306, NPV(Rent): -21475731
+2026-10-09 02:40:24,497 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,495 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.42, NPV(Buy): -53279782, NPV(Rent): -36789153
+2026-10-09 02:40:24,499 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,503 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.42, NPV(Buy): -59099306, NPV(Rent): -30351959
+2026-10-09 02:40:24,504 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,506 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -61302107, NPV(Rent): -16973564
+2026-10-09 02:40:24,509 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 8.58, NPV(Buy): -62852107, NPV(Rent): -24885042
+2026-10-09 02:40:24,513 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,511 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,516 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -65119509, NPV(Rent): -20213249
+2026-10-09 02:40:24,518 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -63569509, NPV(Rent): -13126205
+2026-10-09 02:40:24,519 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,521 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,523 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.33, NPV(Buy): 56787701, NPV(Rent): -77625317
+2026-10-09 02:40:24,525 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.33, NPV(Buy): 58337701, NPV(Rent): -60406732
+2026-10-09 02:40:24,527 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,528 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,531 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.5, NPV(Buy): 20017676, NPV(Rent): -64432669
+2026-10-09 02:40:24,533 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.5, NPV(Buy): 21567676, NPV(Rent): -49542198
+2026-10-09 02:40:24,535 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,537 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,541 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.67, NPV(Buy): -6399126, NPV(Rent): -53513569
+2026-10-09 02:40:24,544 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.75, NPV(Buy): -4849126, NPV(Rent): -40549998
+2026-10-09 02:40:24,545 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,546 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,548 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.92, NPV(Buy): -25263543, NPV(Rent): -44416900
+2026-10-09 02:40:24,549 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.08, NPV(Buy): -23713543, NPV(Rent): -33058624
+2026-10-09 02:40:24,550 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,552 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,554 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.25, NPV(Buy): -38617092, NPV(Rent): -36789153
+2026-10-09 02:40:24,556 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.5, NPV(Buy): -37067092, NPV(Rent): -26776950
+2026-10-09 02:40:24,558 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,559 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,562 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.67, NPV(Buy): -47950508, NPV(Rent): -30351959
+2026-10-09 02:40:24,565 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.17, NPV(Buy): -46400508, NPV(Rent): -21475731
+2026-10-09 02:40:24,566 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,569 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,572 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 4.25, NPV(Buy): -54354058, NPV(Rent): -24885042
+2026-10-09 02:40:24,574 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.42, NPV(Buy): -52804058, NPV(Rent): -16973564
+2026-10-09 02:40:24,576 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,578 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,579 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 5.33, NPV(Buy): -58626172, NPV(Rent): -20213249
+2026-10-09 02:40:24,581 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: None, NPV(Buy): -57076172, NPV(Rent): -13126205
+2026-10-09 02:40:24,583 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,584 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,586 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.0, NPV(Buy): 115661662, NPV(Rent): -77625317
+2026-10-09 02:40:24,588 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 1.92, NPV(Buy): 117211662, NPV(Rent): -60406732
+2026-10-09 02:40:24,591 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,593 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,594 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): 64319976, NPV(Rent): -64432669
+2026-10-09 02:40:24,596 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.08, NPV(Buy): 65869976, NPV(Rent): -49542198
+2026-10-09 02:40:24,598 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,600 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,603 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.25, NPV(Buy): 27027220, NPV(Rent): -53513569
+2026-10-09 02:40:24,604 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.25, NPV(Buy): 28577220, NPV(Rent): -40549998
+2026-10-09 02:40:24,606 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,607 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,608 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.42, NPV(Buy): 23006, NPV(Rent): -44416900
+2026-10-09 02:40:24,610 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.42, NPV(Buy): 1573006, NPV(Rent): -33058624
+2026-10-09 02:40:24,612 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,613 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,615 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.58, NPV(Buy): -19438916, NPV(Rent): -36789153
+2026-10-09 02:40:24,617 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.67, NPV(Buy): -17888916, NPV(Rent): -26776950
+2026-10-09 02:40:24,618 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,619 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,621 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.83, NPV(Buy): -33368355, NPV(Rent): -30351959
+2026-10-09 02:40:24,623 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 2.92, NPV(Buy): -31818355, NPV(Rent): -21475731
+2026-10-09 02:40:24,624 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,626 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,627 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.08, NPV(Buy): -43238971, NPV(Rent): -24885042
+2026-10-09 02:40:24,630 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.33, NPV(Buy): -41688971, NPV(Rent): -16973564
+2026-10-09 02:40:24,632 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,634 | DEBUG    | engine:31 | Szimulációs motor indítása: 30 év, 52.0 m2, Vételár/m2: 1550000
+2026-10-09 02:40:24,644 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.92, NPV(Buy): -48583164, NPV(Rent): -13126205
+2026-10-09 02:40:24,636 | DEBUG    | engine:230 | Szimuláció véget ért. Break-Even év: 3.5, NPV(Buy): -50133164, NPV(Rent): -20213249
+2026-10-09 02:40:29,921 | DEBUG    | app:35 | API Kérés: POST /api/historical_simulation
+2026-10-09 02:40:31,263 | DEBUG    | app:35 | API Kérés: POST /api/historical_simulation
+2026-10-09 02:40:32,207 | DEBUG    | app:35 | API Kérés: POST /api/historical_simulation
+2026-10-09 02:40:37,273 | DEBUG    | app:35 | API Kérés: POST /api/historical_simulation
+2026-10-09 02:40:39,479 | DEBUG    | app:35 | API Kérés: POST /api/historical_simulation
+2026-10-09 02:40:41,044 | DEBUG    | app:35 | API Kérés: POST /api/historical_simulation
+2026-10-09 02:40:42,514 | DEBUG    | app:35 | API Kérés: POST /api/historical_simulation
+2026-10-09 02:40:44,605 | DEBUG    | app:35 | API Kérés: POST /api/historical_simulation

@@ -128,7 +128,9 @@ class HistoricalEngine:
             
             # Rent & Utilities
             y_cpi_idx = cpi_index.get(y_str, latest_cpi_idx)
-            annual_rent = current_prop_val * annual_rent_yield
+            y_rent_idx = rent_index.get(y_str, 1.0)
+            
+            annual_rent = (current_rent_huf * 12) * y_rent_idx
             annual_utils = annual_utils_2024 * (y_cpi_idx / latest_cpi_idx)
             
             buy_costs = actual_mortgage_paid + annual_maintenance + annual_utils
