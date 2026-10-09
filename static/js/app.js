@@ -1152,6 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 9. Vagyonfelhalmozási Chart.js Rajzolás ---
     let wealthChartInstance = null;
+    let simCheaperChartInstance = null;
     let cashflowChartInstance = null;
     let equityChartInstance = null;
     let deadMoneyChartInstance = null;
@@ -1162,6 +1163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resultsTabEl) {
         resultsTabEl.addEventListener('shown.bs.tab', function (event) {
             if (wealthChartInstance) wealthChartInstance.resize();
+            if (simCheaperChartInstance) simCheaperChartInstance.resize();
             if (cashflowChartInstance) cashflowChartInstance.resize();
             if (equityChartInstance) equityChartInstance.resize();
             if (deadMoneyChartInstance) deadMoneyChartInstance.resize();
@@ -1215,6 +1217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const ctxWealth = document.getElementById('wealthChart');
+        const ctxSimCheaper = document.getElementById('simCheaperChart');
         const ctxCashflow = document.getElementById('cashflowChart');
         const ctxEquity = document.getElementById('equityChart');
         const ctxDeadMoney = document.getElementById('deadMoneyChart');
@@ -1222,6 +1225,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Pusztítsuk el a régi grafikonokat
         if (wealthChartInstance) wealthChartInstance.destroy();
+        if (simCheaperChartInstance) simCheaperChartInstance.destroy();
         if (cashflowChartInstance) cashflowChartInstance.destroy();
         if (equityChartInstance) equityChartInstance.destroy();
         if (deadMoneyChartInstance) deadMoneyChartInstance.destroy();
@@ -1288,6 +1292,51 @@ document.addEventListener('DOMContentLoaded', () => {
                     scales: {
                         x: commonOptions.scales.x,
                         y: Object.assign({}, commonOptions.scales.y, { title: { display: true, text: 'Nettó Vagyon (HUF)' } })
+                    }
+                })
+            });
+        }
+
+        // ÚJ: Szimuláció Olcsóbb Chart (Költségelőny)
+        if (ctxSimCheaper) {
+            const rentAdvantageSim = traj.monthly_buy_outflow.map((buyCost, i) => {
+                const diff = buyCost - traj.monthly_rent_outflow[i];
+                return diff > 0 ? diff : 0;
+            });
+            const buyAdvantageSim = traj.monthly_rent_outflow.map((rentCost, i) => {
+                const diff = rentCost - traj.monthly_buy_outflow[i];
+                return diff > 0 ? diff : 0;
+            });
+            
+            simCheaperChartInstance = new Chart(ctxSimCheaper, {
+                type: 'bar',
+                data: {
+                    labels: traj.year,
+                    datasets: [
+                        {
+                            label: 'Bérlés előnye (Havi Ft)',
+                            data: rentAdvantageSim,
+                            backgroundColor: 'rgba(25, 135, 84, 0.7)'
+                        },
+                        {
+                            label: 'Saját lakás előnye (Havi Ft)',
+                            data: buyAdvantageSim,
+                            backgroundColor: 'rgba(13, 110, 253, 0.7)'
+                        }
+                    ]
+                },
+                options: Object.assign({}, commonOptions, {
+                    scales: {
+                        x: Object.assign({}, commonOptions.scales.x, { stacked: true }),
+                        y: Object.assign({}, commonOptions.scales.y, { 
+                            stacked: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) return (value / 1000000).toFixed(0) + ' MFt';
+                                    return formatHUF(value);
+                                }
+                            }
+                        })
                     }
                 })
             });
@@ -1667,6 +1716,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const valHistReCagr = document.getElementById('valHistReCagr');
     
     let historicalChartInstance = null;
+    let histCheaperChartInstance = null;
     let histCashflowChartInstance = null;
     let histDeadMoneyChartInstance = null;
     let histLtvChartInstance = null;
@@ -1776,6 +1826,56 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             });
+
+            // ÚJ: Olcsóbb Chart (Költségelőny)
+            const ctxHistCheaper = document.getElementById('histCheaperChart');
+            if (histCheaperChartInstance) histCheaperChartInstance.destroy();
+            if (ctxHistCheaper) {
+                const rentAdvantage = data.buy_cashflows.map((buyCost, i) => {
+                    const diff = buyCost - data.rent_cashflows[i];
+                    return diff > 0 ? diff : 0;
+                });
+                const buyAdvantage = data.rent_cashflows.map((rentCost, i) => {
+                    const diff = rentCost - data.buy_cashflows[i];
+                    return diff > 0 ? diff : 0;
+                });
+                
+                histCheaperChartInstance = new Chart(ctxHistCheaper, {
+                    type: 'bar',
+                    data: {
+                        labels: data.timeline,
+                        datasets: [
+                            {
+                                label: 'Bérlés előnye (Ft)',
+                                data: rentAdvantage,
+                                backgroundColor: 'rgba(25, 135, 84, 0.7)'
+                            },
+                            {
+                                label: 'Saját lakás előnye (Ft)',
+                                data: buyAdvantage,
+                                backgroundColor: 'rgba(13, 110, 253, 0.7)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { stacked: true },
+                            y: { 
+                                stacked: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        if (value >= 1000000) return (value / 1000000).toFixed(0) + ' MFt';
+                                        return formatHUF(value);
+                                    }
+                                }
+                            }
+                        },
+                        plugins: { tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + formatHUF(c.raw); } } } }
+                    }
+                });
+            }
 
             // 1. Cashflow Chart
             const ctxHistCashflow = document.getElementById('histCashflowChart');
