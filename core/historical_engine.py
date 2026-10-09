@@ -27,7 +27,8 @@ class HistoricalEngine:
                  loan_interest_pct: float = 6.5,
                  loan_term_years: int = 20,
                  current_rent_huf: float = 200000,
-                 current_utilities_huf: float = 30000) -> Dict[str, Any]:
+                 current_utilities_huf: float = 30000,
+                 tbsz_enabled: bool = True) -> Dict[str, Any]:
         
         end_year = max([int(y) for y in self.financial_data.keys()]) if self.financial_data else 2024
         start_year_str = str(start_year)
@@ -69,8 +70,6 @@ class HistoricalEngine:
         else:
             monthly_mortgage = loan_amount_huf / n_payments
             
-        annual_mortgage = monthly_mortgage * 12
-        
         sp500_shares = (down_payment_huf / self.financial_data[start_year_str]['usdhuf']) / self.financial_data[start_year_str]['sp500']
         
         years = []
@@ -89,6 +88,7 @@ class HistoricalEngine:
         current_loan_balance = loan_amount_huf
         cum_dead_buy = 0
         cum_dead_rent = 0
+        total_invested_sp500_huf = down_payment_huf
         
         for year in range(start_year, end_year + 1):
             y_str = str(year)
@@ -103,27 +103,35 @@ class HistoricalEngine:
             annual_maintenance = current_prop_val * 0.01
             
             buy_nw = current_prop_val - current_loan_balance
-            real_estate_net_worth.append(int(max(0, buy_nw)))
+            real_estate_net_worth.append(int(buy_nw)) # allow negative equity
             
             property_market_values.append(int(current_prop_val))
             loan_balances.append(int(current_loan_balance))
             
             interest_paid = 0
+            actual_mortgage_paid = 0
+            
             if current_loan_balance > 0:
-                interest_paid = current_loan_balance * (loan_interest_pct / 100.0)
-                principal_paid = annual_mortgage - interest_paid
-                current_loan_balance = max(0, current_loan_balance - principal_paid)
+                for _ in range(12):
+                    if current_loan_balance <= 0:
+                        break
+                    m_interest = current_loan_balance * monthly_rate
+                    m_payment = min(monthly_mortgage, current_loan_balance + m_interest)
+                    m_principal = m_payment - m_interest
+                    
+                    interest_paid += m_interest
+                    actual_mortgage_paid += m_payment
+                    current_loan_balance -= m_principal
                 
             ltv = (current_loan_balance / current_prop_val * 100) if current_prop_val > 0 else 0
             ltv_values.append(min(100, max(0, ltv)))
             
-            # Rent
+            # Rent & Utilities
             y_cpi_idx = cpi_index.get(y_str, latest_cpi_idx)
-            
             annual_rent = current_prop_val * annual_rent_yield
             annual_utils = annual_utils_2024 * (y_cpi_idx / latest_cpi_idx)
             
-            buy_costs = annual_mortgage + annual_maintenance if current_loan_balance > 0 else annual_maintenance
+            buy_costs = actual_mortgage_paid + annual_maintenance + annual_utils
             rent_costs = annual_rent + annual_utils
             
             # Cash flows
@@ -131,12 +139,19 @@ class HistoricalEngine:
             rent_cashflows.append(int(rent_costs / 12))
             
             # Dead money
-            cum_dead_buy += (interest_paid + annual_maintenance)
+            cum_dead_buy += (interest_paid + annual_maintenance + annual_utils)
             cum_dead_rent += rent_costs
             dead_money_buy.append(int(cum_dead_buy))
             dead_money_rent.append(int(cum_dead_rent))
             
+            # SP500 dividend reinvestment (approx. 1.5% yield)
+            dividend_yield = 0.015
+            dividend_value_usd = sp500_shares * y_sp500 * dividend_yield
+            new_shares_from_div = dividend_value_usd / y_sp500
+            sp500_shares += new_shares_from_div
+            
             cash_difference_huf = buy_costs - rent_costs
+            total_invested_sp500_huf += cash_difference_huf
             new_shares = (cash_difference_huf / y_usdhuf) / y_sp500
             sp500_shares += new_shares
             
@@ -146,12 +161,23 @@ class HistoricalEngine:
         final_re_val = real_estate_net_worth[-1]
         final_sp_val = sp500_net_worth[-1]
         
+        # Apply 15% capital gains tax if TBSZ is not enabled
+        if not tbsz_enabled:
+            sp500_profit = max(0, final_sp_val - total_invested_sp500_huf)
+            tax_amount = sp500_profit * 0.15
+            final_sp_val -= tax_amount
+            sp500_net_worth[-1] = int(final_sp_val)
+        
         base_capital = down_payment_huf
         re_total_growth_pct = ((final_re_val / base_capital) - 1) * 100 if base_capital > 0 else 0
         sp_total_growth_pct = ((final_sp_val / base_capital) - 1) * 100 if base_capital > 0 else 0
         
         years_diff = end_year - start_year
-        re_cagr = ((final_re_val / base_capital) ** (1/years_diff) - 1) * 100 if years_diff > 0 and base_capital > 0 and final_re_val > 0 else 0
+        if final_re_val <= 0:
+            re_cagr = -100.0
+        else:
+            re_cagr = ((final_re_val / base_capital) ** (1/years_diff) - 1) * 100 if years_diff > 0 and base_capital > 0 else 0
+            
         if final_sp_val <= 0:
             sp_cagr = -100.0
         else:

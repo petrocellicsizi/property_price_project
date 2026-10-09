@@ -138,8 +138,8 @@ class QuantitativeSimulationEngine:
         tax_on_rent_rate = 0.135 
         rent_traj_net = rent_traj * (1.0 - tax_on_rent_rate)
         
-        # BTL befektetési egyenleg = Rendelkezésre álló büdzsé + Nettó bérleti díj - Hitel - Karbantartás
-        btl_investment_monthly = budget_m + rent_traj_net - monthly_buy_pmt - maintenance_traj
+        # BTL befektetési egyenleg = Rendelkezésre álló büdzsé - Saját lakhatás költsége (albérlet) + Nettó bérleti díj - Hitel - Karbantartás
+        btl_investment_monthly = budget_m - monthly_rent_outflow + rent_traj_net - monthly_buy_pmt - maintenance_traj
         
         rent_portfolio = np.zeros(self.total_months)
         buy_portfolio = np.zeros(self.total_months)
@@ -201,12 +201,15 @@ class QuantitativeSimulationEngine:
         # 8. Új kimutatások: Dead Money, LTV, Real Wealth, ROE, Price-to-Rent
         # Halott pénz (Dead Money)
         total_buy_dead_money = float(initial_upfront_fees) + float(total_interest) + float(total_maintenance_paid)
-        total_rent_dead_money = float(total_rent_paid)
+        total_rent_dead_money = float(total_rent_paid) + float(np.sum(common_cost_traj))
         
         # Tőkearányos megtérülés (ROE / CAGR of Equity)
         cagr_equity = 0.0
         if initial_equity_needed > 0:
-            cagr_equity = (buy_net_worth[-1] / initial_equity_needed) ** (1.0 / self.sim_years) - 1.0
+            if buy_net_worth[-1] <= 0:
+                cagr_equity = -1.0
+            else:
+                cagr_equity = (buy_net_worth[-1] / initial_equity_needed) ** (1.0 / self.sim_years) - 1.0
             
         # LTV (Loan-to-Value) pálya
         ltv_traj = loan_balance / property_value_traj

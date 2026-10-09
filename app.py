@@ -257,13 +257,14 @@ def historical_simulation():
     loan_term_years = int(payload.get("loan_term_years", 20))
     current_rent_huf = float(payload.get("current_rent_huf", 200000))
     current_utilities_huf = float(payload.get("current_utilities_huf", 30000))
+    tbsz_enabled = payload.get("tbsz_enabled", True)
     
     from core.historical_engine import HistoricalEngine
     engine = HistoricalEngine()
     result = engine.simulate(
         start_year, city, district, current_value,
         down_payment_pct, loan_interest_pct, loan_term_years,
-        current_rent_huf, current_utilities_huf
+        current_rent_huf, current_utilities_huf, tbsz_enabled
     )
     
     if "error" in result:

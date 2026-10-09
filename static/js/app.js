@@ -856,9 +856,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Inicializáláskor futtassuk le a legördülő menü frissítését
-    document.addEventListener('DOMContentLoaded', () => {
-        renderProfileDropdown();
-    });
+    renderProfileDropdown();
 
     async function loadInputsFromServer() {
         try {
@@ -1684,6 +1682,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const loanTermYears = parseInt(document.getElementById('loan_term_years').value) || 20;
         const currentRent = parseCleanNumber(document.getElementById('rent_monthly_huf').value) || 200000;
         const currentUtils = parseCleanNumber(document.getElementById('rent_utilities_huf').value) || 30000;
+        const tbszEnabled = document.getElementById('chk_tbsz_enabled') ? document.getElementById('chk_tbsz_enabled').checked : true;
 
         try {
             const response = await fetch('/api/historical_simulation', {
@@ -1698,7 +1697,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     loan_interest_pct: loanInterestPct,
                     loan_term_years: loanTermYears,
                     current_rent_huf: currentRent,
-                    current_utilities_huf: currentUtils
+                    current_utilities_huf: currentUtils,
+                    tbsz_enabled: tbszEnabled
                 })
             });
 

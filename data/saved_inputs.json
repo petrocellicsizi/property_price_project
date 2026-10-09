@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T02:14:25.297434",
+  "updated_at": "2026-10-09T02:33:06.629476",
   "inputs": {
     "property": {
       "city": "Budapest",
@@ -7,32 +7,32 @@
       "location": "Budapest, VIII. kerület",
       "property_type": "Újépítésű társasház (AA+)",
       "condition": "Újszerű / Prémium",
-      "size_sqm": 52,
+      "size_sqm": 46,
       "room_count": 2,
-      "price_total_huf": 80600000,
-      "price_per_sqm_huf": 1550000,
-      "lawyer_fee_pct": 1,
-      "lawyer_fee_huf": 806000,
-      "furnishing_cost_huf": 3050000,
+      "price_total_huf": 68900000,
+      "price_per_sqm_huf": 1497826,
+      "lawyer_fee_pct": 0.5,
+      "lawyer_fee_huf": 344500,
+      "furnishing_cost_huf": 3000000,
       "other_info": ""
     },
     "loan": {
-      "down_payment_pct": 25,
-      "down_payment_huf": 20150000,
-      "loan_amount_huf": 60450000,
-      "loan_term_years": 20,
-      "interest_rate_annual_pct": 6.5,
+      "down_payment_pct": 27.4,
+      "down_payment_huf": 18900000,
+      "loan_amount_huf": 50000000,
+      "loan_term_years": 21,
+      "interest_rate_annual_pct": 3,
       "other_fees_huf": 120000,
       "monthly_payment_huf": null,
       "other_info": ""
     },
     "rent": {
-      "monthly_rent_huf": 270000,
+      "monthly_rent_huf": 250000,
       "monthly_utilities_huf": 30000,
       "other_info": ""
     },
     "investment": {
-      "expected_return_annual_pct": 7,
+      "expected_return_annual_pct": 10.25,
       "tbsz_enabled": true,
       "property_growth_pct": 5,
       "rent_inflation_pct": 4,
@@ -88,9 +88,9 @@
     }
   },
   "ai_adjusted_suggestions": {
-    "suggested_furnishing_huf": 3050000,
-    "suggested_rent_huf": 270000,
-    "suggested_utilities_huf": 34000,
+    "suggested_furnishing_huf": 3000000,
+    "suggested_rent_huf": 250000,
+    "suggested_utilities_huf": 30000,
     "suggested_price_total_huf": 0,
     "suggested_price_per_sqm_huf": 0,
     "adjustments_applied": {
@@ -100,9 +100,9 @@
       "utilities_adjustment_pct": 0.0
     },
     "formatted": {
-      "suggested_furnishing": "3.050.000 Ft",
-      "suggested_rent": "270.000 Ft",
-      "suggested_utilities": "34.000 Ft",
+      "suggested_furnishing": "3.000.000 Ft",
+      "suggested_rent": "250.000 Ft",
+      "suggested_utilities": "30.000 Ft",
       "suggested_price_total": "0 Ft",
       "suggested_price_per_sqm": "0 Ft/m²"
     }
