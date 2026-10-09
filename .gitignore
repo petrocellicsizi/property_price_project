@@ -3,3 +3,23 @@ venv/
 __pycache__/
 *.pyc
 instance/
+
+# Logs
+logs/
+*.log
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# User-specific application state
+data/saved_inputs.json
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# OS specific
+.DS_Store
+Thumbs.db
