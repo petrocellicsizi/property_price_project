@@ -238,6 +238,38 @@ def calculate_metrics():
     }
     return jsonify(response_data), 200
 
+@app.route("/api/historical_simulation", methods=["POST"])
+def historical_simulation():
+    """
+    Kiszámítja a historikus vagyonalakulást a megadott induló évtől napjainkig,
+    visszaszámolva a jelenlegi lakásárból az induló tőkét.
+    """
+    payload = request.get_json(silent=True)
+    if not payload:
+        return jsonify({"status": "error", "message": "Érvénytelen vagy hiányzó JSON adat."}), 400
+        
+    start_year = int(payload.get("start_year", 2004))
+    city = payload.get("city", "Budapest")
+    district = payload.get("district", "XI. kerület")
+    current_value = float(payload.get("current_property_value_huf", 60000000))
+    down_payment_pct = float(payload.get("down_payment_pct", 20.0))
+    loan_interest_pct = float(payload.get("loan_interest_pct", 6.5))
+    loan_term_years = int(payload.get("loan_term_years", 20))
+    current_rent_huf = float(payload.get("current_rent_huf", 200000))
+    current_utilities_huf = float(payload.get("current_utilities_huf", 30000))
+    
+    from core.historical_engine import HistoricalEngine
+    engine = HistoricalEngine()
+    result = engine.simulate(
+        start_year, city, district, current_value,
+        down_payment_pct, loan_interest_pct, loan_term_years,
+        current_rent_huf, current_utilities_huf
+    )
+    
+    if "error" in result:
+        return jsonify({"status": "error", "message": result["error"]}), 400
+        
+    return jsonify({"status": "success", "data": result}), 200
 
 @app.route("/api/inputs", methods=["POST"])
 def store_inputs():

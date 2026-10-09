@@ -1658,4 +1658,266 @@ document.addEventListener('DOMContentLoaded', () => {
     // Kezdeti indítás
     loadInputsFromServer();
     runPythonCalculations();
+
+    // --- 9. Historikus Eredmények Kezelése ---
+    const rngHistoricalYear = document.getElementById('rngHistoricalYear');
+    const badgeHistoricalYear = document.getElementById('badgeHistoricalYear');
+    const valHistInitial = document.getElementById('valHistInitial');
+    const valHistSp500 = document.getElementById('valHistSp500');
+    const valHistRe = document.getElementById('valHistRe');
+    const valHistSpCagr = document.getElementById('valHistSpCagr');
+    const valHistReCagr = document.getElementById('valHistReCagr');
+    
+    let historicalChartInstance = null;
+    let histCashflowChartInstance = null;
+    let histDeadMoneyChartInstance = null;
+    let histLtvChartInstance = null;
+    let histEquityChartInstance = null;
+
+    async function fetchAndRenderHistorical() {
+        const startYear = parseInt(rngHistoricalYear.value);
+        const city = document.getElementById('prop_city').value || 'Budapest';
+        const district = document.getElementById('prop_district').value || 'XI. kerület';
+        const currentPrice = parseCleanNumber(document.getElementById('prop_price_total').value);
+        const downPaymentPct = parseFloat(document.getElementById('loan_down_payment_pct').value) || 20;
+        const loanInterestPct = parseFloat(document.getElementById('loan_interest_pct').value) || 6.5;
+        const loanTermYears = parseInt(document.getElementById('loan_term_years').value) || 20;
+        const currentRent = parseCleanNumber(document.getElementById('rent_monthly_huf').value) || 200000;
+        const currentUtils = parseCleanNumber(document.getElementById('rent_utilities_huf').value) || 30000;
+
+        try {
+            const response = await fetch('/api/historical_simulation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    start_year: startYear,
+                    city: city,
+                    district: district,
+                    current_property_value_huf: currentPrice,
+                    down_payment_pct: downPaymentPct,
+                    loan_interest_pct: loanInterestPct,
+                    loan_term_years: loanTermYears,
+                    current_rent_huf: currentRent,
+                    current_utilities_huf: currentUtils
+                })
+            });
+
+            if (!response.ok) return;
+            const res = await response.json();
+            if(res.status !== 'success') return;
+            
+            const data = res.data;
+            const kpi = data.kpi;
+
+            // UI Frissítés
+            valHistInitial.textContent = formatHUF(data.initial_capital_huf);
+            valHistSp500.textContent = formatHUF(kpi.final_sp_value);
+            valHistRe.textContent = formatHUF(kpi.final_re_value);
+            valHistSpCagr.textContent = kpi.sp_cagr_pct.toFixed(2) + '%';
+            valHistReCagr.textContent = kpi.re_cagr_pct.toFixed(2) + '%';
+
+            document.querySelectorAll('.dyn-start-year').forEach(el => el.textContent = startYear);
+            document.querySelectorAll('.dyn-location').forEach(el => el.textContent = data.location_used);
+
+            // Chart.js Rajzolás
+            const ctx = document.getElementById('historicalChart');
+            if(!ctx) return;
+            
+            if (historicalChartInstance) {
+                historicalChartInstance.destroy();
+            }
+
+            historicalChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.timeline,
+                    datasets: [
+                        {
+                            label: 'Bérlés (S&P 500 Nettó Vagyon)',
+                            data: data.sp500_values,
+                            borderColor: '#198754',
+                            backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Saját Lakás (Nettó Vagyon)',
+                            data: data.real_estate_values,
+                            borderColor: '#0d6efd',
+                            backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + formatHUF(context.raw);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) return (value / 1000000).toFixed(0) + ' MFt';
+                                    return formatHUF(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 1. Cashflow Chart
+            const ctxHistCashflow = document.getElementById('histCashflowChart');
+            if (histCashflowChartInstance) histCashflowChartInstance.destroy();
+            if (ctxHistCashflow) {
+                histCashflowChartInstance = new Chart(ctxHistCashflow, {
+                    type: 'bar',
+                    data: {
+                        labels: data.timeline,
+                        datasets: [
+                            {
+                                label: 'Bérlés Havi Cash-flow (Ft)',
+                                data: data.rent_cashflows,
+                                backgroundColor: 'rgba(25, 135, 84, 0.7)'
+                            },
+                            {
+                                label: 'Saját Lakás Havi Cash-flow (Ft)',
+                                data: data.buy_cashflows,
+                                backgroundColor: 'rgba(13, 110, 253, 0.7)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + formatHUF(c.raw); } } } }
+                    }
+                });
+            }
+
+            // 2. Equity Chart
+            const ctxHistEquity = document.getElementById('histEquityChart');
+            if (histEquityChartInstance) histEquityChartInstance.destroy();
+            if (ctxHistEquity) {
+                histEquityChartInstance = new Chart(ctxHistEquity, {
+                    type: 'line',
+                    data: {
+                        labels: data.timeline,
+                        datasets: [
+                            {
+                                label: 'Ingatlan Piaci Értéke (HUF)',
+                                data: data.property_market_values,
+                                borderColor: '#0dcaf0',
+                                backgroundColor: 'rgba(13, 202, 240, 0.1)',
+                                borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                            },
+                            {
+                                label: 'Fennálló Banki Tartozás (HUF)',
+                                data: data.loan_balances,
+                                borderColor: '#dc3545',
+                                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                                borderWidth: 2, pointRadius: 0, pointHitRadius: 10, fill: true, tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + formatHUF(c.raw); } } } }
+                    }
+                });
+            }
+
+            // 3. Dead Money Chart (Line)
+            const ctxHistDeadMoney = document.getElementById('histDeadMoneyChart');
+            if (histDeadMoneyChartInstance) histDeadMoneyChartInstance.destroy();
+            if (ctxHistDeadMoney) {
+                histDeadMoneyChartInstance = new Chart(ctxHistDeadMoney, {
+                    type: 'line',
+                    data: {
+                        labels: data.timeline,
+                        datasets: [
+                            {
+                                label: 'Bérlés Halmozott Költségek (Bérleti díj + Rezsi)',
+                                data: data.dead_money_rent,
+                                borderColor: '#dc3545',
+                                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: 'Saját Lakás Halmozott Költségek (Kamat + Karbantartás)',
+                                data: data.dead_money_buy,
+                                borderColor: '#ffc107',
+                                backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + formatHUF(c.raw); } } } }
+                    }
+                });
+            }
+
+            // 3. LTV Chart
+            const ctxHistLtv = document.getElementById('histLtvChart');
+            if (histLtvChartInstance) histLtvChartInstance.destroy();
+            if (ctxHistLtv) {
+                histLtvChartInstance = new Chart(ctxHistLtv, {
+                    type: 'line',
+                    data: {
+                        labels: data.timeline,
+                        datasets: [{
+                            label: 'LTV (%)',
+                            data: data.ltv_values,
+                            borderColor: '#fd7e14',
+                            backgroundColor: 'rgba(253, 126, 20, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.raw.toFixed(1) + '%'; } } } }
+                    }
+                });
+            }
+
+        } catch (err) {
+            console.error("Hiba a historikus adatok lekérésekor:", err);
+        }
+    }
+
+    if (rngHistoricalYear) {
+        rngHistoricalYear.addEventListener('input', (e) => {
+            badgeHistoricalYear.textContent = e.target.value;
+        });
+        rngHistoricalYear.addEventListener('change', fetchAndRenderHistorical);
+    }
+    
+    // Frissítés tab váltáskor is, ha a historical tab aktív
+    const tabBtnHistorical = document.getElementById('tab-btn-historical');
+    if(tabBtnHistorical) {
+        tabBtnHistorical.addEventListener('shown.bs.tab', () => {
+            fetchAndRenderHistorical();
+        });
+    }
+
+
 });

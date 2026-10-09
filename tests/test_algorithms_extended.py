@@ -68,14 +68,17 @@ def test_ai_adjusted_suggestions():
         "suggested_price_total_huf": 50000000,
     }
     ai = {
-        "adjustments": {
-            "furnishing": {"factor": 1.1},
-            "rent": {"factor": 1.2},
-            "utilities": {"factor": 0.9},
-            "price_per_sqm": {"factor": 1.05},
+        "property": {
+            "furnishing_adjustment_huf": 100000,
+            "market_value_adjustment_pct": 5.0
+        },
+        "rent": {
+            "rent_adjustment_pct": 20.0,
+            "utilities_adjustment_pct": -10.0
         }
     }
     adj = calculate_ai_adjusted_suggestions(base, ai)
     assert adj["suggested_furnishing_huf"] == 1100000
     assert adj["suggested_rent_huf"] == 240000
     assert adj["suggested_utilities_huf"] == 27000
+    assert adj["suggested_price_total_huf"] == 52500000

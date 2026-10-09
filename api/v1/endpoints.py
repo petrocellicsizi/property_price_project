@@ -85,13 +85,13 @@ def sensitivity_analysis():
             "errors": err.errors()
         }), 422
 
-    interest_rates = payload.get("interest_rates", None)
+    etf_return_range = payload.get("etf_return_range", None)
     property_growth_rates = payload.get("property_growth_rates", None)
 
     try:
         engine = QuantitativeSimulationEngine(validated_base.model_dump())
         matrix_data = engine.compute_sensitivity_matrix(
-            interest_rate_range=interest_rates,
+            etf_return_range=etf_return_range,
             property_growth_range=property_growth_rates
         )
         return jsonify({

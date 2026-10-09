@@ -72,11 +72,11 @@ def test_sensitivity_matrix_computation():
     rates = [0.05, 0.07]
     growths = [0.03, 0.06]
     matrix = engine.compute_sensitivity_matrix(
-        interest_rate_range=rates,
+        etf_return_range=rates,
         property_growth_range=growths
     )
     
-    assert matrix["interest_rates_pct"] == [5.0, 7.0]
+    assert matrix["etf_rates_pct"] == [5.0, 7.0]
     assert matrix["property_growth_rates_pct"] == [3.0, 6.0]
-    assert len(matrix["bep_years_matrix"]) == 2
-    assert len(matrix["bep_years_matrix"][0]) == 2
+    assert len(matrix["wealth_difference_matrix"]) == 2
+    assert len(matrix["wealth_difference_matrix"][0]) == 2
