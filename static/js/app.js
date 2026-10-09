@@ -67,6 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const lblMonthlyReturnRate = document.getElementById('lblMonthlyReturnRate');
     const badgeTotalInitialOutlay = document.getElementById('badgeTotalInitialOutlay');
 
+    // Állami támogatások mezők
+    const chkCsokPlusz = document.getElementById('chk_csok_plusz');
+    const chkBabavaro = document.getElementById('chk_babavaro');
+    const babavaroOptions = document.getElementById('babavaro_options');
+    const radBabavaroUnder90 = document.getElementById('rad_babavaro_under_90');
+    const radBabavaroOver90 = document.getElementById('rad_babavaro_over_90');
+
     // Egyéb releváns információk (4 kategória szövegdobozai)
     const propOtherInfo = document.getElementById('prop_other_info');
     const loanOtherInfo = document.getElementById('loan_other_info');
@@ -531,6 +538,38 @@ document.addEventListener('DOMContentLoaded', () => {
         el.addEventListener('input', triggerPythonCalculations);
     });
 
+    // Állami támogatások események
+    if (chkCsokPlusz) {
+        chkCsokPlusz.addEventListener('change', triggerPythonCalculations);
+    }
+
+    let previousBabavaroValue = 0;
+    function applyBabavaroDownPayment() {
+        if (!chkBabavaro) return;
+        
+        let currentHuf = parseCleanNumber(loanDownPaymentHuf.value);
+        // Előző hozzáadott érték levonása
+        currentHuf = Math.max(0, currentHuf - previousBabavaroValue);
+        
+        let newBabavaroValue = 0;
+        if (chkBabavaro.checked) {
+            babavaroOptions.classList.remove('d-none');
+            newBabavaroValue = radBabavaroUnder90.checked ? 8250000 : 11000000;
+        } else {
+            babavaroOptions.classList.add('d-none');
+        }
+        
+        currentHuf += newBabavaroValue;
+        previousBabavaroValue = newBabavaroValue;
+        
+        loanDownPaymentHuf.value = formatWithDots(currentHuf);
+        updateLoanFromDownPaymentHuf(); // Ez frissíti az arányt és hitelt, és hívja a Pythont
+    }
+
+    if (chkBabavaro) chkBabavaro.addEventListener('change', applyBabavaroDownPayment);
+    if (radBabavaroUnder90) radBabavaroUnder90.addEventListener('change', applyBabavaroDownPayment);
+    if (radBabavaroOver90) radBabavaroOver90.addEventListener('change', applyBabavaroDownPayment);
+
     // --- 6. Form Adatok Összegyűjtése ---
     function collectFormData() {
         const manualPmtStr = loanMonthlyPayment.value.trim();
@@ -560,7 +599,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 interest_rate_annual_pct: parseFloat(loanInterestPct.value) || 0,
                 other_fees_huf: parseCleanNumber(loanOtherFeesHuf.value),
                 monthly_payment_huf: manualPmt,
-                other_info: loanOtherInfo ? loanOtherInfo.value.trim() : ""
+                other_info: loanOtherInfo ? loanOtherInfo.value.trim() : "",
+                csok_plusz: chkCsokPlusz ? chkCsokPlusz.checked : false,
+                babavaro: chkBabavaro ? chkBabavaro.checked : false,
+                babavaro_under_90: radBabavaroUnder90 ? radBabavaroUnder90.checked : true
             },
             rent: {
                 monthly_rent_huf: parseCleanNumber(rentMonthlyHuf.value),
@@ -718,7 +760,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 8. Szerver Adatmentés (POST /api/inputs) ---
-    async function saveInputsToServer(profileName) {
+    async function saveInputsToServer(profileName, shouldSaveProfile = true) {
+        if (!profileName) profileName = 'Utolsó szimuláció';
         const payload = collectFormData();
 
         // UI töltési állapot kijelzés
@@ -755,7 +798,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             if (response.ok) {
-                showAlert('Sikeres mentés & AI elemzés!', `A(z) "${profileName}" profil sikeresen mentve.`, 'success');
+                if (shouldSaveProfile) {
+                    showAlert('Sikeres mentés & AI elemzés!', `A(z) "${profileName}" profil sikeresen mentve.`, 'success');
+                }
                 if (result.gemini_analysis) {
                     renderGeminiAnalysis(result.gemini_analysis);
                 }
@@ -766,8 +811,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     applyAiAdjustedSuggestionsToUI(result.ai_adjusted_suggestions);
                 }
                 
-                // Mentsük el LocalStorage-be
-                saveProfileToLocal(profileName, payload, result.gemini_analysis, result.ai_adjusted_suggestions);
+                // Mentsük el LocalStorage-be, de csak ha valóban mentés
+                if (shouldSaveProfile) {
+                    saveProfileToLocal(profileName, payload, result.gemini_analysis, result.ai_adjusted_suggestions);
+                }
                 
             } else {
                 showAlert('Hiba a mentés során!', result.message || 'Ismeretlen hiba történt.', 'danger');
@@ -990,6 +1037,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsSection = document.getElementById('resultsSection');
 
     btnSaveTop.addEventListener('click', () => {
+        const payload = collectFormData();
+        if (!payload.property.price_total_huf || !payload.property.size_sqm || !payload.rent.monthly_rent_huf) {
+            showAlert('Hiányzó adatok', 'Kérjük, töltsd ki a kötelező mezőket (ingatlan vételára, alapterülete, havi albérlet díja) a mentéshez!', 'danger');
+            return;
+        }
+
         const profileName = prompt("Add meg a mentendő profil nevét:", "Saját szimuláció");
         if (!profileName || profileName.trim() === "") return;
         saveInputsToServer(profileName.trim());
@@ -1002,7 +1055,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (btnRunSimulation) {
         btnRunSimulation.addEventListener('click', () => {
-            saveInputsToServer();
+            const payload = collectFormData();
+            if (!payload.property.price_total_huf || !payload.property.size_sqm || !payload.rent.monthly_rent_huf) {
+                showAlert('Hiányzó adatok', 'Kérjük, töltsd ki a kötelező mezőket (ingatlan vételára, alapterülete, havi albérlet díja) a szimuláció indításához!', 'danger');
+                return;
+            }
+
+            saveInputsToServer('Utolsó szimuláció', false);
             if (cardAiSummary) cardAiSummary.classList.remove('d-none');
             
             // Bootstrap Tab váltás JS-ből

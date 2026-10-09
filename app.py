@@ -163,13 +163,16 @@ def calculate_metrics():
     other_fees = parse_clean_number(loan.get("other_fees_huf", 120000))
     furnishing = parse_clean_number(prop.get("furnishing_cost_huf", suggested_furnishing))
 
+    csok_plusz = loan.get("csok_plusz", False)
+    applied_transfer_tax_rate = 0.0 if csok_plusz else base_params.get("transfer_tax_rate", 0.04)
+
     total_initial_outlay = calculate_total_initial_outlay(
         down_payment_huf=down_payment,
         lawyer_fee_huf=lawyer_fee,
         other_fees_huf=other_fees,
         furnishing_cost_huf=furnishing,
         price_total_huf=price_total,
-        transfer_tax_rate=base_params.get("transfer_tax_rate", 0.04)
+        transfer_tax_rate=applied_transfer_tax_rate
     )
 
     # Befektetési havi ráta
@@ -191,7 +194,7 @@ def calculate_metrics():
         "property_size_sqm": size,
         "price_per_sqm": int(prop.get("price_per_sqm_huf", suggested_price_per_sqm)),
         "down_payment_ratio": parse_clean_number(loan.get("down_payment_pct", base_params.get("down_payment_ratio", 0.25) * 100)) / 100.0,
-        "transfer_tax_rate": base_params.get("transfer_tax_rate", 0.04),
+        "transfer_tax_rate": applied_transfer_tax_rate,
         "legal_fee_rate": parse_clean_number(prop.get("lawyer_fee_pct", base_params.get("legal_fee_rate", 0.01) * 100)) / 100.0,
         "renovation_cost_initial": parse_clean_number(prop.get("furnishing_cost_huf", suggested_furnishing)),
         "loan_interest_rate_annual": parse_clean_number(loan.get("interest_rate_annual_pct", base_params.get("loan_interest_rate_annual", 0.065) * 100)) / 100.0,
