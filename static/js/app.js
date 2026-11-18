@@ -161,6 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' Ft';
     }
 
+    function formatSignedHuf(val) {
+        if (val === null || val === undefined || isNaN(val) || val === '') return '0 Ft';
+        const num = Math.round(Number(val));
+        const sign = num > 0 ? '+' : (num < 0 ? '-' : '');
+        const absStr = Math.abs(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        return `${sign}${absStr} Ft`;
+    }
+
     // Pontozott formázás minden .format-huf mezőre gépeléskor
     const moneyInputs = document.querySelectorAll('.format-huf');
     moneyInputs.forEach(input => {
@@ -274,14 +282,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // --- Új: Kvantitatív Megtérülési Szimuláció (Chart.js) Renderelése ---
+            lastCalculationRaw = raw;
+            lastCalculationFmt = fmt;
             if (raw.simulation) {
+                lastSimulationData = raw.simulation;
                 renderWealthChart(raw.simulation);
             }
             if (raw.sensitivity) {
+                lastSensitivityData = raw.sensitivity;
                 renderHeatmap(raw.sensitivity);
             }
             // --- ÚJ: Szcenárióelemzés & Valószínűségi Modell Táblázat Renderelése ---
             if (raw.scenarios) {
+                lastScenariosData = raw.scenarios;
                 renderScenarioAnalysis(raw.scenarios);
             }
         } catch (err) {
@@ -1084,6 +1097,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 7/C. Szcenárióelemzés & Valószínűségi Modell Renderelése (Fekete doboz feloldása) ---
     function renderScenarioAnalysis(scenariosData) {
+        lastScenariosData = scenariosData;
         if (!scenariosData) return;
         const metrics = scenariosData.metrics || {};
         const scenarios = scenariosData.scenarios || [];
@@ -1657,6 +1671,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 9. Vagyonfelhalmozási Chart.js Rajzolás ---
+    let lastSimulationData = null;
+    let lastSensitivityData = null;
+    let lastScenariosData = null;
+    let lastCalculationRaw = null;
+    let lastCalculationFmt = null;
+
     let wealthChartInstance = null;
     let simCheaperChartInstance = null;
     let cashflowChartInstance = null;
@@ -1680,6 +1700,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const badgeBreakEven = document.getElementById('badgeBreakEven');
 
     function renderWealthChart(simulation) {
+        lastSimulationData = simulation;
         if (!simulation || !simulation.trajectories) return;
 
         const summary = simulation.summary;
@@ -1974,6 +1995,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Új: Heatmap Renderelése ---
     function renderHeatmap(sensitivity) {
+        lastSensitivityData = sensitivity;
         const container = document.getElementById('heatmapContainer');
         if (!container || !sensitivity) return;
         
@@ -2523,91 +2545,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tabBtnHistorical.addEventListener('shown.bs.tab', () => {
             fetchAndRenderHistorical();
         });
-    }
-
-    // --- 10. PDF Export Funkció (html2pdf.js) ---
-    const btnExportPdfTop = document.getElementById('btnExportPdfTop');
-    const btnExportPdfResults = document.getElementById('btnExportPdfResults');
-
-    async function exportToPdf(buttonEl) {
-        const originalText = buttonEl ? buttonEl.innerHTML : '';
-        if (buttonEl) {
-            buttonEl.disabled = true;
-            buttonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> PDF készítése...';
-        }
-
-        try {
-            // 1. Győződjünk meg róla, hogy az Eredmények tab látható, hogy a grafikonok és táblázatok renderelve legyenek
-            const tabBtn = document.getElementById('tab-btn-results');
-            const tabPane = document.getElementById('tab-results');
-            if (tabBtn && tabPane && !tabPane.classList.contains('active')) {
-                const bsTab = bootstrap.Tab.getInstance(tabBtn) || new bootstrap.Tab(tabBtn);
-                bsTab.show();
-                await new Promise(resolve => setTimeout(resolve, 350));
-            }
-
-            // 2. Ha még nincsenek legenerálva a grafikonok, futtassuk le a kalkulációt
-            if (!wealthChartInstance) {
-                await runPythonCalculations();
-                await new Promise(resolve => setTimeout(resolve, 350));
-            }
-
-            const sourceEl = document.getElementById('resultsSection');
-            if (!sourceEl) {
-                throw new Error("A szimulációs eredmény szekció nem található!");
-            }
-
-            // 3. Rejtsük el az interaktív gombokat, range csúszkákat a PDF generálás idejére
-            const buttonsToHide = sourceEl.querySelectorAll('button, .btn, input[type="range"]');
-            buttonsToHide.forEach(el => {
-                el.setAttribute('data-pdf-orig-disp', el.style.display);
-                el.style.display = 'none';
-            });
-
-            const dateStr = new Date().toISOString().slice(0, 10);
-            const opt = {
-                margin: [8, 8, 8, 8],
-                filename: `lakas_vs_berles_szimulacio_${dateStr}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    windowWidth: 1200
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-            };
-
-            if (window.html2pdf) {
-                await html2pdf().set(opt).from(sourceEl).save();
-            } else {
-                window.print();
-            }
-
-            // 4. Állítsuk vissza a gombokat
-            buttonsToHide.forEach(el => {
-                const orig = el.getAttribute('data-pdf-orig-disp');
-                el.style.display = orig || '';
-                el.removeAttribute('data-pdf-orig-disp');
-            });
-
-        } catch (err) {
-            console.error("PDF exportálási hiba:", err);
-            alert("A PDF generálása során hiba lépett fel. Próbáld meg a böngésző Nyomtatás (Ctrl+P -> Mentés PDF-ként) funkcióját!");
-        } finally {
-            if (buttonEl) {
-                buttonEl.disabled = false;
-                buttonEl.innerHTML = originalText;
-            }
-        }
-    }
-
-    if (btnExportPdfTop) {
-        btnExportPdfTop.addEventListener('click', () => exportToPdf(btnExportPdfTop));
-    }
-    if (btnExportPdfResults) {
-        btnExportPdfResults.addEventListener('click', () => exportToPdf(btnExportPdfResults));
     }
 
 });
