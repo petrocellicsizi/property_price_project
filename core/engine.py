@@ -408,6 +408,23 @@ class QuantitativeSimulationEngine:
                 valid_bep_weighted_sum += (prob / 100.0) * bep_yr
                 valid_bep_prob_sum += (prob / 100.0)
 
+            # Éves felbontású mintavételezés a legyeződiagramhoz (Fan Chart)
+            traj_data = res["trajectories"]
+            w_delta_traj = traj_data.get("wealth_delta", [])
+            w_buy_traj = traj_data.get("buy_net_worth", [])
+            w_rent_traj = traj_data.get("rent_net_worth", [])
+            n_months = len(w_delta_traj)
+
+            annual_wealth_delta = []
+            annual_buy_net_worth = []
+            annual_rent_net_worth = []
+
+            for yr in range(self.sim_years + 1):
+                idx = min(int(round(yr * 12)), n_months - 1) if n_months > 0 else 0
+                annual_wealth_delta.append(float(w_delta_traj[idx]) if n_months > 0 else 0.0)
+                annual_buy_net_worth.append(float(w_buy_traj[idx]) if n_months > 0 else 0.0)
+                annual_rent_net_worth.append(float(w_rent_traj[idx]) if n_months > 0 else 0.0)
+
             scenarios_results.append({
                 "id": s["id"],
                 "name": s["name"],
@@ -425,8 +442,13 @@ class QuantitativeSimulationEngine:
                 "wealth_delta_10y": diff_10y,
                 "wealth_delta_20y": diff_20y,
                 "wealth_delta_30y": diff_30y,
+                "wealth_delta_terminal": diff_30y,
                 "formatted_delta_10y": format_huf(diff_10y),
                 "formatted_delta_30y": format_huf(diff_30y),
+                "formatted_delta_terminal": format_huf(diff_30y),
+                "annual_wealth_delta": annual_wealth_delta,
+                "annual_buy_net_worth": annual_buy_net_worth,
+                "annual_rent_net_worth": annual_rent_net_worth,
                 "winner": "Saját lakás" if is_buy_winner else "Bérlés & Befektetés",
                 "winner_class": "badge bg-success" if is_buy_winner else "badge bg-danger"
             })
@@ -451,13 +473,26 @@ class QuantitativeSimulationEngine:
             risk_profile = "Magas alternatív költség kockázat"
             recommendation = "A jelenlegi piaci árazás és kamatok mellett a bérlés és a tőkepiaci befektetés kombinációja magasabb valószínűséggel vezet nagyobb vagyonhoz."
 
+        # Várható érték éves pályája a Fan Chart EV vonalához
+        expected_annual_wealth_delta = [0.0] * (self.sim_years + 1)
+        for yr in range(self.sim_years + 1):
+            expected_annual_wealth_delta[yr] = round(
+                sum((s["probability_pct"] / 100.0) * s["annual_wealth_delta"][yr] for s in scenarios_results),
+                0
+            )
+
         return {
             "scenarios": scenarios_results,
             "metrics": {
+                "simulation_years": self.sim_years,
+                "timeline_years": list(range(self.sim_years + 1)),
                 "buy_win_probability_pct": round(buy_win_prob, 1),
                 "rent_win_probability_pct": round(rent_win_prob, 1),
                 "expected_wealth_delta_30y": round(expected_diff_30y, 0),
                 "formatted_expected_wealth_delta_30y": format_huf(round(expected_diff_30y, 0)),
+                "expected_wealth_delta_terminal": round(expected_diff_30y, 0),
+                "formatted_expected_wealth_delta_terminal": format_huf(round(expected_diff_30y, 0)),
+                "expected_annual_wealth_delta": expected_annual_wealth_delta,
                 "expected_break_even_year": expected_bep,
                 "expected_break_even_display": bep_display,
                 "risk_profile": risk_profile,

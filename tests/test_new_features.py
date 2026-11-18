@@ -172,3 +172,26 @@ def test_scenarios_sensitivity_expensive_vs_cheap_market():
     assert cheap_metrics["expected_break_even_year"] is not None
     assert cheap_metrics["expected_break_even_year"] < 7.0
 
+
+def test_scenario_annual_trajectories_and_dynamic_years():
+    params_15y = {
+        **SCENARIOS["base"]["params"],
+        "simulation_years": 15
+    }
+    engine = QuantitativeSimulationEngine(params_15y)
+    res = engine.compute_scenario_analysis()
+    metrics = res["metrics"]
+    scenarios = res["scenarios"]
+
+    assert metrics["simulation_years"] == 15
+    assert len(metrics["timeline_years"]) == 16  # 0 to 15
+    assert len(metrics["expected_annual_wealth_delta"]) == 16
+
+    for s in scenarios:
+        assert len(s["annual_wealth_delta"]) == 16
+        assert len(s["annual_buy_net_worth"]) == 16
+        assert len(s["annual_rent_net_worth"]) == 16
+        assert "wealth_delta_terminal" in s
+        assert "formatted_delta_terminal" in s
+
+

@@ -594,6 +594,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update all dynamic-year elements in the UI
             const dynamicYears = document.querySelectorAll('.dynamic-year');
             dynamicYears.forEach(el => el.textContent = newVal);
+
+            // Ha van már betöltött szcenárió adat, szinkronizáljuk a szcenárióelemzést és a legyeződiagramot
+            if (lastScenariosData) {
+                renderScenarioAnalysis(lastScenariosData, true);
+            }
             
             triggerPythonCalculations();
         });
@@ -1096,11 +1101,372 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 7/C. Szcenárióelemzés & Valószínűségi Modell Renderelése (Fekete doboz feloldása) ---
-    function renderScenarioAnalysis(scenariosData) {
+    function getScenarioDeltaAtYear(s, targetYear) {
+        if (s.annual_wealth_delta && s.annual_wealth_delta.length > 0) {
+            const idx = Math.min(Math.max(0, targetYear), s.annual_wealth_delta.length - 1);
+            return s.annual_wealth_delta[idx];
+        }
+        if (targetYear === 10 && s.wealth_delta_10y !== undefined) return s.wealth_delta_10y;
+        if (targetYear === 20 && s.wealth_delta_20y !== undefined) return s.wealth_delta_20y;
+        return s.wealth_delta_terminal ?? s.wealth_delta_30y ?? 0;
+    }
+
+    function renderScenarioFanChart(scenariosData, weights, mode, targetYear) {
+        const ctxFan = document.getElementById('scenarioFanChart');
+        if (!ctxFan || !scenariosData || !scenariosData.scenarios) return;
+
+        const scenarios = scenariosData.scenarios;
+        const safeTargetYear = Math.max(5, Math.min(50, targetYear || 30));
+        const labels = [];
+        for (let y = 0; y <= safeTargetYear; y++) {
+            labels.push(`${y}. év`);
+        }
+
+        // Súlyozási összeg
+        let totalWeight = 0;
+        scenarios.forEach(s => {
+            totalWeight += (weights[s.id] ?? s.probability_pct ?? 25);
+        });
+
+        // EV (súlyozott várható érték) görbe számítása évről évre
+        const evAnnual = [];
+        for (let y = 0; y <= safeTargetYear; y++) {
+            let sumY = 0;
+            scenarios.forEach(s => {
+                const normW = totalWeight > 0 ? ((weights[s.id] ?? s.probability_pct ?? 25) / totalWeight) : (1.0 / scenarios.length);
+                const valY = (s.annual_wealth_delta && y < s.annual_wealth_delta.length)
+                    ? s.annual_wealth_delta[y]
+                    : (y === 0 ? 0 : (s.wealth_delta_terminal ?? s.wealth_delta_30y ?? 0) * (y / safeTargetYear));
+                sumY += normW * valY;
+            });
+            evAnnual.push(Math.round(sumY));
+        }
+
+        const datasets = [];
+
+        if (mode === 'delta') {
+            // 1. Break-Even 0 Ft határvonal
+            datasets.push({
+                label: 'Break-Even határ (0 Ft)',
+                data: new Array(safeTargetYear + 1).fill(0),
+                borderColor: 'rgba(108, 117, 125, 0.55)',
+                borderWidth: 1.5,
+                borderDash: [4, 4],
+                pointRadius: 0,
+                fill: false,
+                order: 10
+            });
+
+            // 2. Egyedi szcenárió vonalak
+            const styleMap = {
+                'bull': { label: 'Bull Case (Konjunktúra)', color: '#198754', width: 2, dash: [] },
+                'base': { label: 'Base Case (Alap forgatókönyv)', color: '#0d6efd', width: 2.5, dash: [] },
+                'bear': { label: 'Bear Case (Pesszimista)', color: '#dc3545', width: 2, dash: [] },
+                'market_surge': { label: 'Market Surge (Tőkepiaci rali)', color: '#ffc107', width: 2, dash: [4, 4] }
+            };
+
+            scenarios.forEach(s => {
+                const style = styleMap[s.id] || { label: s.name, color: '#6c757d', width: 2, dash: [] };
+                const curveData = [];
+                for (let y = 0; y <= safeTargetYear; y++) {
+                    const valY = (s.annual_wealth_delta && y < s.annual_wealth_delta.length)
+                        ? s.annual_wealth_delta[y]
+                        : (y === 0 ? 0 : (s.wealth_delta_terminal ?? s.wealth_delta_30y ?? 0) * (y / safeTargetYear));
+                    curveData.push(Math.round(valY));
+                }
+                datasets.push({
+                    label: style.label,
+                    data: curveData,
+                    borderColor: style.color,
+                    backgroundColor: 'transparent',
+                    borderWidth: style.width,
+                    borderDash: style.dash,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    tension: 0.15,
+                    fill: false,
+                    order: 5
+                });
+            });
+
+            // 3. Súlyozott Várható Érték (EV) kiemelt lila vonal
+            datasets.push({
+                label: 'Súlyozott Várható Érték (EV)',
+                data: evAnnual,
+                borderColor: '#6f42c1',
+                backgroundColor: 'rgba(111, 66, 193, 0.08)',
+                borderWidth: 3.5,
+                borderDash: [6, 4],
+                pointRadius: 0,
+                pointHoverRadius: 7,
+                tension: 0.15,
+                fill: false,
+                order: 1
+            });
+        } else {
+            // Wealth Mode: Saját lakás vagyonpályák és Bérlés referencia
+            const styleMap = {
+                'bull': { label: 'Bull Case (Saját lakás vagyon)', color: '#198754', width: 2 },
+                'base': { label: 'Base Case (Saját lakás vagyon)', color: '#0d6efd', width: 2.5 },
+                'bear': { label: 'Bear Case (Saját lakás vagyon)', color: '#dc3545', width: 2 },
+                'market_surge': { label: 'Market Surge (Saját lakás vagyon)', color: '#ffc107', width: 2 }
+            };
+
+            scenarios.forEach(s => {
+                const style = styleMap[s.id] || { label: s.name, color: '#6c757d', width: 2 };
+                const curveData = [];
+                for (let y = 0; y <= safeTargetYear; y++) {
+                    const valY = (s.annual_buy_net_worth && y < s.annual_buy_net_worth.length)
+                        ? s.annual_buy_net_worth[y]
+                        : 0;
+                    curveData.push(Math.round(valY));
+                }
+                datasets.push({
+                    label: style.label,
+                    data: curveData,
+                    borderColor: style.color,
+                    borderWidth: style.width,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    tension: 0.15,
+                    fill: false
+                });
+            });
+
+            // Bérlés + ETF (Alap pálya) referenciavonal
+            const baseScen = scenarios.find(s => s.id === 'base') || scenarios[0];
+            if (baseScen && baseScen.annual_rent_net_worth) {
+                const rentData = [];
+                for (let y = 0; y <= safeTargetYear; y++) {
+                    const valY = y < baseScen.annual_rent_net_worth.length ? baseScen.annual_rent_net_worth[y] : 0;
+                    rentData.push(Math.round(valY));
+                }
+                datasets.push({
+                    label: 'Bérlés + ETF (Alap pálya)',
+                    data: rentData,
+                    borderColor: '#fd7e14',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    tension: 0.15,
+                    fill: false
+                });
+            }
+        }
+
+        if (scenarioFanChartInstance) {
+            scenarioFanChartInstance.data.labels = labels;
+            scenarioFanChartInstance.data.datasets = datasets;
+            scenarioFanChartInstance.options.scales.y.title.text = mode === 'delta' 
+                ? 'Vagyoni Különbség (Saját - Bérlés HUF)' 
+                : 'Nettó Vagyon (HUF)';
+            scenarioFanChartInstance.update();
+        } else {
+            scenarioFanChartInstance = new Chart(ctxFan, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                boxWidth: 14,
+                                font: { size: 11 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const val = context.parsed.y;
+                                    const label = context.dataset.label || '';
+                                    if (mode === 'delta') {
+                                        return `${label}: ${formatSignedHuf(val)}`;
+                                    } else {
+                                        return `${label}: ${formatHUF(val)}`;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Szimulációs időtáv' },
+                            ticks: { font: { size: 11 } }
+                        },
+                        y: {
+                            title: { 
+                                display: true, 
+                                text: mode === 'delta' ? 'Vagyoni Különbség (Saját - Bérlés HUF)' : 'Nettó Vagyon (HUF)' 
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return (value / 1000000).toFixed(0) + ' M Ft';
+                                },
+                                font: { size: 11 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function initScenarioControls() {
+        const btnModeDelta = document.getElementById('btnScenarioModeDelta');
+        const btnModeWealth = document.getElementById('btnScenarioModeWealth');
+        if (btnModeDelta && btnModeWealth) {
+            btnModeDelta.addEventListener('click', () => {
+                currentScenarioChartMode = 'delta';
+                btnModeDelta.classList.add('active', 'btn-outline-primary');
+                btnModeDelta.classList.remove('btn-outline-secondary');
+                btnModeWealth.classList.remove('active', 'btn-outline-primary');
+                btnModeWealth.classList.add('btn-outline-secondary');
+                const leg = document.getElementById('txtScenarioFanChartLegend');
+                if (leg) {
+                    leg.innerHTML = '<strong>0 Ft-os referenciavonal:</strong> A vízszintes tengely felett a saját lakás, alatta a bérlés & befektetés fölényét jelzi. A lila vonal az interaktívan súlyozott várható érték (EV).';
+                }
+                if (lastScenariosData) renderScenarioAnalysis(lastScenariosData, false);
+            });
+            btnModeWealth.addEventListener('click', () => {
+                currentScenarioChartMode = 'wealth';
+                btnModeWealth.classList.add('active', 'btn-outline-primary');
+                btnModeWealth.classList.remove('btn-outline-secondary');
+                btnModeDelta.classList.remove('active', 'btn-outline-primary');
+                btnModeDelta.classList.add('btn-outline-secondary');
+                const leg = document.getElementById('txtScenarioFanChartLegend');
+                if (leg) {
+                    leg.innerHTML = '<strong>Vagyonpályák:</strong> A saját lakás nettó vagyonának alakulása az egyes piaci környezetekben a bérléshez képest.';
+                }
+                if (lastScenariosData) renderScenarioAnalysis(lastScenariosData, false);
+            });
+        }
+
+        // Gyorsprofil gombok
+        const pDefault = document.getElementById('btnPresetDefault');
+        const pBear = document.getElementById('btnPresetBear');
+        const pBull = document.getElementById('btnPresetBull');
+        const pTech = document.getElementById('btnPresetTech');
+        const pNorm = document.getElementById('btnNormalizeProb');
+
+        if (pDefault) {
+            pDefault.addEventListener('click', () => {
+                currentScenarioWeights = { base: 50, bull: 20, bear: 20, market_surge: 10 };
+                if (lastScenariosData) renderScenarioAnalysis(lastScenariosData, true);
+            });
+        }
+        if (pBear) {
+            pBear.addEventListener('click', () => {
+                currentScenarioWeights = { base: 20, bull: 10, bear: 50, market_surge: 20 };
+                if (lastScenariosData) renderScenarioAnalysis(lastScenariosData, true);
+            });
+        }
+        if (pBull) {
+            pBull.addEventListener('click', () => {
+                currentScenarioWeights = { base: 30, bull: 50, bear: 10, market_surge: 10 };
+                if (lastScenariosData) renderScenarioAnalysis(lastScenariosData, true);
+            });
+        }
+        if (pTech) {
+            pTech.addEventListener('click', () => {
+                currentScenarioWeights = { base: 20, bull: 10, bear: 20, market_surge: 50 };
+                if (lastScenariosData) renderScenarioAnalysis(lastScenariosData, true);
+            });
+        }
+        if (pNorm) {
+            pNorm.addEventListener('click', () => {
+                const ids = ['base', 'bull', 'bear', 'market_surge'];
+                let sum = 0;
+                ids.forEach(id => { sum += (currentScenarioWeights[id] || 0); });
+                if (sum > 0) {
+                    let allocated = 0;
+                    ids.forEach((id, idx) => {
+                        if (idx === ids.length - 1) {
+                            currentScenarioWeights[id] = 100 - allocated;
+                        } else {
+                            const val = Math.round((currentScenarioWeights[id] / sum) * 100);
+                            currentScenarioWeights[id] = val;
+                            allocated += val;
+                        }
+                    });
+                } else {
+                    currentScenarioWeights = { base: 50, bull: 20, bear: 20, market_surge: 10 };
+                }
+                if (lastScenariosData) renderScenarioAnalysis(lastScenariosData, true);
+            });
+        }
+    }
+
+    function renderScenarioAnalysis(scenariosData, rebuildTable = true) {
         lastScenariosData = scenariosData;
         if (!scenariosData) return;
         const metrics = scenariosData.metrics || {};
         const scenarios = scenariosData.scenarios || [];
+        if (!scenarios.length) return;
+
+        // Időtáv szinkronizálása
+        const targetYear = parseInt(document.getElementById('rngSimYears')?.value || 30);
+        const midYear = targetYear <= 10 ? Math.max(1, Math.round(targetYear / 2)) : 10;
+
+        // Címkék dinamikus frissítése
+        const dynamicYears = document.querySelectorAll('.dynamic-year');
+        dynamicYears.forEach(el => el.textContent = targetYear);
+
+        const thMid = document.getElementById('thScenarioColMid');
+        if (thMid) thMid.textContent = `${midYear}. Évi Előny`;
+        const thTerm = document.getElementById('thScenarioColTerminal');
+        if (thTerm) thTerm.innerHTML = `<span class="dynamic-year">${targetYear}</span>. Évi Végső Előny`;
+
+        // Súlyozási összeg kiszámítása
+        let totalWeight = 0;
+        scenarios.forEach(s => {
+            if (currentScenarioWeights[s.id] === undefined) {
+                currentScenarioWeights[s.id] = s.probability_pct ?? 25;
+            }
+            totalWeight += currentScenarioWeights[s.id];
+        });
+
+        const badgeTotalProb = document.getElementById('badgeTotalProb');
+        if (badgeTotalProb) {
+            badgeTotalProb.textContent = `Összesen: ${totalWeight}%`;
+            badgeTotalProb.className = `badge ${totalWeight === 100 ? 'bg-success' : 'bg-warning text-dark'}`;
+        }
+
+        // Metrikák újraszámítása az interaktív súlyok és az aktuális targetYear alapján
+        let buyWinProb = 0.0;
+        let rentWinProb = 0.0;
+        let expectedDelta = 0.0;
+        let validBepWeightedSum = 0.0;
+        let validBepWeightSum = 0.0;
+
+        scenarios.forEach(s => {
+            const rawW = currentScenarioWeights[s.id] ?? s.probability_pct ?? 25;
+            const normW = totalWeight > 0 ? (rawW / totalWeight) : (1.0 / scenarios.length);
+            const deltaTarget = getScenarioDeltaAtYear(s, targetYear);
+            const isBuyWinner = deltaTarget > 0;
+
+            if (isBuyWinner) {
+                buyWinProb += normW * 100.0;
+            } else {
+                rentWinProb += normW * 100.0;
+            }
+
+            expectedDelta += normW * deltaTarget;
+
+            if (s.break_even_year !== null && s.break_even_year !== undefined) {
+                validBepWeightedSum += normW * s.break_even_year;
+                validBepWeightSum += normW;
+            }
+        });
 
         // KPI kártyák frissítése
         const valBuyWin = document.getElementById('valScenarioBuyWinProb');
@@ -1112,110 +1478,155 @@ document.addEventListener('DOMContentLoaded', () => {
         const badgeRiskProfile = document.getElementById('badgeScenarioRiskProfile');
         const valRec = document.getElementById('valScenarioRecommendation');
 
-        const buyProb = metrics.buy_win_probability_pct ?? 70.0;
-        const rentProb = metrics.rent_win_probability_pct ?? 30.0;
-
         if (valBuyWin) {
-            valBuyWin.textContent = `${buyProb.toFixed(1)}%`;
-            valBuyWin.className = `fw-bold mb-0 ${buyProb >= 60 ? 'text-success' : (buyProb >= 40 ? 'text-warning' : 'text-danger')}`;
+            valBuyWin.textContent = `${buyWinProb.toFixed(1)}%`;
+            valBuyWin.className = `fw-bold mb-0 ${buyWinProb >= 60 ? 'text-success' : (buyWinProb >= 40 ? 'text-warning' : 'text-danger')}`;
         }
-        if (valRentWin) valRentWin.textContent = `(Bérlés: ${rentProb.toFixed(1)}%)`;
-        if (barBuyWin) barBuyWin.style.width = `${buyProb}%`;
-        if (barRentWin) barRentWin.style.width = `${rentProb}%`;
+        if (valRentWin) valRentWin.textContent = `(Bérlés: ${rentWinProb.toFixed(1)}%)`;
+        if (barBuyWin) barBuyWin.style.width = `${Math.min(100, Math.max(0, buyWinProb))}%`;
+        if (barRentWin) barRentWin.style.width = `${Math.min(100, Math.max(0, rentWinProb))}%`;
 
         if (valExpectedDelta) {
-            const ev = metrics.expected_wealth_delta_30y || 0;
-            const sign = ev > 0 ? '+' : '';
-            valExpectedDelta.textContent = `${sign}${formatHUF(ev)}`;
-            valExpectedDelta.className = `fw-bold mb-0 mt-2 ${ev > 0 ? 'text-primary' : 'text-danger'}`;
+            valExpectedDelta.textContent = formatSignedHuf(expectedDelta);
+            valExpectedDelta.className = `fw-bold mb-0 mt-2 ${expectedDelta > 0 ? 'text-primary' : 'text-danger'}`;
         }
 
         if (valExpectedBep) {
-            valExpectedBep.textContent = metrics.expected_break_even_display || '-- év';
-        }
-
-        if (badgeRiskProfile && metrics.risk_profile) {
-            badgeRiskProfile.innerHTML = `<i class="bi bi-shield-check me-1"></i>${metrics.risk_profile}`;
-            if (buyProb >= 65) {
-                badgeRiskProfile.className = 'badge bg-success-subtle text-success fw-semibold px-3 py-2';
-            } else if (buyProb >= 45) {
-                badgeRiskProfile.className = 'badge bg-warning-subtle text-warning fw-semibold px-3 py-2';
+            if (validBepWeightSum > 0) {
+                const expBep = (validBepWeightedSum / validBepWeightSum).toFixed(1);
+                valExpectedBep.textContent = validBepWeightSum >= 0.99 
+                    ? `${expBep} év` 
+                    : `${expBep} év (${Math.round(validBepWeightSum * 100)}% eséllyel)`;
             } else {
-                badgeRiskProfile.className = 'badge bg-danger-subtle text-danger fw-semibold px-3 py-2';
+                valExpectedBep.textContent = `Nem térül meg (${targetYear}+ év)`;
             }
         }
 
-        if (valRec && metrics.recommendation) {
-            valRec.textContent = metrics.recommendation;
+        if (badgeRiskProfile) {
+            if (buyWinProb >= 70) {
+                badgeRiskProfile.innerHTML = `<i class="bi bi-shield-check me-1"></i>Alacsony kockázat / Magas saját lakás valószínűség`;
+                badgeRiskProfile.className = 'badge bg-success-subtle text-success fw-semibold px-3 py-2';
+                if (valRec) valRec.textContent = `A piaci szcenáriók döntő többségében (${buyWinProb.toFixed(0)}%) a saját lakás vásárlása bizonyul vagyongyarapítóbbnak.`;
+            } else if (buyWinProb >= 45) {
+                badgeRiskProfile.innerHTML = `<i class="bi bi-exclamation-triangle me-1"></i>Kiegyensúlyozott / Mérsékelt piaci kockázat`;
+                badgeRiskProfile.className = 'badge bg-warning-subtle text-warning fw-semibold px-3 py-2';
+                if (valRec) valRec.textContent = `A megtérülés erősen függ a jövőbeli piaci pályától; konjunktúrában a vásárlás, magas alternatív hozamok esetén a bérlés a kedvezőbb.`;
+            } else {
+                badgeRiskProfile.innerHTML = `<i class="bi bi-shield-slash me-1"></i>Magas alternatív költség kockázat`;
+                badgeRiskProfile.className = 'badge bg-danger-subtle text-danger fw-semibold px-3 py-2';
+                if (valRec) valRec.textContent = `A beállított piaci várakozások mellett a bérlés és a tőkepiaci befektetés kombinációja magasabb valószínűséggel vezet nagyobb vagyonhoz.`;
+            }
         }
 
-        // Táblázat feltöltése
+        // Táblázat feltöltése vagy frissítése
         const tbody = document.getElementById('tbodyScenarios');
-        if (!tbody || !scenarios.length) return;
+        if (tbody && rebuildTable) {
+            let rowsHtml = '';
+            scenarios.forEach(s => {
+                const rawW = currentScenarioWeights[s.id] ?? s.probability_pct ?? 25;
+                const deltaMid = getScenarioDeltaAtYear(s, midYear);
+                const deltaTarget = getScenarioDeltaAtYear(s, targetYear);
+                const isBuyWinner = deltaTarget > 0;
 
-        let rowsHtml = '';
-        scenarios.forEach(s => {
-            const isBuyWinner = (s.wealth_delta_30y || 0) > 0;
-            const delta10Sign = (s.wealth_delta_10y || 0) > 0 ? '+' : '';
-            const delta30Sign = (s.wealth_delta_30y || 0) > 0 ? '+' : '';
-
-            rowsHtml += `
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="badge ${s.badge_class || 'bg-secondary'}">${s.probability_pct}%</span>
-                            <div>
-                                <strong class="text-dark d-block">${s.name}</strong>
-                                <small class="text-muted d-block" style="font-size:0.75rem;">${s.description}</small>
+                rowsHtml += `
+                    <tr id="row_scenario_${s.id}">
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge ${s.badge_class || 'bg-secondary'}">${rawW}%</span>
+                                <div>
+                                    <strong class="text-dark d-block">${s.name}</strong>
+                                    <small class="text-muted d-block" style="font-size:0.75rem;">${s.description}</small>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="d-flex align-items-center gap-2">
-                            <strong class="text-dark small">${s.probability_pct}%</strong>
-                            <div class="progress flex-grow-1" style="height: 6px; min-width: 60px;">
-                                <div class="progress-bar ${s.progress_class || 'bg-primary'}" role="progressbar" style="width: ${s.probability_pct}%;"></div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="range" class="form-range scenario-prob-slider" data-scenario-id="${s.id}" min="0" max="100" step="5" value="${rawW}" style="width: 105px; cursor: pointer;">
+                                <span class="badge ${s.badge_class || 'bg-secondary'} scenario-prob-badge" id="badgeProb_${s.id}" style="min-width: 48px; font-size: 0.8rem;">${rawW}%</span>
                             </div>
-                        </div>
-                    </td>
-                    <td>
-                        <small class="d-block text-muted">
-                            <i class="bi bi-graph-up-arrow me-1"></i>Ingatlan: <strong>${s.property_growth_pct}%/év</strong>
-                        </small>
-                        <small class="d-block text-muted">
-                            <i class="bi bi-cash me-1"></i>Bérlet: <strong>${s.rent_growth_pct}%/év</strong>
-                        </small>
-                        <small class="d-block text-muted">
-                            <i class="bi bi-pie-chart me-1"></i>ETF hozam: <strong>${s.opportunity_cost_pct}%/év</strong>
-                        </small>
-                    </td>
-                    <td class="text-center">
-                        <strong class="${s.break_even_year ? 'text-primary' : 'text-muted'}">
-                            ${s.break_even_display}
-                        </strong>
-                    </td>
-                    <td class="text-end">
-                        <strong class="${(s.wealth_delta_10y || 0) > 0 ? 'text-success' : 'text-danger'}">
-                            ${delta10Sign}${s.formatted_delta_10y || formatHUF(s.wealth_delta_10y)}
-                        </strong>
-                    </td>
-                    <td class="text-end">
-                        <strong class="fs-6 ${(s.wealth_delta_30y || 0) > 0 ? 'text-success' : 'text-danger'}">
-                            ${delta30Sign}${s.formatted_delta_30y || formatHUF(s.wealth_delta_30y)}
-                        </strong>
-                    </td>
-                    <td class="text-center">
-                        <span class="badge ${isBuyWinner ? 'bg-success' : 'bg-danger'} px-2 py-1">
-                            <i class="bi ${isBuyWinner ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-1"></i>
-                            ${s.winner}
-                        </span>
-                    </td>
-                </tr>
-            `;
-        });
+                        </td>
+                        <td>
+                            <small class="d-block text-muted">
+                                <i class="bi bi-graph-up-arrow me-1"></i>Ingatlan: <strong>${s.property_growth_pct}%/év</strong>
+                            </small>
+                            <small class="d-block text-muted">
+                                <i class="bi bi-cash me-1"></i>Bérlet: <strong>${s.rent_growth_pct}%/év</strong>
+                            </small>
+                            <small class="d-block text-muted">
+                                <i class="bi bi-pie-chart me-1"></i>ETF hozam: <strong>${s.opportunity_cost_pct}%/év</strong>
+                            </small>
+                        </td>
+                        <td class="text-center">
+                            <strong class="${s.break_even_year ? 'text-primary' : 'text-muted'}">
+                                ${s.break_even_display}
+                            </strong>
+                        </td>
+                        <td class="text-end" id="colMid_${s.id}">
+                            <strong class="${deltaMid > 0 ? 'text-success' : 'text-danger'}">
+                                ${formatSignedHuf(deltaMid)}
+                            </strong>
+                        </td>
+                        <td class="text-end" id="colTerminal_${s.id}">
+                            <strong class="fs-6 ${deltaTarget > 0 ? 'text-success' : 'text-danger'}">
+                                ${formatSignedHuf(deltaTarget)}
+                            </strong>
+                        </td>
+                        <td class="text-center" id="colWinner_${s.id}">
+                            <span class="badge ${isBuyWinner ? 'bg-success' : 'bg-danger'} px-2 py-1">
+                                <i class="bi ${isBuyWinner ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-1"></i>
+                                ${isBuyWinner ? 'Saját lakás' : 'Bérlés & Befektetés'}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
 
-        tbody.innerHTML = rowsHtml;
+            tbody.innerHTML = rowsHtml;
+
+            // Csúszka eseménykezelők rákötése
+            const sliders = tbody.querySelectorAll('.scenario-prob-slider');
+            sliders.forEach(slider => {
+                slider.addEventListener('input', (e) => {
+                    const scenId = e.target.getAttribute('data-scenario-id');
+                    const newVal = parseInt(e.target.value) || 0;
+                    currentScenarioWeights[scenId] = newVal;
+                    const badge = document.getElementById(`badgeProb_${scenId}`);
+                    if (badge) badge.textContent = `${newVal}%`;
+                    renderScenarioAnalysis(lastScenariosData, false);
+                });
+            });
+        } else if (!rebuildTable) {
+            // Finom frissítés csúszkamozgatáskor (nem írja újra a DOM-ot, megmarad a gördülékeny drag)
+            scenarios.forEach(s => {
+                const rawW = currentScenarioWeights[s.id] ?? s.probability_pct ?? 25;
+                const badge = document.getElementById(`badgeProb_${s.id}`);
+                if (badge) badge.textContent = `${rawW}%`;
+                const slider = document.querySelector(`.scenario-prob-slider[data-scenario-id="${s.id}"]`);
+                if (slider && parseInt(slider.value) !== rawW) slider.value = rawW;
+                const deltaMid = getScenarioDeltaAtYear(s, midYear);
+                const deltaTarget = getScenarioDeltaAtYear(s, targetYear);
+                const isBuyWinner = deltaTarget > 0;
+                const colMid = document.getElementById(`colMid_${s.id}`);
+                if (colMid) {
+                    colMid.innerHTML = `<strong class="${deltaMid > 0 ? 'text-success' : 'text-danger'}">${formatSignedHuf(deltaMid)}</strong>`;
+                }
+                const colTerminal = document.getElementById(`colTerminal_${s.id}`);
+                if (colTerminal) {
+                    colTerminal.innerHTML = `<strong class="fs-6 ${deltaTarget > 0 ? 'text-success' : 'text-danger'}">${formatSignedHuf(deltaTarget)}</strong>`;
+                }
+                const colWinner = document.getElementById(`colWinner_${s.id}`);
+                if (colWinner) {
+                    colWinner.innerHTML = `<span class="badge ${isBuyWinner ? 'bg-success' : 'bg-danger'} px-2 py-1"><i class="bi ${isBuyWinner ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-1"></i>${isBuyWinner ? 'Saját lakás' : 'Bérlés & Befektetés'}</span>`;
+                }
+            });
+        }
+
+        // Legyeződiagram rajzolása / frissítése
+        renderScenarioFanChart(scenariosData, currentScenarioWeights, currentScenarioChartMode, targetYear);
     }
+
+    // Vezérlők inicializálása
+    initScenarioControls();
 
     // --- 8. Szerver Adatmentés (POST /api/inputs) ---
     async function saveInputsToServer(profileName, shouldSaveProfile = true) {
@@ -1683,6 +2094,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let equityChartInstance = null;
     let deadMoneyChartInstance = null;
     let ltvChartInstance = null;
+    let scenarioFanChartInstance = null;
+    let currentScenarioChartMode = 'delta';
+    let currentScenarioWeights = { base: 50, bull: 20, bear: 20, market_surge: 10 };
     
     // Frissítjük a grafikonokat, amikor átváltunk a tabra (Chart.js hidden hiba megelőzése)
     const resultsTabEl = document.getElementById('tab-btn-results');
@@ -1694,6 +2108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (equityChartInstance) equityChartInstance.resize();
             if (deadMoneyChartInstance) deadMoneyChartInstance.resize();
             if (ltvChartInstance) ltvChartInstance.resize();
+            if (scenarioFanChartInstance) scenarioFanChartInstance.resize();
         });
     }
 

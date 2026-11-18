@@ -50,6 +50,19 @@ body {
     border-color: #198754;
 }
 
+/* Szcenárió valószínűségi csúszkák */
+.scenario-prob-slider {
+    height: 1.2rem;
+    cursor: pointer;
+}
+.scenario-prob-slider::-webkit-slider-thumb {
+    width: 0.95rem;
+    height: 0.95rem;
+}
+.scenario-prob-badge {
+    font-variant-numeric: tabular-nums;
+}
+
 /* JSON Inspector */
 pre#jsonInspector {
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
