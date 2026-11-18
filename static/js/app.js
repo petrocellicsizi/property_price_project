@@ -2670,6 +2670,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const valHistRe = document.getElementById('valHistRe');
     const valHistSpCagr = document.getElementById('valHistSpCagr');
     const valHistReCagr = document.getElementById('valHistReCagr');
+    const valHistBond = document.getElementById('valHistBond');
+    const valHistReIrr = document.getElementById('valHistReIrr');
+    const valHistSpIrr = document.getElementById('valHistSpIrr');
+    const valHistBondIrr = document.getElementById('valHistBondIrr');
+    const valHistBondCagr = document.getElementById('valHistBondCagr');
+    const chkHistUseRates = document.getElementById('chkHistUseRates');
     
     let historicalChartInstance = null;
     let histCheaperChartInstance = null;
@@ -2689,6 +2695,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentRent = parseCleanNumber(document.getElementById('rent_monthly_huf').value) || 200000;
         const currentUtils = parseCleanNumber(document.getElementById('rent_utilities_huf').value) || 30000;
         const tbszEnabled = document.getElementById('chk_tbsz_enabled') ? document.getElementById('chk_tbsz_enabled').checked : true;
+        const useHistRates = chkHistUseRates ? chkHistUseRates.checked : false;
 
         try {
             const response = await fetch('/api/historical_simulation', {
@@ -2704,7 +2711,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     loan_term_years: loanTermYears,
                     current_rent_huf: currentRent,
                     current_utilities_huf: currentUtils,
-                    tbsz_enabled: tbszEnabled
+                    tbsz_enabled: tbszEnabled,
+                    use_historical_rates: useHistRates
                 })
             });
 
@@ -2719,8 +2727,24 @@ document.addEventListener('DOMContentLoaded', () => {
             valHistInitial.textContent = formatHUF(data.initial_capital_huf);
             valHistSp500.textContent = formatHUF(kpi.final_sp_value);
             valHistRe.textContent = formatHUF(kpi.final_re_value);
-            valHistSpCagr.textContent = kpi.sp_cagr_pct.toFixed(2) + '%';
-            valHistReCagr.textContent = kpi.re_cagr_pct.toFixed(2) + '%';
+            valHistSpCagr.textContent = kpi.sp_cagr_pct.toFixed(1) + '%';
+            valHistReCagr.textContent = kpi.re_cagr_pct.toFixed(1) + '%';
+
+            if (valHistBond && kpi.final_allampapir_value !== undefined) {
+                valHistBond.textContent = formatHUF(kpi.final_allampapir_value);
+            }
+            if (valHistReIrr && kpi.re_irr_pct !== undefined) {
+                valHistReIrr.textContent = kpi.re_irr_pct.toFixed(1) + '%';
+            }
+            if (valHistSpIrr && kpi.sp_irr_pct !== undefined) {
+                valHistSpIrr.textContent = kpi.sp_irr_pct.toFixed(1) + '%';
+            }
+            if (valHistBondIrr && kpi.allampapir_irr_pct !== undefined) {
+                valHistBondIrr.textContent = kpi.allampapir_irr_pct.toFixed(1) + '%';
+            }
+            if (valHistBondCagr && kpi.allampapir_cagr_pct !== undefined) {
+                valHistBondCagr.textContent = kpi.allampapir_cagr_pct.toFixed(1) + '%';
+            }
 
             document.querySelectorAll('.dyn-start-year').forEach(el => el.textContent = startYear);
             document.querySelectorAll('.dyn-location').forEach(el => el.textContent = data.location_used);
@@ -2733,30 +2757,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 historicalChartInstance.destroy();
             }
 
+            const chartDatasets = [
+                {
+                    label: 'Saját Lakás (Nettó Vagyon)',
+                    data: data.real_estate_values,
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    borderWidth: 2.5,
+                    tension: 0.3,
+                    fill: true
+                },
+                {
+                    label: 'Bérlés (S&P 500 Részvény)',
+                    data: data.sp500_values,
+                    borderColor: '#198754',
+                    backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                    borderWidth: 2.5,
+                    tension: 0.3,
+                    fill: true
+                }
+            ];
+
+            if (data.allampapir_values && data.allampapir_values.length > 0) {
+                chartDatasets.push({
+                    label: 'Bérlés (Magyar Állampapír / PMÁP)',
+                    data: data.allampapir_values,
+                    borderColor: '#6f42c1',
+                    backgroundColor: 'rgba(111, 66, 193, 0.08)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                });
+            }
+
             historicalChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: data.timeline,
-                    datasets: [
-                        {
-                            label: 'Bérlés (S&P 500 Nettó Vagyon)',
-                            data: data.sp500_values,
-                            borderColor: '#198754',
-                            backgroundColor: 'rgba(25, 135, 84, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            fill: true
-                        },
-                        {
-                            label: 'Saját Lakás (Nettó Vagyon)',
-                            data: data.real_estate_values,
-                            borderColor: '#0d6efd',
-                            backgroundColor: 'rgba(13, 110, 253, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.3,
-                            fill: true
-                        }
-                    ]
+                    datasets: chartDatasets
                 },
                 options: {
                     responsive: true,
@@ -2965,6 +3003,10 @@ document.addEventListener('DOMContentLoaded', () => {
             badgeHistoricalYear.textContent = e.target.value;
         });
         rngHistoricalYear.addEventListener('change', fetchAndRenderHistorical);
+    }
+
+    if (chkHistUseRates) {
+        chkHistUseRates.addEventListener('change', fetchAndRenderHistorical);
     }
     
     // Frissítés tab váltáskor is, ha a historical tab aktív

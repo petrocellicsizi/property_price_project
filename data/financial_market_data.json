@@ -1,102 +1,227 @@
 {
     "2000": {
-        "sp500": 1320.0,
-        "usdhuf": 284.0
+        "sp500": 1320.28,
+        "usdhuf": 284.9,
+        "eurhuf": 264.9,
+        "bux": 7850.0,
+        "allampapir_yield": 11.0,
+        "mortgage_rate_avg": 14.5,
+        "mnb_base_rate": 11.0
     },
     "2001": {
-        "sp500": 1148.0,
-        "usdhuf": 279.0
+        "sp500": 1148.08,
+        "usdhuf": 279.0,
+        "eurhuf": 246.3,
+        "bux": 7131.0,
+        "allampapir_yield": 10.5,
+        "mortgage_rate_avg": 13.0,
+        "mnb_base_rate": 9.75
     },
     "2002": {
-        "sp500": 879.0,
-        "usdhuf": 225.0
+        "sp500": 879.82,
+        "usdhuf": 225.2,
+        "eurhuf": 235.9,
+        "bux": 7798.0,
+        "allampapir_yield": 9.0,
+        "mortgage_rate_avg": 11.5,
+        "mnb_base_rate": 8.5
     },
     "2003": {
-        "sp500": 1111.0,
-        "usdhuf": 207.0
+        "sp500": 1111.92,
+        "usdhuf": 207.9,
+        "eurhuf": 262.2,
+        "bux": 9380.0,
+        "allampapir_yield": 10.0,
+        "mortgage_rate_avg": 12.8,
+        "mnb_base_rate": 12.5
     },
     "2004": {
-        "sp500": 1211.0,
-        "usdhuf": 180.0
+        "sp500": 1211.92,
+        "usdhuf": 180.3,
+        "eurhuf": 245.9,
+        "bux": 14738.0,
+        "allampapir_yield": 11.5,
+        "mortgage_rate_avg": 10.5,
+        "mnb_base_rate": 9.5
     },
     "2005": {
-        "sp500": 1248.0,
-        "usdhuf": 213.0
+        "sp500": 1248.29,
+        "usdhuf": 213.6,
+        "eurhuf": 252.7,
+        "bux": 20785.0,
+        "allampapir_yield": 7.5,
+        "mortgage_rate_avg": 9.0,
+        "mnb_base_rate": 6.0
     },
     "2006": {
-        "sp500": 1418.0,
-        "usdhuf": 191.0
+        "sp500": 1418.3,
+        "usdhuf": 191.6,
+        "eurhuf": 252.3,
+        "bux": 24874.0,
+        "allampapir_yield": 7.2,
+        "mortgage_rate_avg": 8.5,
+        "mnb_base_rate": 8.0
     },
     "2007": {
-        "sp500": 1468.0,
-        "usdhuf": 172.0
+        "sp500": 1468.36,
+        "usdhuf": 172.6,
+        "eurhuf": 253.3,
+        "bux": 26236.0,
+        "allampapir_yield": 7.8,
+        "mortgage_rate_avg": 8.8,
+        "mnb_base_rate": 7.5
     },
     "2008": {
-        "sp500": 903.0,
-        "usdhuf": 187.0
+        "sp500": 903.25,
+        "usdhuf": 187.9,
+        "eurhuf": 264.8,
+        "bux": 12242.0,
+        "allampapir_yield": 9.5,
+        "mortgage_rate_avg": 10.5,
+        "mnb_base_rate": 10.0
     },
     "2009": {
-        "sp500": 1115.0,
-        "usdhuf": 188.0
+        "sp500": 1115.1,
+        "usdhuf": 188.1,
+        "eurhuf": 270.8,
+        "bux": 21227.0,
+        "allampapir_yield": 9.0,
+        "mortgage_rate_avg": 11.2,
+        "mnb_base_rate": 6.25
     },
     "2010": {
-        "sp500": 1257.0,
-        "usdhuf": 208.0
+        "sp500": 1257.64,
+        "usdhuf": 208.7,
+        "eurhuf": 278.8,
+        "bux": 21327.0,
+        "allampapir_yield": 6.2,
+        "mortgage_rate_avg": 9.8,
+        "mnb_base_rate": 5.75
     },
     "2011": {
-        "sp500": 1257.0,
-        "usdhuf": 240.0
+        "sp500": 1257.6,
+        "usdhuf": 240.7,
+        "eurhuf": 311.1,
+        "bux": 16974.0,
+        "allampapir_yield": 6.5,
+        "mortgage_rate_avg": 10.2,
+        "mnb_base_rate": 7.0
     },
     "2012": {
-        "sp500": 1426.0,
-        "usdhuf": 220.0
+        "sp500": 1426.19,
+        "usdhuf": 220.9,
+        "eurhuf": 291.3,
+        "bux": 18173.0,
+        "allampapir_yield": 7.8,
+        "mortgage_rate_avg": 9.5,
+        "mnb_base_rate": 5.75
     },
     "2013": {
-        "sp500": 1848.0,
-        "usdhuf": 215.0
+        "sp500": 1848.36,
+        "usdhuf": 215.7,
+        "eurhuf": 296.9,
+        "bux": 18564.0,
+        "allampapir_yield": 5.5,
+        "mortgage_rate_avg": 8.0,
+        "mnb_base_rate": 3.0
     },
     "2014": {
-        "sp500": 2058.0,
-        "usdhuf": 259.0
+        "sp500": 2058.9,
+        "usdhuf": 259.1,
+        "eurhuf": 314.9,
+        "bux": 16634.0,
+        "allampapir_yield": 4.5,
+        "mortgage_rate_avg": 6.8,
+        "mnb_base_rate": 2.1
     },
     "2015": {
-        "sp500": 2043.0,
-        "usdhuf": 286.0
+        "sp500": 2043.94,
+        "usdhuf": 286.6,
+        "eurhuf": 313.1,
+        "bux": 23921.0,
+        "allampapir_yield": 3.5,
+        "mortgage_rate_avg": 5.9,
+        "mnb_base_rate": 1.35
     },
     "2016": {
-        "sp500": 2238.0,
-        "usdhuf": 293.0
+        "sp500": 2238.83,
+        "usdhuf": 293.7,
+        "eurhuf": 311.0,
+        "bux": 32003.0,
+        "allampapir_yield": 3.25,
+        "mortgage_rate_avg": 5.2,
+        "mnb_base_rate": 0.9
     },
     "2017": {
-        "sp500": 2673.0,
-        "usdhuf": 258.0
+        "sp500": 2673.61,
+        "usdhuf": 258.8,
+        "eurhuf": 310.1,
+        "bux": 39377.0,
+        "allampapir_yield": 3.25,
+        "mortgage_rate_avg": 4.8,
+        "mnb_base_rate": 0.9
     },
     "2018": {
-        "sp500": 2506.0,
-        "usdhuf": 280.0
+        "sp500": 2506.85,
+        "usdhuf": 280.9,
+        "eurhuf": 321.5,
+        "bux": 39139.0,
+        "allampapir_yield": 3.5,
+        "mortgage_rate_avg": 4.5,
+        "mnb_base_rate": 0.9
     },
     "2019": {
-        "sp500": 3230.0,
-        "usdhuf": 294.0
+        "sp500": 3230.78,
+        "usdhuf": 294.7,
+        "eurhuf": 330.5,
+        "bux": 46083.0,
+        "allampapir_yield": 4.5,
+        "mortgage_rate_avg": 4.4,
+        "mnb_base_rate": 0.9
     },
     "2020": {
-        "sp500": 3756.0,
-        "usdhuf": 297.0
+        "sp500": 3756.07,
+        "usdhuf": 297.4,
+        "eurhuf": 365.1,
+        "bux": 42118.0,
+        "allampapir_yield": 4.5,
+        "mortgage_rate_avg": 4.2,
+        "mnb_base_rate": 0.6
     },
     "2021": {
-        "sp500": 4766.0,
-        "usdhuf": 325.0
+        "sp500": 4766.18,
+        "usdhuf": 325.7,
+        "eurhuf": 369.0,
+        "bux": 50722.0,
+        "allampapir_yield": 4.8,
+        "mortgage_rate_avg": 4.6,
+        "mnb_base_rate": 2.4
     },
     "2022": {
-        "sp500": 3839.0,
-        "usdhuf": 373.0
+        "sp500": 3839.5,
+        "usdhuf": 375.7,
+        "eurhuf": 400.2,
+        "bux": 43794.0,
+        "allampapir_yield": 6.6,
+        "mortgage_rate_avg": 9.8,
+        "mnb_base_rate": 13.0
     },
     "2023": {
-        "sp500": 4769.0,
-        "usdhuf": 347.0
+        "sp500": 4769.83,
+        "usdhuf": 346.4,
+        "eurhuf": 382.8,
+        "bux": 60620.0,
+        "allampapir_yield": 16.0,
+        "mortgage_rate_avg": 8.9,
+        "mnb_base_rate": 10.75
     },
     "2024": {
-        "sp500": 5700.0,
-        "usdhuf": 360.0
+        "sp500": 5881.63,
+        "usdhuf": 395.2,
+        "eurhuf": 411.5,
+        "bux": 79327.0,
+        "allampapir_yield": 18.5,
+        "mortgage_rate_avg": 6.8,
+        "mnb_base_rate": 6.5
     }
 }
