@@ -950,11 +950,25 @@
                             <span class="badge bg-secondary fs-6" id="badgeHistoricalYear">2004</span>
                         </div>
                         <div class="col-12 mt-2 pt-2 border-top d-flex flex-wrap align-items-center justify-content-between gap-3">
-                            <div class="form-check form-switch mb-0">
-                                <input class="form-check-input" type="checkbox" id="chkHistUseRates">
-                                <label class="form-check-label small fw-semibold" for="chkHistUseRates">
-                                    <i class="bi bi-bank2 me-1 text-primary"></i>Történelmi MNB hitelkamatok használata (évente változó piaci kamatláb)
-                                </label>
+                            <div class="d-flex flex-wrap gap-4 align-items-center">
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" id="chkHistUseRates">
+                                    <label class="form-check-label small fw-semibold" for="chkHistUseRates">
+                                        <i class="bi bi-bank2 me-1 text-primary"></i>Történelmi MNB kamatok (évente változó)
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" id="chkHistAcquisitionCosts">
+                                    <label class="form-check-label small fw-semibold" for="chkHistAcquisitionCosts">
+                                        <i class="bi bi-receipt me-1 text-danger"></i>Vásárlási költségek (4% illeték + 1% ügyvéd)
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" id="chkHistFxHedged">
+                                    <label class="form-check-label small fw-semibold" for="chkHistFxHedged">
+                                        <i class="bi bi-shield-check me-1 text-success"></i>Devizafedezett S&P 500 (FX-Hedged)
+                                    </label>
+                                </div>
                             </div>
                             <div class="small text-muted">
                                 <i class="bi bi-geo-alt me-1 text-danger"></i>Indexált lokáció: <strong class="dyn-location">Budapest átlag</strong>
@@ -1005,6 +1019,33 @@
                                 CAGR: <strong class="text-white" id="valHistBondCagr">-- %</strong> | IRR: <strong class="text-white" id="valHistBondIrr">-- %</strong>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Devizahatás és Forrásbontás Banner (Idea 4) -->
+            <div class="card border-0 shadow-sm mt-3 bg-white" id="cardCurrencyAttribution">
+                <div class="card-body p-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-currency-exchange text-info fs-5"></i>
+                        <div>
+                            <strong class="small text-dark d-block">S&P 500 Hozam Forrásbontása (USD vs. HUF hatás):</strong>
+                            <span class="text-muted" style="font-size: 0.75rem;">A forint leértékelődésének és a tengerentúli tőzsdei növekedésnek az aránya a teljes forinthozamban.</span>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-light text-dark border p-2" title="Tiszta amerikai részvényárfolyam változás USD-ben">
+                            🇺🇸 S&P 500 (USD): <strong class="text-primary ms-1" id="attrSpUsd">--%</strong>
+                        </span>
+                        <span class="badge bg-light text-dark border p-2" title="USD/HUF forintgyengülés többlethozama">
+                            💵 Forint leértékelődés (USD/HUF): <strong class="text-danger ms-1" id="attrFx">--%</strong>
+                        </span>
+                        <span class="badge bg-light text-dark border p-2" title="Becsült újrabefektetett osztalékok hozam-hozzájárulása">
+                            📈 Újrabefektetett osztalék: <strong class="text-success ms-1" id="attrDiv">--%</strong>
+                        </span>
+                        <span class="badge bg-success-subtle text-success border p-2" title="Teljes unhedged piaci eszközárfolyam növekedés forintban">
+                            🇭🇺 Összesített forinthozam: <strong class="ms-1" id="attrTotal">--%</strong>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -1094,6 +1135,82 @@
                     <div class="card-body p-3 bg-light">
                         <div class="bg-white p-3 rounded border" style="height: 300px; position: relative;">
                             <canvas id="histLtvChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. HISTORIKUS CIKLUS- ÉS IDŐTÁV-ELEMZÉS (ROLLING WINDOWS - Idea 3) -->
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-header bg-white py-3 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-repeat text-primary fs-5"></i>
+                            <h5 class="card-title mb-0 fw-bold">Historikus Ciklus- és Időtáv-elemzés (Rolling Windows)</h5>
+                        </div>
+                        <div class="btn-group btn-group-sm" role="group" id="btnGroupRollingYears">
+                            <button type="button" class="btn btn-outline-primary btn-rolling-horizon" data-years="5">5 Éves Ciklusok</button>
+                            <button type="button" class="btn btn-primary btn-rolling-horizon active" data-years="10">10 Éves Ciklusok</button>
+                            <button type="button" class="btn btn-outline-primary btn-rolling-horizon" data-years="15">15 Éves Ciklusok</button>
+                            <button type="button" class="btn btn-outline-primary btn-rolling-horizon" data-years="20">20 Éves Ciklusok</button>
+                        </div>
+                    </div>
+                    <div class="card-body p-4 bg-light">
+                        <p class="text-muted small mb-3">
+                            Az alábbi statisztika megmutatja, hogy a 2000 és 2024 közötti összes lehetséges 
+                            <strong id="labelRollingHorizon">10</strong> éves tartási periódusban hányszor nyert a saját lakás, 
+                            az S&P 500, illetve a Magyar Állampapír, és mekkora volt az átlagos belső megtérülési rátájuk (IRR).
+                        </p>
+
+                        <!-- Összegző Statisztikai Kártyák -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <div class="card bg-white border shadow-sm p-3 h-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="text-muted small fw-bold text-uppercase">Ingatlan Győzelmi Arány</span>
+                                        <span class="badge bg-primary fs-6" id="badgeReWinRate">0%</span>
+                                    </div>
+                                    <h4 class="fw-bold mb-1 text-primary" id="valReWins">0 / 0 ciklus</h4>
+                                    <small class="text-muted">Átlagos periódus IRR: <strong id="valAvgReIrr">0.0%</strong></small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-white border shadow-sm p-3 h-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="text-muted small fw-bold text-uppercase">S&P 500 Győzelmi Arány</span>
+                                        <span class="badge bg-success fs-6" id="badgeSpWinRate">0%</span>
+                                    </div>
+                                    <h4 class="fw-bold mb-1 text-success" id="valSpWins">0 / 0 ciklus</h4>
+                                    <small class="text-muted">Átlagos periódus IRR: <strong id="valAvgSpIrr">0.0%</strong></small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-white border shadow-sm p-3 h-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="text-muted small fw-bold text-uppercase">Állampapír Győzelmi Arány</span>
+                                        <span class="badge text-white fs-6" style="background-color: #6f42c1;" id="badgeBondWinRate">0%</span>
+                                    </div>
+                                    <h4 class="fw-bold mb-1" style="color: #6f42c1;" id="valBondWins">0 / 0 ciklus</h4>
+                                    <small class="text-muted">Átlagos periódus IRR: <strong id="valAvgBondIrr">0.0%</strong></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Részletes Táblázat -->
+                        <div class="table-responsive bg-white rounded border shadow-sm" style="max-height: 420px; overflow-y: auto;">
+                            <table class="table table-hover table-striped align-middle mb-0 small" id="tableRollingWindows">
+                                <thead class="table-light sticky-top">
+                                    <tr>
+                                        <th class="py-2">Periódus (Ciklus)</th>
+                                        <th class="py-2 text-center">Győztes Eszköz</th>
+                                        <th class="py-2 text-end">Saját Lakás Vagyon</th>
+                                        <th class="py-2 text-end">S&P 500 Vagyon</th>
+                                        <th class="py-2 text-end">Állampapír Vagyon</th>
+                                        <th class="py-2 text-end">Ingatlan vs. S&P 500 Különbség</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyRollingWindows">
+                                    <tr><td colspan="6" class="text-center text-muted py-3">Rolling adatok betöltése...</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

@@ -263,6 +263,12 @@ def historical_simulation():
     current_utilities_huf = float(payload.get("current_utilities_huf", 30000))
     tbsz_enabled = payload.get("tbsz_enabled", True)
     use_historical_rates = payload.get("use_historical_rates", False)
+    include_acquisition_costs = payload.get("include_acquisition_costs", False)
+    acquisition_cost_pct = float(payload.get("acquisition_cost_pct", 5.0))
+    fx_hedged = payload.get("fx_hedged", False)
+    end_year = payload.get("end_year", None)
+    if end_year is not None:
+        end_year = int(end_year)
     
     from core.historical_engine import HistoricalEngine
     engine = HistoricalEngine()
@@ -270,12 +276,62 @@ def historical_simulation():
         start_year, city, district, current_value,
         down_payment_pct, loan_interest_pct, loan_term_years,
         current_rent_huf, current_utilities_huf, tbsz_enabled,
-        use_historical_rates=use_historical_rates
+        use_historical_rates=use_historical_rates,
+        include_acquisition_costs=include_acquisition_costs,
+        acquisition_cost_pct=acquisition_cost_pct,
+        fx_hedged=fx_hedged,
+        end_year=end_year
     )
     
     if "error" in result:
         return jsonify({"status": "error", "message": result["error"]}), 400
         
+    return jsonify({"status": "success", "data": result}), 200
+
+@app.route("/api/historical_rolling_windows", methods=["POST"])
+def historical_rolling_windows():
+    """
+    Kiszámítja az összes lehetséges holding_years hosszúságú befektetési periódust
+    2000 és napjaink között (Rolling Windows elemzés).
+    """
+    payload = request.get_json(silent=True)
+    if not payload:
+        return jsonify({"status": "error", "message": "Érvénytelen vagy hiányzó JSON adat."}), 400
+        
+    city = payload.get("city", "Budapest")
+    district = payload.get("district", "XI. kerület")
+    current_value = float(payload.get("current_property_value_huf", 60000000))
+    holding_years = int(payload.get("holding_years", 10))
+    down_payment_pct = float(payload.get("down_payment_pct", 20.0))
+    loan_interest_pct = float(payload.get("loan_interest_pct", 6.5))
+    loan_term_years = int(payload.get("loan_term_years", 20))
+    current_rent_huf = float(payload.get("current_rent_huf", 200000))
+    current_utilities_huf = float(payload.get("current_utilities_huf", 30000))
+    tbsz_enabled = payload.get("tbsz_enabled", True)
+    use_historical_rates = payload.get("use_historical_rates", False)
+    include_acquisition_costs = payload.get("include_acquisition_costs", False)
+    acquisition_cost_pct = float(payload.get("acquisition_cost_pct", 5.0))
+    fx_hedged = payload.get("fx_hedged", False)
+    
+    from core.historical_engine import HistoricalEngine
+    engine = HistoricalEngine()
+    result = engine.calculate_rolling_windows(
+        city=city,
+        district=district,
+        current_property_value_huf=current_value,
+        holding_years=holding_years,
+        down_payment_pct=down_payment_pct,
+        loan_interest_pct=loan_interest_pct,
+        loan_term_years=loan_term_years,
+        current_rent_huf=current_rent_huf,
+        current_utilities_huf=current_utilities_huf,
+        tbsz_enabled=tbsz_enabled,
+        use_historical_rates=use_historical_rates,
+        include_acquisition_costs=include_acquisition_costs,
+        acquisition_cost_pct=acquisition_cost_pct,
+        fx_hedged=fx_hedged
+    )
+    
     return jsonify({"status": "success", "data": result}), 200
 
 @app.route("/api/inputs", methods=["POST"])

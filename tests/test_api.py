@@ -148,3 +148,51 @@ def test_store_inputs_with_dunamenti_note(client):
     assert "adjustments_applied" in adj
     assert "." in adj["formatted"]["suggested_rent"]
 
+
+
+def test_historical_simulation_endpoint(client):
+    """A kibővített /api/historical_simulation végpont tesztelése."""
+    payload = {
+        "start_year": 2004,
+        "city": "Budapest",
+        "district": "VIII. kerület",
+        "current_property_value_huf": 60000000,
+        "down_payment_pct": 20.0,
+        "loan_interest_pct": 6.5,
+        "loan_term_years": 20,
+        "current_rent_huf": 200000,
+        "current_utilities_huf": 30000,
+        "tbsz_enabled": True,
+        "use_historical_rates": True,
+        "include_acquisition_costs": True,
+        "acquisition_cost_pct": 5.0,
+        "fx_hedged": False
+    }
+    response = client.post("/api/historical_simulation", json=payload)
+    assert response.status_code == 200
+    res = response.get_json()
+    assert res["status"] == "success"
+    data = res["data"]
+    assert data["start_year"] == 2004
+    assert data["upfront_fees_huf"] > 0
+    assert "currency_attribution" in data["kpi"]
+    assert "allampapir_values" in data
+
+
+def test_historical_rolling_windows_endpoint(client):
+    """A /api/historical_rolling_windows ciklus-elemző végpont tesztelése."""
+    payload = {
+        "city": "Budapest",
+        "district": "VIII. kerület",
+        "current_property_value_huf": 60000000,
+        "holding_years": 10
+    }
+    response = client.post("/api/historical_rolling_windows", json=payload)
+    assert response.status_code == 200
+    res = response.get_json()
+    assert res["status"] == "success"
+    data = res["data"]
+    assert data["holding_years"] == 10
+    assert len(data["windows"]) > 0
+    assert "stats" in data
+    assert data["stats"]["re_win_rate_pct"] >= 0

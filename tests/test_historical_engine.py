@@ -104,3 +104,65 @@ def test_tbsz_toggle_effect():
     res_tbsz = engine.simulate(2010, "Budapest", "XI. kerület", 60000000, tbsz_enabled=True)
     res_no_tbsz = engine.simulate(2010, "Budapest", "XI. kerület", 60000000, tbsz_enabled=False)
     assert res_tbsz["kpi"]["final_sp_value"] >= res_no_tbsz["kpi"]["final_sp_value"]
+
+def test_acquisition_costs_option():
+    """Idea 2: Tranzakciós költségek (4% illeték + 1% ügyvéd) beszámítása."""
+    engine = HistoricalEngine()
+    res_no_fees = engine.simulate(2004, "Budapest", "XI. kerület", 60000000, include_acquisition_costs=False)
+    res_with_fees = engine.simulate(2004, "Budapest", "XI. kerület", 60000000, include_acquisition_costs=True, acquisition_cost_pct=5.0)
+    
+    assert res_with_fees["upfront_fees_huf"] > 0
+    assert res_with_fees["initial_capital_huf"] > res_no_fees["initial_capital_huf"]
+    assert res_with_fees["dead_money_buy"][0] == res_with_fees["upfront_fees_huf"]
+    assert res_no_fees["dead_money_buy"][0] == 0
+
+def test_currency_attribution_and_fx_hedging():
+    """Idea 4: Devizahatás forrásbontás és FX-hedging tesztelése."""
+    engine = HistoricalEngine()
+    res = engine.simulate(2004, "Budapest", "XI. kerület", 60000000, fx_hedged=False)
+    ca = res["kpi"]["currency_attribution"]
+    assert "usd_price_gain_pct" in ca
+    assert "fx_gain_pct" in ca
+    assert "dividend_est_gain_pct" in ca
+    assert "total_unhedged_market_growth_pct" in ca
+    assert ca["usd_price_gain_pct"] > 0
+    assert ca["fx_gain_pct"] > 0
+
+    res_hedged = engine.simulate(2004, "Budapest", "XI. kerület", 60000000, fx_hedged=True)
+    assert res_hedged["fx_hedged"] is True
+    assert res_hedged["kpi"]["final_sp_value"] == res_hedged["kpi"]["final_sp_hedged_value"]
+    # A forintgyengülés miatt a fedezett végérték alacsonyabb, mint az unhedged végérték
+    assert res_hedged["kpi"]["final_sp_hedged_value"] < res["kpi"]["final_sp_unhedged_value"]
+
+def test_calculate_rolling_windows():
+    """Idea 3: Historikus Rolling Windows ciklus-elemzés tesztelése."""
+    engine = HistoricalEngine()
+    rolling = engine.calculate_rolling_windows(
+        city="Budapest",
+        district="XI. kerület",
+        current_property_value_huf=60000000,
+        holding_years=10
+    )
+    assert rolling["holding_years"] == 10
+    assert rolling["total_windows"] == 15
+    assert len(rolling["windows"]) == 15
+    stats = rolling["stats"]
+    assert stats["re_wins"] + stats["sp_wins"] + stats["bond_wins"] == 15
+    assert round(stats["re_win_rate_pct"] + stats["sp_win_rate_pct"] + stats["bond_win_rate_pct"], 0) == 100.0
+
+def test_sanity_and_edge_cases():
+    """Szélsőérték és sanity ellenőrzések."""
+    engine = HistoricalEngine()
+    # 1. Start year == End year
+    res_zero = engine.simulate(2024, "Budapest", "XI. kerület", 60000000, end_year=2024)
+    assert "error" not in res_zero
+    assert res_zero["kpi"]["re_cagr_pct"] == 0.0
+
+    # 2. 100% önrész (készpénzes vásárlás, 0 hitel)
+    res_cash = engine.simulate(2014, "Budapest", "XI. kerület", 60000000, down_payment_pct=100.0)
+    assert res_cash["loan_balances"][0] == 0
+    assert res_cash["kpi"]["total_interest_paid"] == 0
+
+    # 3. 0% kamat
+    res_zero_intr = engine.simulate(2014, "Budapest", "XI. kerület", 60000000, loan_interest_pct=0.0)
+    assert res_zero_intr["kpi"]["total_interest_paid"] == 0

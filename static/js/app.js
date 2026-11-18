@@ -2676,6 +2676,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const valHistBondIrr = document.getElementById('valHistBondIrr');
     const valHistBondCagr = document.getElementById('valHistBondCagr');
     const chkHistUseRates = document.getElementById('chkHistUseRates');
+    const chkHistAcquisitionCosts = document.getElementById('chkHistAcquisitionCosts');
+    const chkHistFxHedged = document.getElementById('chkHistFxHedged');
+    const attrSpUsd = document.getElementById('attrSpUsd');
+    const attrFx = document.getElementById('attrFx');
+    const attrDiv = document.getElementById('attrDiv');
+    const attrTotal = document.getElementById('attrTotal');
     
     let historicalChartInstance = null;
     let histCheaperChartInstance = null;
@@ -2696,6 +2702,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentUtils = parseCleanNumber(document.getElementById('rent_utilities_huf').value) || 30000;
         const tbszEnabled = document.getElementById('chk_tbsz_enabled') ? document.getElementById('chk_tbsz_enabled').checked : true;
         const useHistRates = chkHistUseRates ? chkHistUseRates.checked : false;
+        const includeAcqCosts = chkHistAcquisitionCosts ? chkHistAcquisitionCosts.checked : false;
+        const fxHedged = chkHistFxHedged ? chkHistFxHedged.checked : false;
 
         try {
             const response = await fetch('/api/historical_simulation', {
@@ -2712,7 +2720,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     current_rent_huf: currentRent,
                     current_utilities_huf: currentUtils,
                     tbsz_enabled: tbszEnabled,
-                    use_historical_rates: useHistRates
+                    use_historical_rates: useHistRates,
+                    include_acquisition_costs: includeAcqCosts,
+                    acquisition_cost_pct: 5.0,
+                    fx_hedged: fxHedged
                 })
             });
 
@@ -2746,6 +2757,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 valHistBondCagr.textContent = kpi.allampapir_cagr_pct.toFixed(1) + '%';
             }
 
+            // Devizahatás forrásbontás megjelenítése (Idea 4)
+            if (kpi.currency_attribution) {
+                const ca = kpi.currency_attribution;
+                if (attrSpUsd) attrSpUsd.textContent = (ca.usd_price_gain_pct >= 0 ? '+' : '') + ca.usd_price_gain_pct.toFixed(1) + '%';
+                if (attrFx) attrFx.textContent = (ca.fx_gain_pct >= 0 ? '+' : '') + ca.fx_gain_pct.toFixed(1) + '%';
+                if (attrDiv) attrDiv.textContent = '+' + ca.dividend_est_gain_pct.toFixed(1) + '%';
+                if (attrTotal) attrTotal.textContent = (ca.total_unhedged_market_growth_pct >= 0 ? '+' : '') + ca.total_unhedged_market_growth_pct.toFixed(1) + '%';
+            }
+
             document.querySelectorAll('.dyn-start-year').forEach(el => el.textContent = startYear);
             document.querySelectorAll('.dyn-location').forEach(el => el.textContent = data.location_used);
 
@@ -2756,6 +2776,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (historicalChartInstance) {
                 historicalChartInstance.destroy();
             }
+
+            const spLabel = fxHedged ? 'Bérlés (S&P 500 Devizafedezett)' : 'Bérlés (S&P 500 Részvény)';
 
             const chartDatasets = [
                 {
@@ -2768,7 +2790,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     fill: true
                 },
                 {
-                    label: 'Bérlés (S&P 500 Részvény)',
+                    label: spLabel,
                     data: data.sp500_values,
                     borderColor: '#198754',
                     backgroundColor: 'rgba(25, 135, 84, 0.1)',
@@ -2998,22 +3020,175 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Historikus Ciklus- és Időtáv-elemzés (Rolling Windows - Idea 3) ---
+    let currentRollingYears = 10;
+
+    async function fetchAndRenderRollingWindows(holdingYears = 10) {
+        currentRollingYears = holdingYears;
+        const labelRollingHorizon = document.getElementById('labelRollingHorizon');
+        if (labelRollingHorizon) labelRollingHorizon.textContent = holdingYears;
+
+        const city = document.getElementById('prop_city').value || 'Budapest';
+        const district = document.getElementById('prop_district').value || 'XI. kerület';
+        const currentPrice = parseCleanNumber(document.getElementById('prop_price_total').value);
+        const downPaymentPct = parseFloat(document.getElementById('loan_down_payment_pct').value) || 20;
+        const loanInterestPct = parseFloat(document.getElementById('loan_interest_pct').value) || 6.5;
+        const loanTermYears = parseInt(document.getElementById('loan_term_years').value) || 20;
+        const currentRent = parseCleanNumber(document.getElementById('rent_monthly_huf').value) || 200000;
+        const currentUtils = parseCleanNumber(document.getElementById('rent_utilities_huf').value) || 30000;
+        const tbszEnabled = document.getElementById('chk_tbsz_enabled') ? document.getElementById('chk_tbsz_enabled').checked : true;
+        const useHistRates = chkHistUseRates ? chkHistUseRates.checked : false;
+        const includeAcqCosts = chkHistAcquisitionCosts ? chkHistAcquisitionCosts.checked : false;
+        const fxHedged = chkHistFxHedged ? chkHistFxHedged.checked : false;
+
+        const tbody = document.getElementById('tbodyRollingWindows');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3"><div class="spinner-border spinner-border-sm text-primary me-2"></div> Rolling ciklusok számítása...</td></tr>';
+        }
+
+        try {
+            const response = await fetch('/api/historical_rolling_windows', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    city: city,
+                    district: district,
+                    current_property_value_huf: currentPrice,
+                    holding_years: holdingYears,
+                    down_payment_pct: downPaymentPct,
+                    loan_interest_pct: loanInterestPct,
+                    loan_term_years: loanTermYears,
+                    current_rent_huf: currentRent,
+                    current_utilities_huf: currentUtils,
+                    tbsz_enabled: tbszEnabled,
+                    use_historical_rates: useHistRates,
+                    include_acquisition_costs: includeAcqCosts,
+                    acquisition_cost_pct: 5.0,
+                    fx_hedged: fxHedged
+                })
+            });
+
+            if (!response.ok) return;
+            const res = await response.json();
+            if (res.status !== 'success') return;
+
+            const data = res.data;
+            const stats = data.stats;
+
+            // UI Stat Kártyák
+            const badgeReWinRate = document.getElementById('badgeReWinRate');
+            const valReWins = document.getElementById('valReWins');
+            const valAvgReIrr = document.getElementById('valAvgReIrr');
+
+            const badgeSpWinRate = document.getElementById('badgeSpWinRate');
+            const valSpWins = document.getElementById('valSpWins');
+            const valAvgSpIrr = document.getElementById('valAvgSpIrr');
+
+            const badgeBondWinRate = document.getElementById('badgeBondWinRate');
+            const valBondWins = document.getElementById('valBondWins');
+            const valAvgBondIrr = document.getElementById('valAvgBondIrr');
+
+            if (badgeReWinRate) badgeReWinRate.textContent = stats.re_win_rate_pct.toFixed(1) + '%';
+            if (valReWins) valReWins.textContent = stats.re_wins + ' / ' + data.total_windows + ' ciklus';
+            if (valAvgReIrr) valAvgReIrr.textContent = stats.avg_re_irr_pct.toFixed(1) + '%';
+
+            if (badgeSpWinRate) badgeSpWinRate.textContent = stats.sp_win_rate_pct.toFixed(1) + '%';
+            if (valSpWins) valSpWins.textContent = stats.sp_wins + ' / ' + data.total_windows + ' ciklus';
+            if (valAvgSpIrr) valAvgSpIrr.textContent = stats.avg_sp_irr_pct.toFixed(1) + '%';
+
+            if (badgeBondWinRate) badgeBondWinRate.textContent = stats.bond_win_rate_pct.toFixed(1) + '%';
+            if (valBondWins) valBondWins.textContent = stats.bond_wins + ' / ' + data.total_windows + ' ciklus';
+            if (valAvgBondIrr) valAvgBondIrr.textContent = stats.avg_bond_irr_pct.toFixed(1) + '%';
+
+            // Táblázat sorainak generálása
+            if (tbody) {
+                tbody.innerHTML = '';
+                data.windows.forEach(w => {
+                    const tr = document.createElement('tr');
+
+                    let badgeHtml = '';
+                    if (w.winner === 'Ingatlan') {
+                        badgeHtml = '<span class="badge bg-primary px-2 py-1"><i class="bi bi-house-door-fill me-1"></i>Ingatlan</span>';
+                    } else if (w.winner === 'S&P 500') {
+                        badgeHtml = '<span class="badge bg-success px-2 py-1"><i class="bi bi-graph-up-arrow me-1"></i>S&P 500</span>';
+                    } else {
+                        badgeHtml = '<span class="badge text-white px-2 py-1" style="background-color: #6f42c1;"><i class="bi bi-shield-shaded me-1"></i>Állampapír</span>';
+                    }
+
+                    const deltaFormatted = formatSignedHuf(w.re_sp_delta);
+                    const deltaClass = w.re_sp_delta >= 0 ? 'text-primary fw-bold' : 'text-success fw-bold';
+
+                    tr.innerHTML = `
+                        <td class="fw-bold">${w.label}</td>
+                        <td class="text-center">${badgeHtml}</td>
+                        <td class="text-end">${formatHUF(w.re_final)} <br><span class="text-muted" style="font-size:0.75rem;">IRR: ${w.re_irr.toFixed(1)}%</span></td>
+                        <td class="text-end">${formatHUF(w.sp_final)} <br><span class="text-muted" style="font-size:0.75rem;">IRR: ${w.sp_irr.toFixed(1)}%</span></td>
+                        <td class="text-end">${formatHUF(w.bond_final)} <br><span class="text-muted" style="font-size:0.75rem;">IRR: ${w.bond_irr.toFixed(1)}%</span></td>
+                        <td class="text-end ${deltaClass}">${deltaFormatted}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+        } catch (err) {
+            console.error("Hiba a rolling adatok lekérésekor:", err);
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger py-3">Hiba történt a rolling adatok betöltésekor.</td></tr>';
+            }
+        }
+    }
+
     if (rngHistoricalYear) {
         rngHistoricalYear.addEventListener('input', (e) => {
             badgeHistoricalYear.textContent = e.target.value;
         });
-        rngHistoricalYear.addEventListener('change', fetchAndRenderHistorical);
+        rngHistoricalYear.addEventListener('change', () => {
+            fetchAndRenderHistorical();
+            fetchAndRenderRollingWindows(currentRollingYears);
+        });
     }
 
     if (chkHistUseRates) {
-        chkHistUseRates.addEventListener('change', fetchAndRenderHistorical);
+        chkHistUseRates.addEventListener('change', () => {
+            fetchAndRenderHistorical();
+            fetchAndRenderRollingWindows(currentRollingYears);
+        });
     }
+
+    if (chkHistAcquisitionCosts) {
+        chkHistAcquisitionCosts.addEventListener('change', () => {
+            fetchAndRenderHistorical();
+            fetchAndRenderRollingWindows(currentRollingYears);
+        });
+    }
+
+    if (chkHistFxHedged) {
+        chkHistFxHedged.addEventListener('change', () => {
+            fetchAndRenderHistorical();
+            fetchAndRenderRollingWindows(currentRollingYears);
+        });
+    }
+
+    // Rolling időtáv gombok eseménykezelése
+    document.querySelectorAll('.btn-rolling-horizon').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.btn-rolling-horizon').forEach(b => {
+                b.classList.remove('active', 'btn-primary');
+                b.classList.add('btn-outline-primary');
+            });
+            btn.classList.remove('btn-outline-primary');
+            btn.classList.add('active', 'btn-primary');
+            const years = parseInt(btn.dataset.years) || 10;
+            fetchAndRenderRollingWindows(years);
+        });
+    });
     
     // Frissítés tab váltáskor is, ha a historical tab aktív
     const tabBtnHistorical = document.getElementById('tab-btn-historical');
     if(tabBtnHistorical) {
         tabBtnHistorical.addEventListener('shown.bs.tab', () => {
             fetchAndRenderHistorical();
+            fetchAndRenderRollingWindows(currentRollingYears);
         });
     }
 
