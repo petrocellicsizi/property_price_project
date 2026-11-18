@@ -334,6 +334,79 @@ def historical_rolling_windows():
     
     return jsonify({"status": "success", "data": result}), 200
 
+@app.route("/api/creditworthiness", methods=["POST"])
+def creditworthiness_endpoint():
+    """
+    Kiszámítja az MNB JTM (Jövedelemarányos Törlesztőrészlet) mutatót,
+    a maximálisan felvehető hitelösszeget és a banki hitelbírálati minősítést.
+    """
+    payload = request.get_json(silent=True)
+    if not payload:
+        return jsonify({"status": "error", "message": "Érvénytelen vagy hiányzó JSON adat."}), 400
+
+    from core.creditworthiness import calculate_creditworthiness
+    
+    net_income = float(payload.get("net_monthly_income_huf", 850_000.0))
+    loan_principal = float(payload.get("loan_principal_huf", 60_000_000.0))
+    annual_rate = float(payload.get("annual_interest_rate_pct", 6.5))
+    loan_term = int(payload.get("loan_term_years", 20))
+    interest_period = float(payload.get("interest_period_years", 10.0))
+    existing_loans = float(payload.get("existing_monthly_loans_huf", 0.0))
+    credit_card_limits = float(payload.get("credit_card_limits_huf", 0.0))
+    prop_price = float(payload.get("property_price_huf", 80_000_000.0))
+    is_first_buyer = bool(payload.get("is_first_home_buyer", False))
+    is_green = bool(payload.get("is_green_certified", False))
+
+    result = calculate_creditworthiness(
+        net_monthly_income_huf=net_income,
+        loan_principal_huf=loan_principal,
+        annual_interest_rate_pct=annual_rate,
+        loan_term_years=loan_term,
+        interest_period_years=interest_period,
+        existing_monthly_loans_huf=existing_loans,
+        credit_card_limits_huf=credit_card_limits,
+        property_price_huf=prop_price,
+        is_first_home_buyer=is_first_buyer,
+        is_green_certified=is_green
+    )
+
+    return jsonify({"status": "success", "data": result}), 200
+
+@app.route("/api/crisis_replay", methods=["POST"])
+def crisis_replay_endpoint():
+    """
+    Lefuttatja a kiválasztott történelmi válság stressztesztet (2008 Lehman, 2020 Covid, 2022 Stagfláció).
+    """
+    payload = request.get_json(silent=True)
+    if not payload:
+        return jsonify({"status": "error", "message": "Érvénytelen vagy hiányzó JSON adat."}), 400
+
+    from core.crisis_replay import run_crisis_replay
+
+    crisis_id = payload.get("crisis_id", "crisis_2008")
+    prop_val = float(payload.get("property_val_0", 80_000_000.0))
+    down_ratio = float(payload.get("down_payment_ratio", 0.20))
+    annual_rate = float(payload.get("loan_annual_rate", 0.065))
+    loan_term = int(payload.get("loan_term_years", 20))
+    initial_rent = float(payload.get("initial_rent_monthly", 250_000.0))
+    common_cost = float(payload.get("common_cost_monthly", 25_000.0))
+    renovation = float(payload.get("renovation_initial", 2_500_000.0))
+    is_fixed = bool(payload.get("is_loan_fixed", True))
+
+    result = run_crisis_replay(
+        crisis_id=crisis_id,
+        property_val_0=prop_val,
+        down_payment_ratio=down_ratio,
+        loan_annual_rate=annual_rate,
+        loan_term_years=loan_term,
+        initial_rent_monthly=initial_rent,
+        common_cost_monthly=common_cost,
+        renovation_initial=renovation,
+        is_loan_fixed=is_fixed
+    )
+
+    return jsonify({"status": "success", "data": result}), 200
+
 @app.route("/api/inputs", methods=["POST"])
 def store_inputs():
     """

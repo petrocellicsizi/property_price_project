@@ -75,6 +75,11 @@
                     <i class="bi bi-clock-history me-2"></i>Historikus Eredmények
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold fs-5 px-4" id="tab-btn-creditworthiness" data-bs-toggle="tab" data-bs-target="#tab-creditworthiness" type="button" role="tab" aria-controls="tab-creditworthiness" aria-selected="false">
+                    <i class="bi bi-shield-check me-2"></i>MNB Hitelképesség & JTM
+                </button>
+            </li>
         </ul>
 
         <div class="tab-content" id="mainTabsContent">
@@ -931,6 +936,112 @@
                         <strong>Módszertani Megjegyzés:</strong> A valószínűségi modell a determinisztikus „fekete doboz” helyett a jövőbeli bizonytalanságot modellezi. A súlyozott mutatók a 4 fő makrogazdasági forgatókönyv valószínűségeivel aggregált várható értéket képviselik a szakdolgozati sztenderdeknek megfelelően.
                     </span>
                 </div>
+
+                <!-- ÚJ: Történelmi Válság Stressztesztek (Historical Crisis Replay) -->
+                <div class="card bg-white border-0 shadow-sm rounded mt-4">
+                    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-tornado text-danger fs-4"></i>
+                            <div>
+                                <h6 class="card-title mb-0 fw-bold">🌪️ Történelmi Válság Stressztesztek (Historical Crisis Replay)</h6>
+                                <small class="text-muted">A modern gazdaságtörténet 3 legnagyobb válságának (2008 Lehman, 2020 Covid, 2022 Stagfláció) hatása a saját lakás vs. bérlés egyenlegre</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" id="chkCrisisLoanFixed" checked>
+                                <label class="form-check-label small fw-semibold text-dark" for="chkCrisisLoanFixed">
+                                    <i class="bi bi-lock-fill text-primary me-1"></i>Végig fix hitelkamat
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4 bg-light">
+                        <!-- Válság választó gombok -->
+                        <div class="d-flex flex-wrap gap-2 mb-4" id="crisisButtonGroup">
+                            <button type="button" class="btn btn-outline-danger active fw-semibold d-flex align-items-center gap-2" data-crisis="crisis_2008" id="btnCrisis2008">
+                                <i class="bi bi-building-fill-exclamation"></i>
+                                <span>2008 Lehman-krízis & Ingatlanbuborék (10 év)</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-warning text-dark fw-semibold d-flex align-items-center gap-2" data-crisis="crisis_2020" id="btnCrisis2020">
+                                <i class="bi bi-virus"></i>
+                                <span>2020 Covid Karantén & Albérlet-sokk (5 év)</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary fw-semibold d-flex align-items-center gap-2" data-crisis="crisis_2022" id="btnCrisis2022">
+                                <i class="bi bi-fire"></i>
+                                <span>2022-2023 Stagfláció & Kamatcsúcs (5 év)</span>
+                            </button>
+                        </div>
+
+                        <!-- Válság leírás és jelvény -->
+                        <div class="p-3 bg-white rounded border mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <span class="badge bg-danger mb-1" id="badgeCrisisPeriod">2008 - 2018 (10 év)</span>
+                                <h6 class="fw-bold text-dark mb-1" id="lblCrisisTitle">2008 Lehman-krízis & Ingatlanbuborék</h6>
+                                <p class="text-muted small mb-0" id="lblCrisisDesc">Likviditási összeomlás, hitelpiaci lefagyás, lakásáresés és forintgyengülés.</p>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-light text-muted border" id="badgeCrisisTimeline">Válság időtartam: 10 év</span>
+                            </div>
+                        </div>
+
+                        <!-- 4 Stressz KPI Kártya -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-3">
+                                <div class="card bg-white border-0 shadow-sm h-100 p-3 border-start border-4 border-success">
+                                    <span class="text-muted small fw-semibold text-uppercase">Válság utáni vagyoni előny</span>
+                                    <h4 class="fw-bold mb-1 text-success mt-2" id="valCrisisDelta">-- Ft</h4>
+                                    <span class="badge bg-success" id="badgeCrisisWinner">Saját lakás nyert</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-white border-0 shadow-sm h-100 p-3 border-start border-4 border-primary">
+                                    <span class="text-muted small fw-semibold text-uppercase">Saját Lakás Max Visszaesés (DD)</span>
+                                    <h4 class="fw-bold mb-1 text-primary mt-2" id="valCrisisBuyDd">-15.0%</h4>
+                                    <small class="text-muted">A legmélyebb tőkeveszteség</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-white border-0 shadow-sm h-100 p-3 border-start border-4 border-danger">
+                                    <span class="text-muted small fw-semibold text-uppercase">Bérlő / Tőkepiac Max Visszaesés</span>
+                                    <h4 class="fw-bold mb-1 text-danger mt-2" id="valCrisisRentDd">-38.5%</h4>
+                                    <small class="text-muted">Tőzsdei visszaesés a mélyponton</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-white border-0 shadow-sm h-100 p-3 border-start border-4 border-info">
+                                    <span class="text-muted small fw-semibold text-uppercase">Infláció-korrigált Reálvagyon</span>
+                                    <h4 class="fw-bold mb-1 text-info mt-2" id="valCrisisRealBuy">-- Ft</h4>
+                                    <small class="text-muted" id="valCrisisRealRent">Bérlő: -- Ft</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vagyoni lefutás diagram a válság alatt -->
+                        <div class="bg-white p-3 rounded border mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold text-dark small text-uppercase">
+                                    <i class="bi bi-graph-up-arrow text-primary me-1"></i>Vagyoni Pályák Összehasonlítása: Válság vs. Normál Pálya
+                                </span>
+                                <small class="text-muted">Folytonos vonalak: Válság | Szaggatott: Normál bázis</small>
+                            </div>
+                            <div style="height: 340px; position: relative;">
+                                <canvas id="crisisReplayChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Akadémiai / Szakdolgozati Konklúzió -->
+                        <div class="p-3 bg-white rounded border border-info-subtle d-flex gap-3 align-items-start">
+                            <i class="bi bi-mortarboard-fill text-primary fs-3 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold text-primary mb-1">Közgazdasági Elemzés & Válságállósági Tanulság (BME GTK)</h6>
+                                <p class="small text-muted mb-0" id="txtCrisisTakeaway">
+                                    A 2008-as krízis fő tanulsága: a tőkeáttétel negatív ársokk esetén felerősíti a tőkeveszteséget. A változó kamatozású hitellel rendelkezők terhei ugrásszerűen megnőttek, míg a tőkepiac a kezdeti sokk után erőteljesen visszapattant.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         </div> <!-- end of tab-scenarios -->
@@ -1216,6 +1327,259 @@
                 </div>
                 
         </div> <!-- end of tab-historical -->
+
+        <!-- 5. TAB: CREDITWORTHINESS & MNB JTM DASHBOARD -->
+        <div class="tab-pane fade" id="tab-creditworthiness" role="tabpanel" aria-labelledby="tab-btn-creditworthiness">
+            
+            <!-- Felső Vezérlősáv & Információs Fejléc -->
+            <div class="card border-0 shadow-sm mt-4 bg-light">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-shield-check text-primary fs-3"></i>
+                            <div>
+                                <h5 class="fw-bold mb-0 text-dark">🛡️ MNB Hitelképesség & JTM (Jövedelemarányos Törlesztőrészlet) Dashboard</h5>
+                                <small class="text-muted">
+                                    32/2014. (IX. 10.) MNB rendelet és a 2024. január 1-től hatályos 10%-os első lakásvásárlói önerő szabályozás alapján
+                                </small>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm fw-bold px-3 py-2 shadow-sm" id="btnSyncFromSimulation">
+                            <i class="bi bi-arrow-repeat me-1"></i>Adatok átemelése a Fő Szimulációból
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kétoszlopos Hitelbírálati Rendszer -->
+            <div class="row g-4 mt-1">
+                
+                <!-- BAL OSZLOP: Bemeneti Hitelparaméterek (5 oszlop) -->
+                <div class="col-lg-5">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white py-3 border-bottom d-flex align-items-center gap-2">
+                            <i class="bi bi-person-vcard text-primary fs-5"></i>
+                            <h6 class="card-title mb-0 fw-bold">1. Hiteligénylő Jövedelme & Meglévő Terhei</h6>
+                        </div>
+                        <div class="card-body p-4">
+                            
+                            <!-- Havi nettó háztartási jövedelem -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label class="form-label small fw-bold text-dark mb-0">Havi nettó háztartási jövedelem</label>
+                                    <strong class="text-primary" id="lblJtmNetIncomeBadge">850.000 Ft</strong>
+                                </div>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control fw-bold" id="jtm_net_income" value="850 000">
+                                    <span class="input-group-text">Ft / hó</span>
+                                </div>
+                                <input type="range" class="form-range" id="rngJtmNetIncome" min="300000" max="3000000" step="25000" value="850000">
+                                <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
+                                    <i class="bi bi-info-circle me-1"></i>600.000 Ft felett az MNB magasabb (60% / 40% / 30%) JTM plafont engedélyez.
+                                </small>
+                            </div>
+
+                            <!-- Meglévő havi törlesztőrészletek -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-dark mb-1">Meglévő egyéb havi törlesztőrészletek</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="jtm_existing_loans" value="0">
+                                    <span class="input-group-text">Ft / hó</span>
+                                </div>
+                                <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">
+                                    Személyi kölcsön, autóhitel, áruhitel, babaváró havi törlesztése.
+                                </small>
+                            </div>
+
+                            <!-- Hitelkártya & folyószámla hitelkeret -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-dark mb-1">Hitelkártya & folyószámla hitelkeret összege</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="jtm_credit_cards" value="0">
+                                    <span class="input-group-text">Ft</span>
+                                </div>
+                                <div class="p-2 bg-warning-subtle text-dark rounded border border-warning small mt-1" style="font-size: 0.73rem;">
+                                    <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i><strong>MNB Szabály:</strong> A megnyitott hitelkeret <strong>5%-a</strong> automatikusan havi törlesztési teherként terheli a jövedelmet (akkor is, ha nem használod ki!).
+                                </div>
+                            </div>
+
+                            <hr class="my-3">
+
+                            <!-- Hitel és Lakás Paraméterek -->
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-dark mb-1">Ingatlan vételára</label>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control fw-bold" id="jtm_property_price" value="80 600 000">
+                                        <span class="input-group-text">Ft</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-dark mb-1">Kért hitelösszeg</label>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control fw-bold text-primary" id="jtm_loan_amount" value="60 450 000">
+                                        <span class="input-group-text">Ft</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-dark mb-1">Kamat (% / év)</label>
+                                    <div class="input-group input-group-sm">
+                                        <input type="number" class="form-control" id="jtm_interest_rate" value="6.5" step="0.1">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold text-dark mb-1">Futamidő (év)</label>
+                                    <div class="input-group input-group-sm">
+                                        <input type="number" class="form-control" id="jtm_loan_term" value="20" min="5" max="35">
+                                        <span class="input-group-text">év</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kamatperiódus hossza -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-dark mb-1">Hitel Kamatperiódusa</label>
+                                <select class="form-select form-select-sm" id="jtm_interest_period">
+                                    <option value="10" selected>Legalább 10 éves vagy végig fix (JTM plafon: 50% / 60%)</option>
+                                    <option value="5">5 és 10 év közötti kamatperiódus (JTM plafon: 35% / 40%)</option>
+                                    <option value="3">5 évnél rövidebb / változó kamat (JTM plafon: 25% / 30%)</option>
+                                </select>
+                            </div>
+
+                            <!-- MNB Speciális Jogszabályi Kapcsolók -->
+                            <div class="p-3 bg-light rounded border mb-3">
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="jtm_chk_first_buyer">
+                                    <label class="form-check-label small fw-bold text-dark" for="jtm_chk_first_buyer">
+                                        <i class="bi bi-star-fill text-warning me-1"></i>35 év alatti első lakásvásárló (10% önerő / 90% HFM)
+                                    </label>
+                                </div>
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" id="jtm_chk_green">
+                                    <label class="form-check-label small fw-bold text-dark" for="jtm_chk_green">
+                                        <i class="bi bi-patch-check-fill text-success me-1"></i>Zöld lakáshitel (AA+ energetika, -0.5% kamatkedvezmény)
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary w-100 fw-bold py-2 shadow-sm" id="btnRecalculateJtm">
+                                <i class="bi bi-calculator-fill me-1"></i>Hitelképesség Újraszámolása
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JOBB OSZLOP: Hitelbírálati Dashboard (7 oszlop) -->
+                <div class="col-lg-7">
+                    
+                    <!-- 1. Hitelminősítési Státusz Banner (Verdict Card) -->
+                    <div class="card border-0 shadow-sm p-4 mb-4 text-white bg-success" id="jtmVerdictCard">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-check-circle-fill display-5" id="jtmVerdictIcon"></i>
+                            <div>
+                                <h4 class="fw-bold mb-1" id="jtmVerdictTitle">HITELKÉPES (Biztonságos Zóna)</h4>
+                                <p class="mb-0 small opacity-90" id="jtmVerdictSummary">
+                                    Kiváló hitelbírálati mutatók! A havi törlesztőrészlet kényelmesen belefér a jogszabályi keretekbe, és bőséges szabad jövedelem marad havonta.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Négy Fő KPI Kártya -->
+                    <div class="row g-3 mb-4">
+                        <!-- KPI 1: Kalkulált JTM vs Plafon -->
+                        <div class="col-md-6">
+                            <div class="card bg-white border-0 shadow-sm h-100 p-3 border-start border-4 border-primary">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted small fw-semibold text-uppercase">Kalkulált JTM terheltség</span>
+                                    <span class="badge bg-primary" id="badgeJtmCompliance">Megfelelő</span>
+                                </div>
+                                <h3 class="fw-bold mb-1 text-primary mt-2" id="jtmValCalculatedJtm">38.5%</h3>
+                                <small class="text-muted d-block mb-2">Jogszabályi MNB plafon: <strong id="jtmValMnbLimit">60.0%</strong></small>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" id="jtmProgressBar" style="width: 38.5%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KPI 2: Szabad Megélhetési Jövedelem -->
+                        <div class="col-md-6">
+                            <div class="card bg-white border-0 shadow-sm h-100 p-3 border-start border-4 border-success">
+                                <span class="text-muted small fw-semibold text-uppercase">Szabad havi jövedelem</span>
+                                <h3 class="fw-bold mb-1 text-success mt-2" id="jtmValDisposableIncome">522.600 Ft</h3>
+                                <small class="text-muted">A havi törlesztő levonása után megmaradó összeg</small>
+                            </div>
+                        </div>
+
+                        <!-- KPI 3: Maximális Felvehető Hitelösszeg -->
+                        <div class="col-md-6">
+                            <div class="card bg-white border-0 shadow-sm h-100 p-3 border-start border-4 border-info">
+                                <span class="text-muted small fw-semibold text-uppercase">Maximálisan Felvehető Hitel</span>
+                                <h3 class="fw-bold mb-1 text-info mt-2" id="jtmValMaxLoanAmount">94.200.000 Ft</h3>
+                                <small class="text-muted">A jelenlegi jövedelem mellett az MNB plafonig</small>
+                            </div>
+                        </div>
+
+                        <!-- KPI 4: Hitelfedezeti Arány (HFM / LTV) -->
+                        <div class="col-md-6">
+                            <div class="card bg-white border-0 shadow-sm h-100 p-3 border-start border-4 border-warning">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted small fw-semibold text-uppercase">Önerő & Hitelbiztosíték (LTV)</span>
+                                    <span class="badge bg-success" id="badgeLtvCompliance">Megfelelő</span>
+                                </div>
+                                <h3 class="fw-bold mb-1 text-dark mt-2" id="jtmValLtv">75.0%</h3>
+                                <small class="text-muted">Maximálisan megengedett: <strong id="jtmValMaxLtv">80.0% (20% önerő)</strong></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Két Grafikonos Vizualizációs Sáv -->
+                    <div class="row g-3 mb-4">
+                        <!-- Doughnut Chart: Havi Jövedelem Felosztás -->
+                        <div class="col-md-6">
+                            <div class="card bg-white border-0 shadow-sm rounded p-3 h-100">
+                                <span class="fw-bold text-dark small text-uppercase mb-2 d-block">
+                                    <i class="bi bi-pie-chart text-primary me-1"></i>Havi Jövedelem Felosztása
+                                </span>
+                                <div style="height: 220px; position: relative;">
+                                    <canvas id="jtmDistributionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bar Chart: Hitelkapacitás Jövedelemszintek szerint -->
+                        <div class="col-md-6">
+                            <div class="card bg-white border-0 shadow-sm rounded p-3 h-100">
+                                <span class="fw-bold text-dark small text-uppercase mb-2 d-block">
+                                    <i class="bi bi-bar-chart-steps text-info me-1"></i>Max Hitelösszeg Jövedelemszintek szerint
+                                </span>
+                                <div style="height: 220px; position: relative;">
+                                    <canvas id="jtmIncomeSensitivityChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Banki Diagnosztika & Tippek Kártya -->
+                    <div class="card bg-white border-0 shadow-sm rounded p-3 border-top border-4 border-info">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="bi bi-lightbulb-fill text-warning fs-5"></i>
+                            <h6 class="fw-bold text-dark mb-0">Banki Bírálati Diagnosztika & Hitelképesség Növelési Tippek</h6>
+                        </div>
+                        <ul class="list-unstyled mb-0 small" id="jtmRecommendationsContainer">
+                            <li class="mb-1 text-muted"><i class="bi bi-check2 text-success me-2"></i>A hitelkérelem banki szempontból kifogástalan.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div> <!-- end of tab-creditworthiness -->
 
         </div> <!-- end of tab-content -->
     </form>

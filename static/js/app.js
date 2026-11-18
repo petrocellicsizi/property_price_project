@@ -3192,4 +3192,464 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ==========================================
+    // 7. TÖRTÉNELMI VÁLSÁG STRESSZTESZTEK (Tab 3)
+    // ==========================================
+    let currentCrisisId = 'crisis_2008';
+    let crisisReplayChartInstance = null;
+
+    const chkCrisisLoanFixed = document.getElementById('chkCrisisLoanFixed');
+    const crisisButtons = document.querySelectorAll('#crisisButtonGroup button');
+
+    async function fetchAndRenderCrisisReplay(crisisId = currentCrisisId) {
+        currentCrisisId = crisisId;
+        const propPriceVal = parseCleanNumber(propPriceTotal ? propPriceTotal.value : 80600000);
+        const downPctVal = parseCleanNumber(loanDownPaymentPct ? loanDownPaymentPct.value : 25) / 100.0;
+        const loanRateVal = parseCleanNumber(loanInterestPct ? loanInterestPct.value : 6.5) / 100.0;
+        const loanTermVal = parseInt(loanTermYears ? loanTermYears.value : 20) || 20;
+        const rentVal = parseCleanNumber(rentMonthlyHuf ? rentMonthlyHuf.value : 270000);
+        const utilsVal = parseCleanNumber(rentUtilitiesHuf ? rentUtilitiesHuf.value : 34000);
+        const furnishVal = parseCleanNumber(propFurnishingHuf ? propFurnishingHuf.value : 2800000);
+        const isFixed = chkCrisisLoanFixed ? chkCrisisLoanFixed.checked : true;
+
+        const payload = {
+            crisis_id: crisisId,
+            property_val_0: propPriceVal,
+            down_payment_ratio: downPctVal,
+            loan_annual_rate: loanRateVal,
+            loan_term_years: loanTermVal,
+            initial_rent_monthly: rentVal,
+            common_cost_monthly: utilsVal,
+            renovation_initial: furnishVal,
+            is_loan_fixed: isFixed
+        };
+
+        try {
+            const res = await fetch('/api/crisis_replay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) return;
+            const json = await res.json();
+            const data = json.data;
+            renderCrisisReplayUI(data);
+        } catch (err) {
+            console.error("Hiba a válság stresszteszt futtatásakor:", err);
+        }
+    }
+
+    function renderCrisisReplayUI(data) {
+        if (!data) return;
+        const m = data.metrics;
+        const traj = data.trajectories;
+
+        const lblCrisisTitle = document.getElementById('lblCrisisTitle');
+        const lblCrisisDesc = document.getElementById('lblCrisisDesc');
+        const badgeCrisisPeriod = document.getElementById('badgeCrisisPeriod');
+        const badgeCrisisTimeline = document.getElementById('badgeCrisisTimeline');
+        const txtCrisisTakeaway = document.getElementById('txtCrisisTakeaway');
+
+        if (lblCrisisTitle) lblCrisisTitle.textContent = data.name;
+        if (lblCrisisDesc) lblCrisisDesc.textContent = data.description;
+        if (badgeCrisisPeriod) {
+            badgeCrisisPeriod.textContent = data.period;
+            badgeCrisisPeriod.className = `badge ${data.badge} mb-1`;
+        }
+        if (badgeCrisisTimeline) badgeCrisisTimeline.textContent = `Válság időtartam: ${data.duration_years} év`;
+        if (txtCrisisTakeaway) txtCrisisTakeaway.textContent = data.economic_takeaway;
+
+        // KPI kártyák
+        const valCrisisDelta = document.getElementById('valCrisisDelta');
+        const badgeCrisisWinner = document.getElementById('badgeCrisisWinner');
+        const valCrisisBuyDd = document.getElementById('valCrisisBuyDd');
+        const valCrisisRentDd = document.getElementById('valCrisisRentDd');
+        const valCrisisRealBuy = document.getElementById('valCrisisRealBuy');
+        const valCrisisRealRent = document.getElementById('valCrisisRealRent');
+
+        if (valCrisisDelta) valCrisisDelta.textContent = formatSignedHuf(m.wealth_delta);
+        if (badgeCrisisWinner) {
+            badgeCrisisWinner.textContent = m.winner;
+            badgeCrisisWinner.className = m.winner_badge;
+        }
+        if (valCrisisBuyDd) valCrisisBuyDd.textContent = `-${m.max_buy_drawdown_pct}%`;
+        if (valCrisisRentDd) valCrisisRentDd.textContent = `-${m.max_rent_drawdown_pct}%`;
+        if (valCrisisRealBuy) valCrisisRealBuy.textContent = m.formatted_real_buy_wealth;
+        if (valCrisisRealRent) valCrisisRealRent.textContent = `Bérlő reálvagyon: ${m.formatted_real_rent_wealth}`;
+
+        // Chart.js renderelés
+        const ctx = document.getElementById('crisisReplayChart');
+        if (!ctx) return;
+
+        if (crisisReplayChartInstance) {
+            crisisReplayChartInstance.destroy();
+        }
+
+        crisisReplayChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: traj.timeline.map(yr => yr === 0 ? 'Indulás' : `${yr}. év`),
+                datasets: [
+                    {
+                        label: 'Saját Lakás (Válság alatt)',
+                        data: traj.crisis_buy_wealth,
+                        borderColor: '#0d6efd',
+                        backgroundColor: 'rgba(13, 110, 253, 0.15)',
+                        borderWidth: 3,
+                        tension: 0.25,
+                        fill: false
+                    },
+                    {
+                        label: 'Bérlés & Befektetés (Válság alatt)',
+                        data: traj.crisis_rent_wealth,
+                        borderColor: '#198754',
+                        backgroundColor: 'rgba(25, 135, 84, 0.15)',
+                        borderWidth: 3,
+                        tension: 0.25,
+                        fill: false
+                    },
+                    {
+                        label: 'Saját Lakás (Normál alappálya)',
+                        data: traj.baseline_buy_wealth,
+                        borderColor: '#6c757d',
+                        borderDash: [5, 5],
+                        borderWidth: 1.5,
+                        pointRadius: 2,
+                        tension: 0.25,
+                        fill: false
+                    },
+                    {
+                        label: 'Bérlés & Befektetés (Normál alappálya)',
+                        data: traj.baseline_rent_wealth,
+                        borderColor: '#20c997',
+                        borderDash: [5, 5],
+                        borderWidth: 1.5,
+                        pointRadius: 2,
+                        tension: 0.25,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${formatHUF(context.parsed.y)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(val) {
+                                return (val / 1000000).toFixed(0) + ' M Ft';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    if (crisisButtons && crisisButtons.length > 0) {
+        crisisButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                crisisButtons.forEach(b => {
+                    b.classList.remove('active');
+                });
+                btn.classList.add('active');
+                const crisisId = btn.dataset.crisis || 'crisis_2008';
+                fetchAndRenderCrisisReplay(crisisId);
+            });
+        });
+    }
+
+    if (chkCrisisLoanFixed) {
+        chkCrisisLoanFixed.addEventListener('change', () => {
+            fetchAndRenderCrisisReplay(currentCrisisId);
+        });
+    }
+
+    // ==========================================
+    // 8. MNB HITELKÉPESSÉG & JTM DASHBOARD (Tab 5)
+    // ==========================================
+    let jtmDistributionChartInstance = null;
+    let jtmIncomeSensitivityChartInstance = null;
+
+    const jtmNetIncome = document.getElementById('jtm_net_income');
+    const rngJtmNetIncome = document.getElementById('rngJtmNetIncome');
+    const lblJtmNetIncomeBadge = document.getElementById('lblJtmNetIncomeBadge');
+    const jtmExistingLoans = document.getElementById('jtm_existing_loans');
+    const jtmCreditCards = document.getElementById('jtm_credit_cards');
+    const jtmPropertyPrice = document.getElementById('jtm_property_price');
+    const jtmLoanAmount = document.getElementById('jtm_loan_amount');
+    const jtmInterestRate = document.getElementById('jtm_interest_rate');
+    const jtmLoanTerm = document.getElementById('jtm_loan_term');
+    const jtmInterestPeriod = document.getElementById('jtm_interest_period');
+    const jtmChkFirstBuyer = document.getElementById('jtm_chk_first_buyer');
+    const jtmChkGreen = document.getElementById('jtm_chk_green');
+    const btnRecalculateJtm = document.getElementById('btnRecalculateJtm');
+    const btnSyncFromSimulation = document.getElementById('btnSyncFromSimulation');
+
+    // Formázott bevitel kezelése a JTM mezőkre
+    [jtmNetIncome, jtmExistingLoans, jtmCreditCards, jtmPropertyPrice, jtmLoanAmount].forEach(inp => {
+        if (!inp) return;
+        inp.addEventListener('input', (e) => {
+            const formatted = formatWithDots(e.target.value);
+            e.target.value = formatted;
+        });
+    });
+
+    if (rngJtmNetIncome && jtmNetIncome && lblJtmNetIncomeBadge) {
+        rngJtmNetIncome.addEventListener('input', (e) => {
+            jtmNetIncome.value = formatWithDots(e.target.value);
+            lblJtmNetIncomeBadge.textContent = formatHUF(e.target.value);
+        });
+        rngJtmNetIncome.addEventListener('change', fetchCreditworthiness);
+
+        jtmNetIncome.addEventListener('input', (e) => {
+            const val = parseCleanNumber(e.target.value);
+            rngJtmNetIncome.value = Math.min(3000000, Math.max(300000, val));
+            lblJtmNetIncomeBadge.textContent = formatHUF(val);
+        });
+        jtmNetIncome.addEventListener('change', fetchCreditworthiness);
+    }
+
+    if (btnSyncFromSimulation) {
+        btnSyncFromSimulation.addEventListener('click', () => {
+            if (propPriceTotal && jtmPropertyPrice) jtmPropertyPrice.value = propPriceTotal.value;
+            if (loanAmountHuf && jtmLoanAmount) jtmLoanAmount.value = loanAmountHuf.value;
+            if (loanInterestPct && jtmInterestRate) jtmInterestRate.value = loanInterestPct.value;
+            if (loanTermYears && jtmLoanTerm) jtmLoanTerm.value = loanTermYears.value;
+            fetchCreditworthiness();
+            if (typeof showNotification === 'function') {
+                showNotification("Sikeres szinkronizáció!", "A szimuláció adatai átmásolva a Hitelképesség dashboardra.");
+            }
+        });
+    }
+
+    [jtmExistingLoans, jtmCreditCards, jtmPropertyPrice, jtmLoanAmount, jtmInterestRate, jtmLoanTerm, jtmInterestPeriod, jtmChkFirstBuyer, jtmChkGreen].forEach(el => {
+        if (!el) return;
+        el.addEventListener('change', fetchCreditworthiness);
+    });
+
+    if (btnRecalculateJtm) {
+        btnRecalculateJtm.addEventListener('click', fetchCreditworthiness);
+    }
+
+    async function fetchCreditworthiness() {
+        const payload = {
+            net_monthly_income_huf: parseCleanNumber(jtmNetIncome ? jtmNetIncome.value : 850000),
+            loan_principal_huf: parseCleanNumber(jtmLoanAmount ? jtmLoanAmount.value : 60450000),
+            annual_interest_rate_pct: parseFloat(jtmInterestRate ? jtmInterestRate.value : 6.5) || 6.5,
+            loan_term_years: parseInt(jtmLoanTerm ? jtmLoanTerm.value : 20) || 20,
+            interest_period_years: parseFloat(jtmInterestPeriod ? jtmInterestPeriod.value : 10.0) || 10.0,
+            existing_monthly_loans_huf: parseCleanNumber(jtmExistingLoans ? jtmExistingLoans.value : 0),
+            credit_card_limits_huf: parseCleanNumber(jtmCreditCards ? jtmCreditCards.value : 0),
+            property_price_huf: parseCleanNumber(jtmPropertyPrice ? jtmPropertyPrice.value : 80600000),
+            is_first_home_buyer: jtmChkFirstBuyer ? jtmChkFirstBuyer.checked : false,
+            is_green_certified: jtmChkGreen ? jtmChkGreen.checked : false
+        };
+
+        try {
+            const res = await fetch('/api/creditworthiness', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) return;
+            const json = await res.json();
+            const data = json.data;
+            renderCreditworthinessUI(data);
+        } catch (err) {
+            console.error("Hiba a hitelképességi bírálat lekérésekor:", err);
+        }
+    }
+
+    function renderCreditworthinessUI(data) {
+        if (!data) return;
+        const m = data.metrics;
+        const charts = data.charts;
+
+        // Verdict Card
+        const card = document.getElementById('jtmVerdictCard');
+        const icon = document.getElementById('jtmVerdictIcon');
+        const title = document.getElementById('jtmVerdictTitle');
+        const summary = document.getElementById('jtmVerdictSummary');
+
+        if (card) {
+            card.className = `card border-0 shadow-sm p-4 mb-4 text-white ${data.verdict_badge}`;
+        }
+        if (icon) {
+            icon.className = `bi ${data.verdict_icon} display-5`;
+        }
+        if (title) title.textContent = data.verdict;
+        if (summary) summary.textContent = data.summary_text;
+
+        // KPI Kártyák
+        const valCalculatedJtm = document.getElementById('jtmValCalculatedJtm');
+        const valMnbLimit = document.getElementById('jtmValMnbLimit');
+        const progressBar = document.getElementById('jtmProgressBar');
+        const badgeJtmCompliance = document.getElementById('badgeJtmCompliance');
+
+        if (valCalculatedJtm) valCalculatedJtm.textContent = `${m.calculated_jtm_pct}%`;
+        if (valMnbLimit) valMnbLimit.textContent = `${m.mnb_limit_pct}%`;
+        if (progressBar) {
+            const width = Math.min(100, m.calculated_jtm_pct);
+            progressBar.style.width = `${width}%`;
+            progressBar.className = `progress-bar ${m.is_jtm_compliant ? (m.calculated_jtm_pct > m.mnb_limit_pct - 7 ? 'bg-warning' : 'bg-success') : 'bg-danger'}`;
+        }
+        if (badgeJtmCompliance) {
+            badgeJtmCompliance.textContent = m.is_jtm_compliant ? 'Megfelelő' : 'Limit Túllépés';
+            badgeJtmCompliance.className = `badge ${m.is_jtm_compliant ? 'bg-success' : 'bg-danger'}`;
+        }
+
+        const valDisposable = document.getElementById('jtmValDisposableIncome');
+        if (valDisposable) valDisposable.textContent = m.formatted_disposable_income;
+
+        const valMaxLoan = document.getElementById('jtmValMaxLoanAmount');
+        if (valMaxLoan) valMaxLoan.textContent = m.formatted_max_loan_amount;
+
+        const valLtv = document.getElementById('jtmValLtv');
+        const valMaxLtv = document.getElementById('jtmValMaxLtv');
+        const badgeLtvCompliance = document.getElementById('badgeLtvCompliance');
+
+        if (valLtv) valLtv.textContent = `${m.current_ltv_pct}%`;
+        if (valMaxLtv) valMaxLtv.textContent = `${m.max_allowed_ltv_pct}% (${(100 - m.max_allowed_ltv_pct).toFixed(0)}% önerő)`;
+        if (badgeLtvCompliance) {
+            badgeLtvCompliance.textContent = m.is_ltv_compliant ? 'Megfelelő' : 'Túl alacsony önerő';
+            badgeLtvCompliance.className = `badge ${m.is_ltv_compliant ? 'bg-success' : 'bg-danger'}`;
+        }
+
+        // Tippek & Javaslatok
+        const recContainer = document.getElementById('jtmRecommendationsContainer');
+        if (recContainer) {
+            recContainer.innerHTML = '';
+            if (data.recommendations && data.recommendations.length > 0) {
+                data.recommendations.forEach(rec => {
+                    const li = document.createElement('li');
+                    li.className = 'mb-1 text-dark';
+                    li.innerHTML = `<i class="bi bi-lightbulb text-warning me-2"></i>${rec}`;
+                    recContainer.appendChild(li);
+                });
+            } else {
+                recContainer.innerHTML = '<li class="mb-1 text-muted"><i class="bi bi-check2 text-success me-2"></i>A hitelkérelem banki és jogszabályi szempontból kifogástalan.</li>';
+            }
+        }
+
+        // Grafikon A: Havi Jövedelem Felosztás (Doughnut)
+        const distCtx = document.getElementById('jtmDistributionChart');
+        if (distCtx && charts.distribution) {
+            if (jtmDistributionChartInstance) {
+                jtmDistributionChartInstance.destroy();
+            }
+            jtmDistributionChartInstance = new Chart(distCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: charts.distribution.labels,
+                    datasets: [{
+                        data: charts.distribution.values,
+                        backgroundColor: [
+                            '#0d6efd', // Hitel törlesztő (kék)
+                            '#fd7e14', // Egyéb hitelek (narancs)
+                            '#6c757d', // Szabad hitelkapacitás (szürke)
+                            '#198754'  // Szabad jövedelem (zöld)
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return `${ctx.label}: ${formatHUF(ctx.parsed)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Grafikon B: Jövedelemérzékenységi Görbe (Bar Chart)
+        const incCtx = document.getElementById('jtmIncomeSensitivityChart');
+        if (incCtx && charts.income_sensitivity) {
+            if (jtmIncomeSensitivityChartInstance) {
+                jtmIncomeSensitivityChartInstance.destroy();
+            }
+            const sens = charts.income_sensitivity;
+            jtmIncomeSensitivityChartInstance = new Chart(incCtx, {
+                type: 'bar',
+                data: {
+                    labels: sens.income_labels,
+                    datasets: [
+                        {
+                            label: '10+ év / Fix (50-60%)',
+                            data: sens.max_loans_fix,
+                            backgroundColor: '#0d6efd'
+                        },
+                        {
+                            label: 'Változó / <5 év (25-30%)',
+                            data: sens.max_loans_var,
+                            backgroundColor: '#ffc107'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return `${ctx.dataset.label}: ${formatHUF(ctx.parsed.y)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { font: { size: 9 } } },
+                        y: {
+                            ticks: {
+                                callback: function(val) {
+                                    return (val / 1000000).toFixed(0) + ' M';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    // Tab váltáskor inicializáljuk
+    const tabBtnCreditworthiness = document.getElementById('tab-btn-creditworthiness');
+    if (tabBtnCreditworthiness) {
+        tabBtnCreditworthiness.addEventListener('shown.bs.tab', () => {
+            fetchCreditworthiness();
+        });
+    }
+
+    const tabBtnScenarios = document.getElementById('tab-btn-scenarios');
+    if (tabBtnScenarios) {
+        tabBtnScenarios.addEventListener('shown.bs.tab', () => {
+            fetchAndRenderCrisisReplay(currentCrisisId);
+        });
+    }
+
+    // Kezdeti inicializálás
+    fetchCreditworthiness();
+    fetchAndRenderCrisisReplay('crisis_2008');
+
 });
