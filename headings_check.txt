@@ -1,0 +1,104 @@
+TOTAL BODY HEADINGS: 52
+1: 1. Bevezetés
+2: 1.1. A kutatás háttere és időszerűsége
+2: 1.2. A kutatási probléma és a megválaszolandó kérdések
+2: 1.3. A dolgozat célkitűzései és strukturális felépítése
+1: 2. Szakirodalmi áttekintés
+2: 2.1. A lakásvásárlási és bérlési döntések elméleti háttere
+3: 2.1.1. Az életciklus-elmélet és a lakhatási fogyasztás simítása
+3: 2.1.2. Vagyonakkumulációs modellek és a diszkontált cash-flow szemlélet
+3: 2.1.3. A lakóingatlan kettős jellege: létszükséglet és beruházási eszköz
+2: 2.2. A magyar makrogazdasági környezet és lakáshitelezési piac
+3: 2.2.1. Jelzáloghitelezés, kamatvolatilitás és tőkeáttételi hatások
+3: 2.2.2. Állami lakástámogatási mechanizmusok és adózási feltételek
+2: 2.3. Tőkepiaci alternatívák és megtakarítási struktúrák
+3: 2.3.1. Részvény- és kötvénypiaci eszközök hosszú távú kockázat-hozam profilja
+3: 2.3.2. Adóoptimalizáció a megtakarításokban: a Tartós Befektetési Számla szerepe
+2: 2.4. Lokális sajátosságok és fejlett döntéstámogatási eszközök
+3: 2.4.1. Városrehabilitáció és gentrifikáció a budapesti VIII. kerületben
+3: 2.4.2. Algoritmikus modellezés és mesterséges intelligencia az ingatlanelemzésben
+1: 3. Módszertan, adatbázis és a pénzügyi szimulációs modell
+2: 3.1. A vizsgált szegmens és az alkalmazott adatok köre
+3: 3.1.1. Adatforrások és adatfeldolgozás
+3: 3.1.2. A VIII. kerületi 50 m²-es újépítésű mintaprojekt kalibrációja
+2: 3.2. A kvantitatív pénzügyi szimulációs modell leírása
+3: 3.2.1. Kezdeti tőkeigény és az annuitásos amortizáció leírása
+3: 3.2.2. A tulajdonosi vagyonpálya és a fenntartási költségek modellezése
+3: 3.2.3. A bérlői vagyonakkumuláció és a tőkepiaci újrabefektetés pályája
+3: 3.2.4. A vagyonnövekmény-fordulópont (Break-Even Point) és a DCF/NPV meghatározása
+3: 3.2.5. Az elveszett pénzek (Dead Money) elmélete és számítása
+2: 3.3. A szcenárióelemzés és érzékenységvizsgálat módszertani kerete
+1: 4. A Python-alapú döntéstámogató alkalmazás architektúrája
+2: 4.1. Szoftverarchitektúra és technológiai megvalósítás
+2: 4.2. A szimulációs motor számítási algoritmusa
+2: 4.3. Felhasználói felület és interaktív adatvizualizáció
+2: 4.4. A Google Gemini AI modul szerepe a döntés-előkészítésben
+1: 5. Empirikus vizsgálat és eredmények
+2: 5.1. Alap forgatókönyv lefutása a VIII. kerületi mintaprojektre
+3: 5.1.1. Vagyoni pályagörbék és a megtérülési fordulópont elemzése
+3: 5.1.2. A Dead Money költségszerkezet dekompozíciója
+2: 5.2. A kamatkörnyezet hatása: Piaci hitel kontra Támogatott hitel
+2: 5.3. A tőkepiaci alternatívák versenye: Piaci benchmark kontra 12%-os hibrid portfólió
+2: 5.4. Kétdimenziós érzékenységi mátrixok és robusztussági tesztek
+2: 5.5. Historikus visszatesztelés tanulságai (2014–2024 tényadatok alapján)
+1: 6. Következtetések és döntési javaslatok
+2: 6.1. A kutatási kérdések szintetizált megválaszolása
+2: 6.2. Döntési útmutató lakásvásárlók és magánbefektetők számára
+2: 6.3. A modell korlátai és jövőbeli kutatási irányok
+1: Összegzés
+1: Irodalomjegyzék
+1: Függelékek
+2: 1. sz. Függelék: A Python szimulációs motor (core/engine.py) legfontosabb számítási kódjai
+2: 2. sz. Függelék: A Budapest VIII. kerületi lakáspiaci historikus adatsor (2014–2024)
+2: 3. sz. Függelék: Automatizált tesztelési jegyzőkönyv (Pytest Coverage Report)
+
+TOTAL TOC ITEMS: 49
+1: 1. Bevezetés (page 6)
+2: 1.1. A kutatás háttere és időszerűsége (page 6)
+2: 1.2. A kutatási probléma és a megválaszolandó kérdések (page 7)
+2: 1.3. A dolgozat célkitűzései és strukturális felépítése (page 8)
+1: 2. Szakirodalmi áttekintés (page 9)
+2: 2.1. A lakásvásárlási és bérlési döntések elméleti háttere (page 9)
+3: 2.1.1. Az életciklus-elmélet és a lakhatási fogyasztás simítása (page 9)
+3: 2.1.2. Vagyonakkumulációs modellek és a diszkontált cash-flow szemlélet (page 11)
+3: 2.1.3. A lakóingatlan kettős jellege: létszükséglet és beruházási eszköz (page 12)
+2: 2.2. A magyar makrogazdasági környezet és lakáshitelezési piac (page 13)
+3: 2.2.1. Jelzáloghitelezés, kamatvolatilitás és tőkeáttételi hatások (page 13)
+3: 2.2.2. Állami lakástámogatási mechanizmusok és adózási feltételek (page 15)
+2: 2.3. Tőkepiaci alternatívák és megtakarítási struktúrák (page 16)
+3: 2.3.1. Részvény- és kötvénypiaci eszközök hosszú távú kockázat-hozam profilja (page 16)
+3: 2.3.2. Adóoptimalizáció a megtakarításokban: a Tartós Befektetési Számla szerepe (page 18)
+2: 2.4. Lokális sajátosságok és fejlett döntéstámogatási eszközök (page 19)
+3: 2.4.1. Városrehabilitáció és gentrifikáció a budapesti VIII. kerületben (page 19)
+3: 2.4.2. Algoritmikus modellezés és mesterséges intelligencia az ingatlanelemzésben (page 21)
+1: 3. Módszertan, adatbázis és a pénzügyi szimulációs modell (page 23)
+2: 3.1. A vizsgált szegmens és az alkalmazott adatok köre (page 23)
+3: 3.1.1. Adatforrások és adatfeldolgozás (page 23)
+3: 3.1.2. A VIII. kerületi 50 m²-es újépítésű mintaprojekt kalibrációja (page 24)
+2: 3.2. A kvantitatív pénzügyi szimulációs modell leírása (page 26)
+3: 3.2.1. Kezdeti tőkeigény és az annuitásos amortizáció leírása (page 26)
+3: 3.2.2. A tulajdonosi vagyonpálya és a fenntartási költségek modellezése (page 28)
+3: 3.2.3. A bérlői vagyonakkumuláció és a tőkepiaci újrabefektetés pályája (page 29)
+3: 3.2.4. A vagyonnövekmény-fordulópont (Break-Even Point) és a DCF/NPV meghatározása (page 31)
+3: 3.2.5. Az elveszett pénzek (Dead Money) elmélete és számítása (page 32)
+2: 3.3. A szcenárióelemzés és érzékenységvizsgálat módszertani kerete (page 33)
+1: 4. A Python-alapú döntéstámogató alkalmazás architektúrája (page 35)
+2: 4.1. Szoftverarchitektúra és technológiai megvalósítás (page 35)
+2: 4.2. A szimulációs motor számítási algoritmusa (page 37)
+2: 4.3. Felhasználói felület és interaktív adatvizualizáció (page 38)
+2: 4.4. A Google Gemini AI modul szerepe a döntés-előkészítésben (page 40)
+1: 5. Empirikus vizsgálat és eredmények (page 42)
+2: 5.1. Alap forgatókönyv lefutása a VIII. kerületi mintaprojektre (page 42)
+3: 5.1.1. Vagyoni pályagörbék és a megtérülési fordulópont elemzése (page 42)
+3: 5.1.2. A Dead Money költségszerkezet dekompozíciója (page 45)
+2: 5.2. A kamatkörnyezet hatása: Piaci hitel kontra Támogatott hitel (page 47)
+2: 5.3. A tőkepiaci alternatívák versenye: Piaci benchmark kontra 12%-os hibrid portfólió (page 49)
+2: 5.4. Kétdimenziós érzékenységi mátrixok és robusztussági tesztek (page 51)
+2: 5.5. Historikus visszatesztelés tanulságai (2014–2024 tényadatok alapján) (page 54)
+1: 6. Következtetések és döntési javaslatok (page 46)
+2: 6.1. A kutatási kérdések szintetizált megválaszolása (page 46)
+2: 6.2. Döntési útmutató lakásvásárlók és magánbefektetők számára (page 47)
+2: 6.3. A modell korlátai és jövőbeli kutatási irányok (page 49)
+1: Összegzés (page 61)
+1: Irodalomjegyzék (page 63)
+1: Függelékek (page 66)

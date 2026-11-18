@@ -22,8 +22,15 @@ def setup_logger(app_name="calc_flask"):
         console_formatter = logging.Formatter('%(asctime)s | %(levelname)-8s | %(module)s | %(message)s', datefmt='%H:%M:%S')
         console_handler.setFormatter(console_formatter)
 
+        class SafeRotatingFileHandler(RotatingFileHandler):
+            def doRollover(self):
+                try:
+                    super().doRollover()
+                except (PermissionError, OSError):
+                    pass
+
         # 2. File Handler (DEBUG szint, részletes formátum, max 5MB/fájl, 3 backup)
-        file_handler = RotatingFileHandler('logs/app.log', maxBytes=5*1024*1024, backupCount=3, encoding='utf-8')
+        file_handler = SafeRotatingFileHandler('logs/app.log', maxBytes=5*1024*1024, backupCount=3, encoding='utf-8', delay=True)
         file_handler.setLevel(logging.DEBUG)
         file_formatter = logging.Formatter('%(asctime)s | %(levelname)-8s | %(module)s:%(lineno)d | %(message)s')
         file_handler.setFormatter(file_formatter)

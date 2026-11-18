@@ -225,7 +225,8 @@ def calculate_metrics():
             "monthly_return_rate_pct": monthly_return_rate,
             "adjustments_info": adjustments_info,
             "simulation": simulation_results,
-            "sensitivity": engine.compute_sensitivity_matrix()
+            "sensitivity": engine.compute_sensitivity_matrix(),
+            "scenarios": engine.compute_scenario_analysis()
         },
         "formatted": {
             "suggested_price_per_sqm": f"{format_huf(suggested_price_per_sqm)}/m²",

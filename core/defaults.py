@@ -22,12 +22,12 @@ DISTRICT_8_HISTORICAL_DATA = {
 SCENARIOS = {
     "base": {
         "name": "Alap forgatókönyv (Base Case)",
-        "probability_pct": 55,
+        "probability_pct": 50,
         "description": "Kiegyensúlyozott piaci konvergencia, mérsékelt gazdasági növekedés és konszolidált infláció.",
         "params": {
             "property_size_sqm": 52.0,
             "price_per_sqm": 1_550_000.0,
-            "renovation_cost_initial": 2_500_000.0,
+            "renovation_cost_initial": 5_500_000.0,
             "transfer_tax_rate": 0.04,
             "legal_fee_rate": 0.01,
             "down_payment_ratio": 0.25,
@@ -43,12 +43,12 @@ SCENARIOS = {
     },
     "bear": {
         "name": "Pesszimista / Magas kamatkörnyezet (Bear Case)",
-        "probability_pct": 25,
+        "probability_pct": 20,
         "description": "Tartósan magas kamatszintek, stagnáló reálbérek és visszafogott ingatlanár-növekedés.",
         "params": {
             "property_size_sqm": 52.0,
             "price_per_sqm": 1_600_000.0,
-            "renovation_cost_initial": 3_000_000.0,
+            "renovation_cost_initial": 6_500_000.0,
             "transfer_tax_rate": 0.04,
             "legal_fee_rate": 0.01,
             "down_payment_ratio": 0.30,
@@ -69,7 +69,7 @@ SCENARIOS = {
         "params": {
             "property_size_sqm": 52.0,
             "price_per_sqm": 1_500_000.0,
-            "renovation_cost_initial": 2_000_000.0,
+            "renovation_cost_initial": 4_800_000.0,
             "transfer_tax_rate": 0.04,
             "legal_fee_rate": 0.01,
             "down_payment_ratio": 0.20,
@@ -81,6 +81,27 @@ SCENARIOS = {
             "opportunity_cost_rate_annual": 0.060,
             "maintenance_rate_annual": 0.008,
             "common_cost_monthly": 22_000.0
+        }
+    },
+    "market_surge": {
+        "name": "Tőkepiaci szárnyalás (Tech/Market Surge)",
+        "probability_pct": 10,
+        "description": "Kiemelkedő globális tőkepiaci hozamok (S&P 500 / MSCI World rally) normál hazai lakáspiac mellett.",
+        "params": {
+            "property_size_sqm": 52.0,
+            "price_per_sqm": 1_550_000.0,
+            "renovation_cost_initial": 5_500_000.0,
+            "transfer_tax_rate": 0.04,
+            "legal_fee_rate": 0.01,
+            "down_payment_ratio": 0.25,
+            "loan_term_years": 20,
+            "loan_interest_rate_annual": 0.065,
+            "property_growth_rate_annual": 0.050,
+            "initial_rent_monthly": 270_000.0,
+            "rent_growth_rate_annual": 0.045,
+            "opportunity_cost_rate_annual": 0.120,
+            "maintenance_rate_annual": 0.010,
+            "common_cost_monthly": 23_400.0
         }
     }
 }

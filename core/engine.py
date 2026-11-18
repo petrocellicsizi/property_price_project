@@ -311,3 +311,156 @@ class QuantitativeSimulationEngine:
             "property_growth_rates_pct": [round(g * 100.0, 2) for g in property_growth_range],
             "wealth_difference_matrix": matrix
         }
+
+    def compute_scenario_analysis(self) -> Dict[str, Any]:
+        """
+        Kiszámítja több makrogazdasági és piaci forgatókönyv kimenetét,
+        bekövetkezési valószínűségeit, és az összesített valószínűségi mutatókat,
+        feloldva a modell determinisztikus 'fekete doboz' jellegét.
+        """
+        from utils.formatters import format_huf
+
+        base_params = dict(self.params)
+        base_growth = float(base_params.get("property_growth_rate_annual", 0.055))
+        base_rent_growth = float(base_params.get("rent_growth_rate_annual", 0.045))
+        base_etf = float(base_params.get("opportunity_cost_rate_annual", 0.07))
+        base_maint = float(base_params.get("maintenance_rate_annual", 0.01))
+
+        scenario_defs = [
+            {
+                "id": "base",
+                "name": "Alap forgatókönyv (Base Case)",
+                "probability_pct": 50,
+                "description": "Kiegyensúlyozott piaci konvergencia, mérsékelt gazdasági növekedés és konszolidált infláció.",
+                "badge_class": "bg-primary text-white",
+                "progress_class": "bg-primary",
+                "params": dict(base_params)
+            },
+            {
+                "id": "bull",
+                "name": "Ingatlanpiaci konjunktúra (Bull Case)",
+                "probability_pct": 20,
+                "description": "Erőteljes gazdasági expanzió, dinamikus bérletidíj- és ingatlanár-növekedés.",
+                "badge_class": "bg-success text-white",
+                "progress_class": "bg-success",
+                "params": {
+                    **base_params,
+                    "property_growth_rate_annual": round(min(0.12, max(0.08, base_growth + 0.03)), 4),
+                    "rent_growth_rate_annual": round(min(0.10, max(0.065, base_rent_growth + 0.02)), 4),
+                    "maintenance_rate_annual": round(max(0.007, base_maint * 0.9), 4),
+                }
+            },
+            {
+                "id": "bear",
+                "name": "Pesszimista / Magas kamatkörnyezet (Bear Case)",
+                "probability_pct": 20,
+                "description": "Stagnáló reálbérek, visszafogott lakásdrágulás és magasabb üzemeltetési terhek.",
+                "badge_class": "bg-danger text-white",
+                "progress_class": "bg-danger",
+                "params": {
+                    **base_params,
+                    "property_growth_rate_annual": round(max(0.015, base_growth - 0.03), 4),
+                    "rent_growth_rate_annual": round(max(0.02, base_rent_growth - 0.02), 4),
+                    "maintenance_rate_annual": round(base_maint * 1.3, 4),
+                }
+            },
+            {
+                "id": "market_surge",
+                "name": "Tőkepiaci szárnyalás (Tech/Market Surge)",
+                "probability_pct": 10,
+                "description": "Kiemelkedő globális tőkepiaci hozamok (S&P 500 / MSCI World rally) átlagos lakáspiac mellett.",
+                "badge_class": "bg-warning text-dark",
+                "progress_class": "bg-warning",
+                "params": {
+                    **base_params,
+                    "opportunity_cost_rate_annual": round(max(0.11, base_etf + 0.04), 4),
+                }
+            }
+        ]
+
+        scenarios_results = []
+        buy_win_prob = 0.0
+        rent_win_prob = 0.0
+        expected_diff_30y = 0.0
+        valid_bep_weighted_sum = 0.0
+        valid_bep_prob_sum = 0.0
+
+        for s in scenario_defs:
+            sub_engine = QuantitativeSimulationEngine(s["params"])
+            res = sub_engine.execute()
+            sum_data = res["summary"]
+
+            bep_yr = sum_data["break_even_year"]
+            diff_10y = sum_data["wealth_delta_10y"]
+            diff_20y = sum_data["wealth_delta_20y"]
+            diff_30y = sum_data["wealth_delta_30y"]
+            prob = s["probability_pct"]
+
+            is_buy_winner = diff_30y > 0
+            if is_buy_winner:
+                buy_win_prob += prob
+            else:
+                rent_win_prob += prob
+
+            expected_diff_30y += (prob / 100.0) * diff_30y
+
+            if bep_yr is not None:
+                valid_bep_weighted_sum += (prob / 100.0) * bep_yr
+                valid_bep_prob_sum += (prob / 100.0)
+
+            scenarios_results.append({
+                "id": s["id"],
+                "name": s["name"],
+                "description": s["description"],
+                "probability_pct": prob,
+                "badge_class": s["badge_class"],
+                "progress_class": s["progress_class"],
+                "property_growth_pct": round(s["params"]["property_growth_rate_annual"] * 100.0, 1),
+                "rent_growth_pct": round(s["params"]["rent_growth_rate_annual"] * 100.0, 1),
+                "opportunity_cost_pct": round(s["params"]["opportunity_cost_rate_annual"] * 100.0, 1),
+                "break_even_year": bep_yr,
+                "break_even_display": f"{bep_yr} év" if bep_yr is not None else "Nem térül meg (30+ év)",
+                "terminal_buy_net_worth": sum_data["terminal_buy_net_worth"],
+                "terminal_rent_net_worth": sum_data["terminal_rent_net_worth"],
+                "wealth_delta_10y": diff_10y,
+                "wealth_delta_20y": diff_20y,
+                "wealth_delta_30y": diff_30y,
+                "formatted_delta_10y": format_huf(diff_10y),
+                "formatted_delta_30y": format_huf(diff_30y),
+                "winner": "Saját lakás" if is_buy_winner else "Bérlés & Befektetés",
+                "winner_class": "badge bg-success" if is_buy_winner else "badge bg-danger"
+            })
+
+        if valid_bep_prob_sum > 0:
+            expected_bep = round(valid_bep_weighted_sum / valid_bep_prob_sum, 1)
+            if valid_bep_prob_sum >= 0.99:
+                bep_display = f"{expected_bep} év"
+            else:
+                bep_display = f"{expected_bep} év ({round(valid_bep_prob_sum * 100)}% eséllyel)"
+        else:
+            expected_bep = None
+            bep_display = "Nem térül meg (30+ év)"
+
+        if buy_win_prob >= 70:
+            risk_profile = "Alacsony kockázat / Magas saját lakás valószínűség"
+            recommendation = "A különböző piaci szcenáriók túlnyomó többségében a saját lakás vásárlása bizonyul pénzügyileg kedvezőbbnek."
+        elif buy_win_prob >= 50:
+            risk_profile = "Kiegyensúlyozott / Mérsékelt piaci kockázat"
+            recommendation = "A megtérülés erősen függ a jövőbeli piaci pályától; konjunktúrában a vásárlás, magas alternatív hozamok esetén a bérlés a kedvezőbb."
+        else:
+            risk_profile = "Magas alternatív költség kockázat"
+            recommendation = "A jelenlegi piaci árazás és kamatok mellett a bérlés és a tőkepiaci befektetés kombinációja magasabb valószínűséggel vezet nagyobb vagyonhoz."
+
+        return {
+            "scenarios": scenarios_results,
+            "metrics": {
+                "buy_win_probability_pct": round(buy_win_prob, 1),
+                "rent_win_probability_pct": round(rent_win_prob, 1),
+                "expected_wealth_delta_30y": round(expected_diff_30y, 0),
+                "formatted_expected_wealth_delta_30y": format_huf(round(expected_diff_30y, 0)),
+                "expected_break_even_year": expected_bep,
+                "expected_break_even_display": bep_display,
+                "risk_profile": risk_profile,
+                "recommendation": recommendation
+            }
+        }

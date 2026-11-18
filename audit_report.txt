@@ -1,0 +1,117 @@
+=== 1. DOCUMENT STATS ===
+Total paragraphs: 369
+Total tables: 7
+Total inline figures: 9
+Total characters WITHOUT spaces: 71,519
+Total characters WITH spaces: 81,779
+
+=== 2. TEXTBOX AUDIT ===
+Instruction textbox found: False
+
+=== 3. TABLE OF CONTENTS AUDIT ===
+Total TOC entries: 52
+ 1. [toc 1] 1.	Bevezetés	7 | DotLeader: True
+ 2. [toc 2] 1.1.	A kutatás háttere és időszerűsége	8 | DotLeader: True
+ 3. [toc 2] 1.2.	A kutatási probléma és a megválaszolandó kérdések	9 | DotLeader: True
+ 4. [toc 2] 1.3.	A dolgozat célkitűzései és strukturális felépítése	10 | DotLeader: True
+ 5. [toc 1] 2.	Szakirodalmi áttekintés	12 | DotLeader: True
+ 6. [toc 2] 2.1.	A lakásvásárlási és bérlési döntések elméleti háttere	12 | DotLeader: True
+ 7. [toc 3] 2.1.1.	Az életciklus-elmélet és a lakhatási fogyasztás simítása	12 | DotLeader: True
+ 8. [toc 3] 2.1.2.	Vagyonakkumulációs modellek és a diszkontált cash-flow szemlélet	14 | DotLeader: True
+ 9. [toc 3] 2.1.3.	A lakóingatlan kettős jellege: létszükséglet és beruházási eszköz	16 | DotLeader: True
+10. [toc 2] 2.2.	A magyar makrogazdasági környezet és lakáshitelezési piac	17 | DotLeader: True
+11. [toc 3] 2.2.1.	Jelzáloghitelezés, kamatvolatilitás és tőkeáttételi hatások	17 | DotLeader: True
+12. [toc 3] 2.2.2.	Állami lakástámogatási mechanizmusok és adózási feltételek	19 | DotLeader: True
+13. [toc 2] 2.3.	Tőkepiaci alternatívák és megtakarítási struktúrák	20 | DotLeader: True
+14. [toc 3] 2.3.1.	Részvény- és kötvénypiaci eszközök hosszú távú kockázat-hozam profilja	20 | DotLeader: True
+15. [toc 3] 2.3.2.	Adóoptimalizáció a megtakarításokban: a Tartós Befektetési Számla szerepe	22 | DotLeader: True
+16. [toc 2] 2.4.	Lokális sajátosságok és fejlett döntéstámogatási eszközök	22 | DotLeader: True
+17. [toc 3] 2.4.1.	Városrehabilitáció és gentrifikáció a budapesti VIII. kerületben	23 | DotLeader: True
+18. [toc 3] 2.4.2.	Algoritmikus modellezés és mesterséges intelligencia az ingatlanelemzésben	23 | DotLeader: True
+19. [toc 1] 3.	Módszertan, adatbázis és a pénzügyi szimulációs modell	25 | DotLeader: True
+20. [toc 2] 3.1.	A vizsgált szegmens és az alkalmazott adatok köre	25 | DotLeader: True
+21. [toc 3] 3.1.1.	Adatforrások és adatfeldolgozás	25 | DotLeader: True
+22. [toc 3] 3.1.2.	A VIII. kerületi 50 m²-es újépítésű mintaprojekt kalibrációja	26 | DotLeader: True
+23. [toc 2] 3.2.	A kvantitatív pénzügyi szimulációs modell leírása	28 | DotLeader: True
+24. [toc 3] 3.2.1.	Kezdeti tőkeigény és az annuitásos amortizáció leírása	28 | DotLeader: True
+25. [toc 3] 3.2.2.	A tulajdonosi vagyonpálya és a fenntartási költségek modellezése	29 | DotLeader: True
+26. [toc 3] 3.2.3.	A bérlői vagyonakkumuláció és a tőkepiaci újrabefektetés pályája	30 | DotLeader: True
+27. [toc 3] 3.2.4.	A vagyonnövekmény-fordulópont (Break-Even Point) és a DCF/NPV meghatározása	31 | DotLeader: True
+28. [toc 3] 3.2.5.	Az elveszett pénzek (Dead Money) elmélete és számítása	31 | DotLeader: True
+29. [toc 2] 3.3.	A szcenárióelemzés és érzékenységvizsgálat módszertani kerete	32 | DotLeader: True
+30. [toc 1] 4.	A Python-alapú döntéstámogató alkalmazás architektúrája	33 | DotLeader: True
+31. [toc 2] 4.1.	Szoftverarchitektúra és technológiai megvalósítás	33 | DotLeader: True
+32. [toc 2] 4.2.	A szimulációs motor számítási algoritmusa	34 | DotLeader: True
+33. [toc 2] 4.3.	Felhasználói felület és interaktív adatvizualizáció	35 | DotLeader: True
+34. [toc 2] 4.4.	A Google Gemini AI modul szerepe a döntés-előkészítésben	36 | DotLeader: True
+35. [toc 1] 5.	Empirikus vizsgálat és eredmények	38 | DotLeader: True
+36. [toc 2] 5.1.	Alap forgatókönyv lefutása a VIII. kerületi mintaprojektre	38 | DotLeader: True
+37. [toc 3] 5.1.1.	Vagyoni pályagörbék és a megtérülési fordulópont elemzése	38 | DotLeader: True
+38. [toc 3] 5.1.2.	A Dead Money költségszerkezet dekompozíciója	41 | DotLeader: True
+39. [toc 2] 5.2.	A kamatkörnyezet hatása: Piaci hitel kontra Támogatott hitel	42 | DotLeader: True
+40. [toc 2] 5.3.	A tőkepiaci alternatívák versenye: Piaci benchmark kontra 12%-os hibrid portfólió	43 | DotLeader: True
+41. [toc 2] 5.4.	Kétdimenziós érzékenységi mátrixok és robusztussági tesztek	44 | DotLeader: True
+42. [toc 2] 5.5.	Historikus visszatesztelés tanulságai (2014–2024 tényadatok alapján)	45 | DotLeader: True
+43. [toc 1] 6.	Következtetések és döntési javaslatok	47 | DotLeader: True
+44. [toc 2] 6.1.	A kutatási kérdések szintetizált megválaszolása	47 | DotLeader: True
+45. [toc 2] 6.2.	Döntési útmutató lakásvásárlók és magánbefektetők számára	47 | DotLeader: True
+46. [toc 2] 6.3.	A modell korlátai és jövőbeli kutatási irányok	49 | DotLeader: True
+47. [toc 1] Összegzés	50 | DotLeader: True
+48. [toc 1] Irodalomjegyzék	51 | DotLeader: True
+49. [toc 1] Függelékek	53 | DotLeader: True
+50. [toc 2] 1.	sz. Függelék: A Python szimulációs motor (core/engine.py) legfontosabb számítási kódjai	53 | DotLeader: True
+51. [toc 2] 2.	sz. Függelék: A Budapest VIII. kerületi lakáspiaci historikus adatsor (2014–2024)	55 | DotLeader: True
+52. [toc 2] 3.	sz. Függelék: Automatizált tesztelési jegyzőkönyv (Pytest Coverage Report)	56 | DotLeader: True
+
+=== 4. TABLES AUDIT ===
+Total table captions: 7
+  1. táblázat: A Budapest VIII. kerületi 50 m²-es újépítésű mintaprojekt bemeneti alapparaméterei
+  2. táblázat: Vagyoni egyenlegek alakulása az 1., 3., 5., 10., 15., 20., 25. és 30. évben az Alap forgatókönyv szerint
+  3. táblázat: A piaci hitel és a támogatott hitel (CSOK Plusz) törlesztési és költségparamétereinek összevetése
+  4. táblázat: Érzékenységi mátrix: A Break-Even évek alakulása az ingatlanár-növekedés és a tőkepiaci hozam függvényében
+  5. táblázat: Érzékenységi mátrix: A Break-Even évek alakulása a hitelkamatláb és a bérleti díj növekedési üteme szerint
+  6. táblázat: Összehasonlító döntési mátrix különböző élethelyzetek és befektetői profilok esetén
+  7. táblázat: Budapest VIII. kerületi újépítésű lakáspiaci és bérleti díj adatsor (2014–2024)
+
+=== 5. FIGURES AUDIT ===
+Total figure captions: 8
+  1. ábra: A lakástulajdonlási arányok megoszlása az Európai Unió tagállamaiban (2024)
+  2. ábra: Budapest VIII. kerületi újépítésű árak és bérleti díjak alakulása (2014–2024)
+  3. ábra: A döntéstámogató szimulációs rendszer többrétegű MVC architektúrája
+  4. ábra: Kumulált vagyoni pályagörbék és a megtérülési fordulópont az Alap forgatókönyvben (T = 14,2 év)
+  5. ábra: Az elveszett pénzek (Dead Money) struktúrájának összehasonlítása az 5., 10. és 20. évben
+  6. ábra: A megtérülési fordulópont (T) eltolódása a jelzáloghitel THM függvényében
+  7. ábra: Vagyoni pályák alakulása 12%-os dinamikus portfólióhozam mellett
+  8. ábra: A tőkeáttétel (LTV) lefutása és az amortizáció dinamikája a futamidő alatt
+
+=== 6. FORMULAS AUDIT ===
+Total formulas: 10
+  E_0 = V_0 * alpha_onerő + V_0 * (tau_illetek + tau_ugyved) + K_berendezes		(1)
+  PMT = P_0 * [ r_m * (1 + r_m)^n ] / [ (1 + r_m)^n - 1 ]		(2)
+  B(m) = P_0 * [ (1 + r_m)^n - (1 + r_m)^m ] / [ (1 + r_m)^n - 1 ]		(3)
+  CF_vasarlas(m) = PMT(m) + K_kozos(m) + K_karbantartas(m)		(4)
+  W_sajat(m) = V(m) * (1 - c_eladas) - B(m) + W_megtakaritas_sajat(m)		(5)
+  S_berlo(m) = Büdzsé(m) - CF_berles(m)		(6)
+  W_berlo(m) = W_berlo(m-1) * (1 + r_portfolió,m) + S_berlo(m)		(7)
+  T = min { m in [1, 360] | W_sajat(m) >= W_berlo(m) }		(8)
+  DM_sajat = Illeték + Ügyvéd + Sum(Kamat_fizetett) + Sum(Karbantartás)		(9)
+  DM_berlo = Sum(Bérleti_díj) + Sum(Rezsiköltség)		(10)
+
+=== 7. BIBLIOGRAPHY AUDIT ===
+Total bibliography items: 16
+  Alföldi, Gy., Sárkány, Cs., Szabó, J. (2018): Városrehabilitáció és társadalmi megújulás a budapesti Józsefvárosban. Építészet és Urbanisztika, 49 (3) 142-160
+  Al-Batah, M. S., et al. (2025): Using ensemble methods of machine learning to predict real estate. arXiv preprint, arXiv:2501.01234
+  Artle, R., Varaiya, P. (1978): Life cycle consumption and homeownership. Journal of Economic Theory, 18 (1) 38-58
+  Balemi, N., Füss, R., Weigand, A. (2021): Equity returns of real estate. Journal of Economic Surveys, 35 (3) 896-928, DOI: 10.1111/joes.12417
+  Beracha, E., Johnson, K. H. (2012): Lessons from over 30 years of buy versus rent decisions. Real Estate Economics, 40 (2) 217-247
+  Case, K. E., Shiller, R. J. (2003): Is there a bubble in the housing market? Brookings Papers on Economic Activity, 2003 (2) 299-362
+  Fábián G., Horváth G., Laki T., Varga M. (2022): A hazai lakáspiac jellemzői és hitelezési folyamatai. Hitelintézeti Szemle, 21 (3) 5-34
+  Magyar Nemzeti Bank (2024): Lakáspiaci jelentés, 2024. május. MNB, Budapest
+  Magyar Nemzeti Bank (2026): Lakáspiaci jelentés, 2026. tavasz. MNB, Budapest
+  Markowitz, H. (1952): Portfolio selection. The Journal of Finance, 7 (1) 77-91
+  Mayer, M., et al. (2025): Machine Learning Algorithms and Explainable Artificial Intelligence in Urban Real Estate Analysis. MDPI Applied Sciences, 15 (2) 112-130
+  Modigliani, F. (1986): Life cycle, individual thrift, and the wealth of nations. The American Economic Review, 76 (3) 297-312
+  Varga, L. (2023): Monetary Operations in Hungary Before, During, and After the Pandemic. IMF Working Papers, WP/23/154, Washington DC
+  1990. évi XCIII. törvény az illetékekről.
+  1995. évi CXVII. törvény a személyi jövedelemadóról.
+  518/2023. (XI. 30.) Korm. rendelet a CSOK Plusz hitelprogram részletes szabályairól.

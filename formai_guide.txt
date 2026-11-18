@@ -1,0 +1,811 @@
+=== Page 1 ===
+ 
+ 
+ 
+ 
+ 
+Útmutató a projektfeladatok, 
+szakdolgozatok és diplomamunkák  
+FORMAI KÖVETELMÉNYEI 
+teljesítéséhez 
+ 
+ 
+ 
+ 
+ 
+2021 ősz 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Tartalom 
+ 
+1. Kedves hallgatónk! ................................................................................................. 2 
+2. A dolgozat terjedelme, felépítése és tagolása ........................................................ 2 
+3. Címlap .................................................................................................................... 3 
+4. Tartalmi kivonat ...................................................................................................... 4 
+5. Tartalomjegyzék ..................................................................................................... 4 
+6. Bevezetés ............................................................................................................... 5 
+7. Fő rész .................................................................................................................... 5 
+8. Összegzés .............................................................................................................. 5 
+9. Hivatkozás és irodalomjegyzék .............................................................................. 6 
+10. Ábrák és táblázatok ............................................................................................ 14 
+11. Matematikai képletek .......................................................................................... 16 
+12. Függelékek (mellékletek) .................................................................................... 16 
+13. Feltöltés előtt ...................................................................................................... 16 
+ 
+  
+=== Page 2 ===
+2 
+ 
+1. Kedves hallgatónk! 
+Útmutatónkkal projektfeladat -dolgozata(i) és szakdolgozata vagy 
+diplomamunkája elkészítéséhez szeretnénk formai segítséget nyújtani önnek. A formai 
+szabályok betartásának megkövetelése korántsem öncélú, hanem az üzleti életre , a 
+munka világára való felkészítésének fontos része, két szempontból is. Egyrészt meg 
+kell tanulni a szakszöveget írni, aminek megvannak a maga szabályai . Ezeket  a 
+szellemi munka világában mindig mindenhol betartják és betartatják, és a világ minden 
+egyetemén ugyanígy megkövetelik a lee ndő diplomásoktól. Másrészt, ha az üzleti 
+életben nem tart be egy formai előírást, azzal komoly veszteséget okozhat magának, 
+leendő munkáltatójának vagy vállalkozásának. Ha pl. szabálytalan formátumban ad be 
+egy pályázatot, akkor formai okokból azonnal kizárják, tartalmilag már el sem bírálják. 
+Ezért is fontos, hogy megszokj a a formai előírások precíz követését, és hogy mi, 
+oktatók szigorúan számon kérjük a betartásukat. 
+Ez a formai útmutató a tartalmi útmutatóval és a dolgozat megírására szolgáló  
+sablonnal együtt alkot egy teljes egészet. A tartalmi útmutató végigvezeti a 
+témaválasztástól egészen a záróvizsgáig (illetve projektfeladat esetén a kész 
+dolgozatról tartandó kiselőadásig)  szakmai szempontból, az elvégze ndő feladatra 
+koncentrálva. A tantárgyismertetőben megtalálja a betartandó határidőket és az adott 
+képzési forma adott feladattípusában ( az alapképzésben 1., 2. vagy 3. projektfeladat  
+vagy szakdolgozat, a mesterképzésben modul-projektfeladat vagy  diplomamunka) 
+előírt terjedelmet, és minden hasonló technikai tudnivalót. A sablon pedig arra szolgál, 
+hogy abban írja meg a dolgozatát. A sablon formátumbeállításain ne változtasson! 
+Sem ennek a formai útmutatónak, sem a dolgozat megírására szolgáló 
+sablonnak, sem pedi g a konzulensének  nem feladata a szövegszerkesztő 
+használatának megtanítása . Akinek hiányosságai vannak a szövegszerkesztésben, 
+annak magának kell bepótolni a azokat. Egyetemi szinten a szövegszerkesztő 
+használatában való jártasság alapkövetelmény. 
+2. A dolgozat terjedelme, felépítése és tagolása 
+Alapképzéseink szakdolgozatainak elvárt terjedelme szóközök nélkül 65.000 -
+140.000 karakter , a mesterképzése ink diplomamunkáié pedig szóközök nélkül 
+100.000-140.000 karakter. A karakterszámba beleszámítanak az ábrák és táblázatok, 
+a tartalomjegyzék és az irodalomjegyzék is . A projektfeladat-dolgozatok előírt 
+terjedelme képzésenként és projektfeladat-tantárgyanként más és más, e zért ezt az 
+információt mindig az adott tantárgy ismertetője tartalmazza . Nem feltétlenül jobb a 
+hosszabb dolgozat! Ne „pumpálja fel” öncélúan, mert könnyen kaphat rá éppen emiatt 
+rosszabb jegyet. 
+Dolgozata az alábbi fő részekből álljon: 
+• Címlap 
+• Tartalmi kivonat 
+• Tartalomjegyzék 
+• Bevezetés 
+• Fő rész 
+• Összegzés 
+• Irodalomjegyzék 
+• Függelékek (mellékletek) 
+ Dolgozatát tagolja fő - és alfejezetekre, azokon belül pedig bekezdésekre! 
+Túlságosan rövid, csupán néhány sorból álló (al)fejezetekre ne bontsa szét a 
+szöveget, mert az csak zavarná a folyamatos olvasást! A fejezetcímek világossá teszik 
+írása szerkezetét, „útjelzőkként” segítik mondanivalója követését. 
+=== Page 3 ===
+3 
+ 
+Fejezetet vagy alfejezetet csak akkor van értelme létrehozni, ha legalább kettő 
+van belőle, hiszen ezek egyik feladata a szöveg tagolása. Kell lennie minimum két 
+szövegrésznek, amelyeket elválasztanak egymástól, másképp nincs értelmük. 
+ A fejezetek számozásánál kövesse a decimális rendszert: 
+1. Rész 
+ 1.1. Fejezet 
+  1.1.1. Alfejezet 
+  1.1.2. Alfejezet 
+  1.1.3. Alfejezet 
+ 1.2. Fejezet 
+  1.2.1. Alfejezet 
+  1.2.2. Alfejezet 
+2. Rész 
+ 2.1. Fejezet 
+  2.1.1. Alfejezet 
+  2.1.2. Alfejezet 
+és így tovább. 
+ Ez egy széles körben használt, bevált, áttekinthető megoldás, amellyel 
+elkerülhető a fejezetszámok zavaró ismétlődése. A fejezetek számozásakor soha ne 
+keverjen római számokat vagy betűket az arab számok közé, mert az rontaná az 
+áttekinthetőséget, ezért nem szokás. 
+ Az alfejezetekre bontott fejezetek élén, még az első alfejezet címe előtt állhat a 
+fejezet egészére vonatkozó  néhány bevez ető mondat, ha szükséges. Ez azonban 
+sohasem lehet több néhány sornál. Hosszabban kifejtendő gondolatait már önálló 
+alfejezet formájában kell megírnia.  Tehát nem kezdődhet egy rész (pl. a 2.) több 
+bekezdésnyi, netán több oldalnyi szöveggel úgy, hogy bekezdésekkel vagy oldalakkal 
+később egyszer csak fölbukkan egy fejezetcím (példánkban a 2.1.). Azért alakult ki ez 
+a formai szabály, mert i lyen „senki földje” szövegrészekre nem lehet utalni a szöveg 
+más részeiben, nem lévén saját sorszámuk. (Pl. a 2. részre utalás a nnak egészére 
+vonatkozik az összes fejezetével együtt, korántsem c supán az elején lévő 
+számozatlan „senki földjére” .) Vagy nincsenek alfejezetei  a főfejezetnek , vagy ha 
+vannak, akkor az első alfejezet rögtön a főfejezet címe után kezdődik, legf eljebb pár 
+bevezető mondat előzheti meg, semmi több. 
+ Ügyeljen rá, hogy a szövegben szereplő fejezetcímek  és oldalszámok pontosan 
+megegyezzenek a tartalomjegyzékben felsoroltakkal! Ennek érdekében a 
+tartalomjegyzéket a dokumentum megírásának befejeztével f eltétlenül teljes 
+tartalmában frissítenie kell a szövegszerke sztőjével. Fejezetcím nem végződhet 
+ponttal vagy kettősponttal, és nem lehet benne hivatkozás. 
+ Fölöslegesen ne tördelje a mondanivalóját új bekezdésekbe!  Ha több két -
+háromsoros bekezdés követi e gymást a szövegben, gondolja át, hogy valóban 
+indokolt-e tartalmi szempontból ennyire sok részre tördelni az adott gondolatmenetet! 
+ A bekezdések közé ne szúrjon be üres sorokat! A sablonban már be van állítva 
+minden szükséges térköz, így a bekezdések között i is. Ugyanez vonatkozik a 
+fejezetcímekre is, azok elé vagy után se szúrjon be üres sorokat! 
+3. Címlap 
+Dolgozatának címlapját is a letölthető formai sablonban kell elkészítenie.  Az 
+alapképzést lezáró dolgozata címlapjára azt kell írnia, hogy „Szakdolgozat”, a 
+mesterképzést lezáróére pedig azt, hogy „Diplomamunka”. 
+=== Page 4 ===
+4 
+ 
+4. Tartalmi kivonat 
+Írnia kell egy tömör, lehetőleg egy -, maximum kétoldalas tartalmi kivonatot, az 
+üzleti életben sz okásos, igazgatói szintű összefoglalókhoz (executive summary) 
+hasonlót. Ezt a műfajt is meg kell tanulnia, mert munkája során nagy valószínűséggel 
+írnia kell majd ilyeneket is elfoglalt, időhiánnyal küzdő főnökei gyors, tömör, lényegre 
+törő tájékoztatására. Ennek önmagában is kerek egész írásnak kell lennie, amely 
+tartalmaz minden fontos megállapítást és javaslatot. A tartalmi kivonat nem „szöveges 
+tartalomjegyzék”, hanem „mini dolgozat”. 
+Semmiféle érdemi tájékoztatást nem nyújt egy olyasfajta „tartalmi kiv onat”, 
+amelyet az alábbi példában olvasható stílusban írtak. 
+Tartalmi kivonat − negatív példa 
+ Dolgozatomban először megvizsgálom, hogy a meglévő 
+képzési anyagok megfelelnek -e az oktatási részleg által 
+támasztott követelményeknek. Ezután azt elemzem, hogy az 
+oktatógárda hogyan viszonyul a bentlakásos hétvégi tréning 
+módszeréhez. 
+ Dolgozatom második részében javaslatot teszek oktatási 
+programjaink továbbfejlesztésére, valamint a bentlakásos 
+hétvégi tréning módszerének vállalati elfogadtatására. 
+ Stb., stb. 
+Mit tud meg ebből az olvasó? A tartalomjegyzékhez képest az égvilágon semmi 
+újat. A tartalmi kivonatnak valóban a dolgozat tartalmát, mondandóját kell 
+összesűrítenie, mint a következő példában. 
+Tartalmi kivonat – pozitív példa 
+ Megvizsgálva a vállalatnál fo lyó oktatás helyzetét, az alábbi 
+megállapításokra jutottam. 
+ A meglévő képzési anyagok nem felelnek meg az oktatási 
+részleg által támasztott követelményeknek sem tartalmi, sem 
+pedig oktatásmódszertani szempontból. 
+  A dolgozók nagy része nem ismeri, illetv e – 
+tájékozatlanságában – félremagyarázza, szélhámosságnak 
+titulálja, oktatásnak álcázott bulizásnak, illetve fölösleges 
+időpocsékolásnak tartja a bentlakásos hétvégi tréningeket. 
+ A fenti problémák megoldására az alábbi javaslatokat teszem. 
+• Kérjünk ajánla tot külső oktató cégektől a tananyag és az 
+oktatási módszer korszerűsítésére. 
+• Szervezzünk egy házi kiselőadást a bentlakásos hétvégi 
+tréningek módszertanáról és más vállalatoknál szerzett 
+alkalmazási tapasztalatairól. 
+Stb., stb. 
+Ez utóbbi már megfelel a „mini dolgozat” követelményének, ez már valóban 
+tartalmi kivonat, nem pedig szöveges tartalomjegyzék. 
+5. Tartalomjegyzék 
+A tartalomjegyzékben minden fő - és alfejezetet föl kell sorolnia, az 
+oldalszámokkal együtt. Ehhez persze meg is kell számoznia az oldalakat. A 
+tartalomjegyzékben szereplő fejezetcímeknek pontosan, betűről -betűre meg kell 
+egyezniük a szövegben található címekkel, másképp rejtvényfejtésre kényszerítené az 
+olvasót. Ezért a tartalomjegyzéket a dolgozat megírásának befejeztével feltétlenül 
+=== Page 5 ===
+5 
+ 
+teljes tartalmában frissítenie kell a szövegszerkesztőjével (jobb egérgomb, 
+mezőfrissítés). 
+6. Bevezetés 
+A fő rész előtt egy rövid bevezetésben mutassa be a dolgozatot: milyen témában, 
+milyen céllal írta, milyen összefüggésben kell értelmezni stb. A téma részletes 
+ismertetése (történeti háttér, az előzmények áttekintése, a szervezet vagy a 
+munkafolyamat bemutatása stb.) már nem  a bevezetésbe való, hanem a fő részbe. 
+Ide csak az kerüljön, amiből az olvasó megtudja, milyen jellegű dolgozatot tart a 
+kezében. Ennek megfelelően a bevezetés terjedelme csak néhány bekezdés legyen , 
+amivel rögtön az elején képbe helyezi az olvasót, miről lesz szó a dolgozatban. 
+7. Fő rész 
+A fő rész tartalmazza a dolgozat mondandójának részletes kifejtését. Míg a 
+tartalmi kivonatban puszta kijelentések és javaslatok szerepelnek, addig itt érvelünk, 
+minden állításunkat megindokoljuk, tényekkel, számításokka l, szakvéleményekkel 
+támasztjuk alá. A puszta állítások nem védhetők, könnyedén lesöpörhetők az asztalról, 
+hiszen ugyanezzel az erővel az ellenkezőjük is leírható lenne. Bírálója, akinek ez is a 
+feladatai közé tartozik, az ilyen hiányosságokat szóvá is fogja tenni! Úgy kell megírnia 
+dolgozatát, hogy összes fontos kijelentéséről világossá váljon, mire alapozza, mivel 
+tudja alátámasztani. A tényeknek és a véleményeknek egyértelműen külön kell 
+válniuk! Egyéni véleményét nem szabad tényként tálalnia, mert ezzel tönkreteszi saját 
+szavahihetőségét. Véleményének pedig a dokumentumban leírt vitathatatlan 
+tényeken, illetve vitán felül hiteles forrásokra való hivatkozásokon kell alapulnia. 
+Mondandóját mindig valamilyen logikus sorrendben írja le, mert a csapongó 
+szöveg nehezen követhető, az olvasó számára fárasztó és idegesítő. Ha feltárunk és 
+elemzünk egy problémát, akkor általában az alábbi logikai sorrendet követjük. 
+• a probléma ismertetése, pontos meghatározása, 
+• a probléma okainak feltárása és elemzése, 
+• a lehetséges megoldások ismertetése és összehasonlító értékelése, 
+• javaslat a legjobbnak tartott megoldás megvalósítására. 
+Az ilyen, vagy ehhez hasonló tagolás nagyon jellemző a dolgozatokra, jól bevált, 
+így önnek is ezt javasoljuk. Témájától függően persze többé-kevésbé eltérhet tőle, de 
+kiindulás gyanánt mindenképpen ezt a sémát tartsa szem előtt, és ok nélkül ne térjen 
+el tőle túlságosan. A fenti pontokon belül a tárgyalási sorrend sokféle lehet: időrendben 
+haladva ismertethet eseményeket, területeket vehet sorra, fo ntossági sorrendben 
+vázolhat problémákat vagy lehetőségeket stb. A lényeg az, hogy legyen egy jól 
+követhető, logikus gondolatmenete. 
+8. Összegzés 
+A fő rész után, a dolgozat gondolatmenetének lezárásaként foglalja össze az 
+elvégzett munka folyamatából és er edményeiből levonható legfontosabb 
+következtetéseket, tanulságokat ! Ez nem tévesztendő össze a külön elkészítendő 
+tartalmi kivonattal! A tartalmi kivonatnak a dolgozat elolvasása nélkül, önmagában is 
+teljes egésze t alkotó írásműnek kell lennie, vázlatosan megírva. A fő részt lezáró 
+konklúziókat viszont nem vázlatosan , hanem a többi részhez hasonló stílusban kell 
+megírnia, és nem kell, nem is lehet  az előzmények elolvasása nélkül is érthetőnek 
+lennie. 
+=== Page 6 ===
+6 
+ 
+9. Hivatkozás és irodalomjegyzék  
+Általános tudnivalók 
+A munkájához felhasznált minden forrásmunkára hivatkoznia kell a szövegnek 
+azon a helyén, ahol felhasználta.  Ha ezt elmulasztja, plágiumot követ el, ami súlyos 
+etikai vétség, és amit a tudomány etikája mellett a szerzői jogról szóló, 1999. évi 
+LXXVI. törvény (http://net.jogtar.hu/jr/gen/hjegy_doc.cgi?docid=99900076.TV) is tilt. A 
+TVSz az alábbiak szerint rendelkezik a hivatkozásról illetve annak elmulasztásáról. 
+133. § 
+(1) A hallgató a tanulmányi követelmények teljesítése során végzett munkájában, 
+így különösen az egyénileg vagy csoportosan készített ot thoni feladat, a tervezési 
+feladat, a projektfeladat, a műszaki alkotás, a szakdolgozat é s a diplomamunka (a  
+továbbiakban együttesen: hallgatói mű) elkészítése során idegen szerzői művet  csak 
+a szerzői jog tiszteletben tartásával, a jelen Sza bályzat 134. § (1) bekezdésében 
+foglaltaknak megfelelően használhat fel. Nem minősül hallgatói műnek az írásbeli vagy 
+szóbeli vizsga, a laboratóriumi (mérési) jegyzőkönyv, valamint a zárthelyi dolgozat. 
+(2) A jelen Szabályzat 134. § alkalmazásában idegen szerzői műnek minősül 
+minden, nem a hallgató által készített irodalmi, tudományos, művészeti, más hallga tó 
+által készített hallgatói mű vagy egyéb szellemi alkotás, függetlenül 
+a) annak készítőjétől, 
+b) annak megjelenési formájától (pl. magyar vagy idegen nyelvű, nyomtatott 
+vagy internetes forrás, konferencia-előadás), 
+c) nyilvánossá válásának mértékétől (széles körben ismertté vált mű vagy 
+csak szűkebb körben hozzáférhető mű), 
+d) attól, hogy az idegen szerzői mű a mindenkori hatályos jogszabályok 
+szerint szerzői jogi vagy ahhoz hasonló jogi védelemben részesül-e. 
+134. § [Felhasználásra vonatkozó szabályok] 
+(1) Idegen szerzői mű felhasználásakor a következők szerint kell eljárni: 
+a) az idegen szerzői mű egészének vagy részletének felhasználása (pl. 
+átvétele, idézése, más nyelvből történő fordítása vagy ismertetése) 
+esetén a forrást, továbbá a sze rző nevét meg kell jelölni, ha ez a név a 
+forrásban szerepel vagy – szóban elhangzó művek esetén – 
+egyértelműen megállapítható; 
+b) az idegen szerzői művet vagy annak részletét – a hallgatói mű jellege és 
+célja által indokolt terjedelemben és az eredetihez híven – idézetként 
+való megjelöléssel szabad felhasználni. 
+(2) Az oktató jogosult számítógépes programok és adatbázisok alkalmazásával 
+is ellenőrizni az e §-ban foglalt kötelezettségek teljesülését. 
+(3) Az idegen szerzői mű felhasználására és a felhasználás jelölésére 
+egyebekben a vonatkozó jogszabályok, és az adott szakterület vonatkozó szabályai 
+irányadóak. 
+135. § 
+(1) Amennyiben a hallgató a felhasználásra vonatkozó szabályoknak egészben 
+vagy részben nem tesz eleget, a hallgatói művet értékelhe tetlennek kell minősíteni, 
+továbbá az érintett tantárgy kreditjét az adott félévben nem szerezheti meg. 
+(2) Fegyelmi vétségnek minősül, amennyiben a hallgató – a felhasználásra 
+vonatkozó szabályok megsértésével – szövegszerűen vagy al apvető tartalmi elemei  
+tekintetében saját hallgatói műveként teljes egészében va gy jelentős részben idegen 
+szerzői művet vagy idegen szerzői művek egybeszerkesztett változatát nyújtja be vagy 
+adja elő. 
+=== Page 7 ===
+7 
+ 
+(3) Az Nftv. 52/A. § (1) bekezdésében foglaltak alapján a szakdolgozat, ille tve 
+diplomamunka esetében a felhasználásra vonatkozó szabályoknak való megfelelés az 
+oklevél kiállítását követő öt éven belül is ellenőrizhető. A szabályok megsértése esetén 
+az Nftv. 52/A. §-ban foglaltak szerint kell eljárni. 
+A plágium elkerülésére jól használható a University of Technology Sydney formai 
+útmutatója is: https://avoidingplagiarism.uts.edu.au/. Szinte minden elképzelhető 
+esetre mutat mintapéldát, az elkövethető hibákra is, magyarázattal ellátva. 
+Minden olyan szövegrész, amelyben nem hivatkozik mások munkájára, 
+automatikusan az ön szellemi alkotásának minősül – annak minden szerzői jogi 
+következményével együtt. Ebből következik, hogy saját mondatainál, ábrá inál, 
+táblázatainál stb. fölösleges külön jeleznie, hogy az a sajátja  (pl. „Forrás: saját 
+szerkesztés”), hiszen magától értetődik, hogy minden a szerző munkája, ahol nem 
+jelölt meg forrásmunkát, ahonnan átvette. 
+A szerzői jog tiszteletben tartásán túl a precíz hivatkozás és irodalomjegyzék az 
+írásmű olvasója számára is nélkülözhetetlen segítség. Ezek hiányában aligha tudná 
+megtalálni és elolvasni eredetiben a felhasznált forrásmunkákat, hiába érdekelné 
+mélyebben is a téma. A hivatkozás arra szolgál, hogy a részletes bibliográfiai adatok 
+hosszas felsorolása ne szakítsa meg a szöveget, ne akassza meg az olvasót a 
+folyamatos olvasásban. A hivatkozás egy mutató, amely az irodalomjegyzék megfelelő 
+tételére mutat. 
+Korrekt hivatkozással sem mindegy, mennyit idéz má soktól. Önállóan elvégzett 
+munkáját és annak eredményeit, saját gondolatait kell dolgozata fókuszába állítania, 
+amit nem helyettesíthet szolgaian átmásolt, terjedelmes idézetek hosszú sorával. 
+Mértéktartóan, mindig csak a mondanivalója kifejtéséhez valóban szükséges 
+esetekben és terjedelemben idézze mások munkáit! 
+Ha szó szerin t idéz egy művet, akkor az idézetet tegye idézőjelbe! Ha kihagy 
+bizonyos részeket a szó szerint idézett szövegből, akkor a kihagyásokat így jelölje: 
+(...)! Ha nem szó szerint idéz, hanem csak tartalmilag, azaz a saját szavaival 
+fogalmazza meg másvalaki gondolatát, akkor idézőjel nélkül írja le, de utána ugyanúgy 
+tüntesse fel a forrását, mint a szó szerinti idézetnél!  Ha nem teszi ki az idézőjelet, 
+mintha csak tartalomra támaszkodott volna, de valójában változtatás nélkül másolt át 
+szövegeket, akkor is plágiumot követ el. 
+A szövegben ún. harvardi típusú hivatkozással, azaz a szerző vezetéknevével, a 
+mű megjelenésének évszámával és az idézett részlet oldal sorszámával (ti. hogy az 
+idézett forrásmunka hányadik oldalán olvasható az idézett gondolat) kell hivatkoznia a 
+felhasznált forrásmunkákra, nem lábjegyzetként vagy végjegyzetként. Minden más az 
+irodalomjegyzékből derül ki, ahol a név és az évszám alapján kikereshető a hivatkozott 
+forrásmunka, az összes fontos bibliográfiai adatával együtt, amelyek ismeretében az 
+érdeklődő olvasó már megtalálhatja azt. Ha a szerző neve része a mondatnak, és 
+közvetlenül a neve után áll a hivatkozás, akkor nem kell újból leírni a hivatkozásban is 
+a nevét, elég az évszám (és az oldalszám) – ld. alább a hivatkozási szövegmintákban.  
+A szerzők keresztnevét és doktori címét sohasem tüntetjük fel. A hivatkozásban 
+csak a vezetéknevük szerepelhet, az irodalomjegyzékben viszont a vezetéknevük után 
+a keresztnevük kezdőbetűjét is meg kell adni. Olyan nemzetiségű szerzők esetén, 
+amelyek nyelvén a keresztnév áll elöl (angol, német, francia, orosz stb.), a vezetéknév 
+után vesszőt írunk, pl.: Smith, A. Olyan nemzetiségű szerzők esetén, amelyek nyelvén 
+a vezetéknév áll elöl (magyar, japán, kínai, koreai stb.), a vezetéknév után nem írunk 
+vesszőt, pl.: Balogh T. 
+Amint arról már szó volt a 2. részben, fejezet- illetve alfejezetcímek után nem 
+állhat hivatkozás,  csakis a szövegtörzsben. A nem saját szerkesztésű, hanem 
+=== Page 8 ===
+8 
+ 
+máshonnan átvett ábrák vagy táblázatok  címe után viszont kötelező hivatkozásnak 
+állnia. 
+Az írásában hivatkozott összes forrásmunkát – a szerzők betűrendjében és egy-
+egy szerzőn belül időrendben , sor számozás nélkül  – föl kell sorolnia az 
+irodalomjegyzékben, hiánytalanul megadva a bibliográfiai adataikat.  Az 
+irodalomjegyzéket semmilyen más módon ne tagolja, tehát pl. ne külön listában sorolja 
+fel a könyveket, külön a cikkeket stb.! Az irodalomjegyzék mindig egyetlen lista, amely 
+a szerzők ABC -sorrendjében tartalmazza a felhasznált forrásmunkákat (vegyesen a 
+különböző megjelenési formákat, pl. könyv, cikk, weboldal stb.). 
+Nem általában véve a témához kapcsolódó szakirodalmak jegyzéket kell 
+megadnia! Kizárólag azokat a forrásmunkákat sorolhatja fel az irodalomjegyzékben, 
+amelyeket valóban felhasznált, és amelyekre hivatkozott a szövegben.  Ennek a 
+fordítottja is igaz: egyetlen olyan hivatkozás sem lehet a szövegben, amelynek 
+megfelelő tétel nem szerepel az irodalomjegyzékben. A hivatkozásban és az 
+irodalomjegyzékben szereplő névnek és évszámnak hajszálpontosan meg kell 
+egyeznie egymással, másképp az olvasó nem tudná azonosítani a hivatkozott forrást, 
+vagy csak hosszas, bosszantó keresgélés és találgatás után. 
+Folyóiratcikk 
+Folyóiratcikk egészére a szövegben így hivatkozunk: 
+Hasonló megoldásokat mutat be Iyer és Davenport (2008) is a Google innovációs 
+folyamatainak példáján. 
+Ha viszont nem a cikk egészére, hanem annak csak egy részletére, a cikkben 
+megfogalmazott konkrét gondolatra hivatkozunk, akkor azt a hivatkozott részlet, 
+gondolat helyének oldalsorszámával együtt tehetjük meg: 
+A Google innovációs gépezetének fontos részét képezi az innováció belefoglalása a 
+munkaköri leírásokba (Iyer, Davenport, 2008, 28). 
+A fenti példában nem szó szerinti, hanem tartalmi idézet szerepel, ezért nem kell 
+idézőjelbe tenni. A hivatkozásban a 28 azt jelenti, hogy az idézett gondolat 
+(példánkban az innováció belefoglalása a munkaköri leírásokba) a 28. oldalon 
+olvasható. 
+Folyóiratcikk bibliográfiai adatainak megadása az irodalomjegyzékben: 
+ Iyer, B., Davenport, T. H. (2008): A Google innovációs gépezetének visszafejtése. 
+Harvard Business Review, magyar kiadás. 10 (9) 20-32 
+ A fenti hivatkozásban a „10 (9) 20 -32” azt jelenti, hogy a folyóirat 10. évfolyama 
+9. számának 20 -32. oldalán olvasható a cikk. Tehát míg a konkrét részletre való 
+hivatkozásban az oldalsorszám a konkrétan idézett gondolat helyét adja meg 
+(példánkban a 28. oldalon van a konkrétan hivatkozott részlet), addi g az 
+irodalomjegyzékben a teljes cikk folyóiratszámon belüli helyét jelzik az oldalszámok 
+(példánkban a teljes cikk a 20. oldalon kezdődik, és a 32. oldalon ér véget). 
+Könyv  
+ Könyv egészére a szövegben így hivatkozunk: 
+ E szakterület fejlődésében mérföldkő volt Porter (2006) alapműve. 
+Ha viszont nem a könyv egészére, hanem annak csak egy részletére, a könyvben 
+megfogalmazott konkrét gondolatra hivatkozunk, akkor azt a hivatkozott részlet, 
+gondolat helyének oldalsorszámával együtt tehetjük meg. 
+ „Az iparág strukturális változásának egyik fő forrása a különböző típusú és eredetű 
+technológiai újítás” (Porter, 2006, 174). 
+A fenti példában szó szerinti idézet szerepel a könyvből, ezért kellett idézőjelbe 
+tenni. A hivatkozásban a 174 azt jelenti, hogy az idézett mondat a könyv 174. oldalán 
+olvasható. 
+=== Page 9 ===
+9 
+ 
+Könyv bibliográfiai adatainak megadása az irodalomjegyzékben: 
+ Porter, M. E. (2006): Versenystratégia. Akadémiai Kiadó, Budapest 
+Tehát nem elég csak a kiadót feltüntetni, hanem a kiadás helye is kell. 
+Ha egy könyvnek több kiadása is megjelent, akkor az irodalomjegyzékben azt is 
+föl kell tüntetni, hogy hányadik kiadást használta, pl.: 
+ Carnall, C. (2007): Managing change in organizations. 5th ed. Prentice Hall, London 
+A hivatkozásban viszont nem tüntetjük föl a  kiadás sorszámát, ugyanúgy kell 
+rájuk hivatkozni, mint a csak egy kiadásban megjelent könyvekre. 
+Elektronikus könyv 
+Elektronikus könyveknél csak a konkrétan felhasznált részletek feltüntetésében 
+van különbség a nyomtatottakhoz képest , egyébként ugyanúgy k ell hivatkozni rájuk.  
+Nyomtatott könyvnél, mint tisztáztuk, ha nem a kötet egészére hivatkozunk, akkor 
+oldalszámmal jelezzük, melyik részét haszn áltuk fel. Az elektronikus könyv ekre még 
+nem alakult ki hasonlóan egyszerű en hivatkozható, egységes  oldalszámozás. A  
+legtöbb e-könyvolvasóban az oldalszám a betűmérettől és az oldalak megjelenésének 
+beállításától függően változik. Az Amazon Kindle olvasókban ún. lokációkat (speciális 
+számsorokat) használnak oldalszámok helyett, amelyek a betűméret vagy a hasábok 
+átállítása után is változatlanok maradnak. A lokációk azonban más gyártmányú 
+olvasókban nem biztos, hogy megjelennek, vagy másképp jelenhetek meg, ezért 
+hivatkozásra nem használhatók. Szintén kerülendő az egyes e -könyesboltok által 
+hozzáadott ún. virtuális oldalszámok használata, mert sok esetben eltérnek ugyanazon 
+könyvek nyomtatott változatának oldalszámozásától, így félreértésekre adhatnak okot. 
+A Kindle 3. generációs olvasóiban megjelent ún. valós oldalszámok viszont már 
+alkalmasak hivatkozásra, csakhogy nincs minden e -könyvnek ilyen oldalszámozása. 
+Ezért a világszerte referenciaként elfogadott formai útmutatók (felsorolásukat és URL-
+jüket ld. e fejezet végén, az „Egyéb esetek” c. szakaszban) azt javasolják, hogy ‒ jobb 
+híján ‒ a fejezet sorszámával, vagy annak hiányában a címével adjuk meg, hogy az e-
+könyv melyik részét használtuk fel.  Az előző szakaszban példaként használt Porter -
+mű e -könyvként való kiadását elképzelve , ugyanazt a mondatát idézve  így kellene 
+hivatkozni a forrására: 
+ „Az iparág strukturális változásának egyik fő forrása a különböző típusú és eredetű 
+technológiai újítás” (Porter, 2006, 8. fej.). 
+Ez azt jelenti, hogy az idézet a könyv 8. fejezetéből való, nem a 8. oldaláról, amit 
+„fej.” nélkül jelentene. Ha nem lennének számozva a fejezetek, akkor így nézne ki a 
+hivatkozás: 
+ „Az iparág strukturális változásának egyik fő forrása a különböző típusú és eredetű 
+technológiai újítás” (Porter, 2006, Az iparágak fejlődése). 
+Itt tehát ‒ fejezetszámozás híján ‒ a fejezet címe mutathatná az idézet körülbelüli 
+helyét. 
+Ezek a kényszermegoldások azonban kizárólag e -könyvek konkrét részleteir e 
+való hivatkozásokra szolgálnak, nyomtatott könyvek  esetében mindig az előző 
+szakaszban bemutatott oldalszámos hivatkozást kell alkalmazni.  
+A bibliográfiai adatok megadásakor pedig az irodalomjegyzékben föl kell tüntetni, 
+hogy e-könyvről van szó: 
+ Porter, M. E. (2006): Versenystratégia. Akadémiai Kiadó, Budapest (e-könyv) 
+Ha a fejezet címe hosszú, akkor csak az első néhány szavával hivatkozunk rá. A 
+fenti példában szereplő könyvben pl. van egy „A versenytársak elemzésének fogalmi 
+kerete” c. fejezet, amelyre  már jobb inkább rövidítve hivatkozni: (Porter, 2006, A 
+versenytársak …). A rövidítés után írt 3 pont jelzi, hogy ez rövidítés,  a cím valójában 
+folytatódik. Ha más fejezet is kezdődne „A versenytársak” szavakkal, akkor ez nem 
+=== Page 10 ===
+10 
+ 
+lenne elegendő, és annyi  szót kellene megadni a rövidítésben, hogy egyértelmű 
+legyen, melyik fejezet az. Ha pl. ”A versenytársak stratégiájának vizsgálata” c. fejezet 
+is volna a kö nyvben, akkor már csak a (Porter, 2006, A versenytársak elemzésének 
+…”) hivatkozással tudnánk megkülönböztetni a másik fejezettől, egyértelművé téve, 
+melyikről van szó. 
+Tanulmány szerkesztett könyvben 
+ Több szerző által írt, szerkesztett könyvben megjelent tanulmányra a szövegben 
+így hivatkozunk: 
+ Bramorski (2008, 111 -112) a kompetitív prioritások meghatározásának három fontos 
+gyártási szempontjára hívja föl a figyelmet a hosszú távú stratégiai tervezésben. 
+ Érdemes szabadalmaztatni olyan megoldást is, amely a termék alapján könnyen 
+reprodukálható, így nincs értelme a titkosításának (Török, 2007, 113). 
+ Szerkesztett könyvben megjelent tanulmányok bibliográfiai adatainak megadása 
+az irodalomjegyzékben:  
+ Bramorski, T. (2008): Management training issues in engineering-driven companies: the 
+case of Ultrahone, Inc. In: Tesar, G., Anderson, S. W., Ghosh, S., Bramorski, T. (eds.): Strategic 
+technology management. 2nd ed. Imperial College Press, London, 109-126 
+ Török F. (2007): A szellemi tulajdon szerepe és védelme. In: Buzás N. (szerk.): 
+Innovácómenedzsment a gyakorlatban. Akadémiai Kiadó, Budapest, 108-146 
+ Tehát először az idézett, hivatkozott tanulmány adatait adjuk meg, majd egy „in:” 
+után a teljes tanulmánykötetéit, amelyben megjelent. Amint a fenti példákban láthatja, 
+magyar nyelvű könyv szerkesztőjének, szerkesztőinek neve után (szerk.) áll, idegen 
+nyelvűeké után egy szerkesztő esetén (ed.), több szerkesztő esetén (eds.). Mindkét 
+fenti példában a bibliográfiai adatok végén szereplő oldalszámok a tanulmányok helyét 
+jelzik a tanulmányköteteken belül (példán kban az egyik tanulmány a 109. oldalon 
+kezdődik, és a 126. oldalon ér véget, a másik pedig a 108. oldaltól a 146.-ig tart). 
+Jegyzet, oktatási segédlet 
+ Egyetemi jegyzetekre vagy oktatási segédletekre ugyanúgy kell hivatkozni, mint 
+a könyvekre. Különbség cs ak az irodalomjegyzékben van, ahol a bibliográfiai 
+adatoknál fel kell tüntetni, hogy jegyzetről ill. oktatási segédletről van szó. 
+Nyomtatásban, könyv alakban kiadott jegyzet esetén pl. így: 
+35070 sz. egyetemi jegyzet, Műegyetemi Kiadó, Budapest 
+Fénymásolt vagy elektronikus (pdf) oktatási segédlet esetén pl. így: 
+BSc oktatási segédlet, BME ÜTI, Budapest 
+Internetes forrás 
+Az i nternetes forrás okra alapvetően u gyanúgy, harvardi hivatkozási 
+formátumban kell hivatkozni a, mint a nyomtatottakra . URL nem szerepelhet sem a 
+szövegben, sem ábra vagy táblázat címe után, hivatkozás helyett vagy annak 
+részeként! Az URL nem hivatkozás, hanem bibliográfiai adat, amelynek az 
+irodalomjegyzékben a helye, a többi bibliográfiai adat között.  Az irodalomjegyzékben 
+sem szere pelhet URL önmagában!  Az internetes források bibliográfia adatai t 
+ugyanúgy kell megadni, mint a nyomtatottak ét (szerző, év, mű címe, kiadvány/portál 
+címe/neve), és csak azután következhet az URL. 
+A szövegben: 
+A Gartner ITScores módszer kilenc területet vizsgál három nézőpontból (The Gartner..., 
+2011, 4-5). 
+  
+=== Page 11 ===
+11 
+ 
+Az irodalomjegyzékben: 
+The Gartner research process and methodologies. (2011) Gartner, Stamford, Connecticut. 
+http://imagesrv.gartner.com/research/methodologies/methodologies.pdf 2013. 1. 31. 
+A fenti példa egyúttal a szerző  nevének feltüntetése nélkül közzétett művekre 
+való hivatkozás módját is mutatja, amiről a „Szerző nélküli forrásmunka” c. szakaszban 
+lesz szó részletesebben. Az internetes források között ez gyakori eset. 
+Az URL után a letöltés pontos dátumát is fel kell tüntetnie, amint a fenti példán is 
+látható, mert a weblapok tartalma idővel megváltozhat. A letöltés dátuma nem 
+tévesztendő össze a forrásmunka publikálásának (megjelenésének) dátumával! Ha az 
+internetes forrásmunkában feltüntették publikálásának dátumát, akkor két dátumot kell 
+megadnia: a hivatkozásban és az irodalomjegyzékben egyaránt a szerző neve (vagy 
+annak hiányában a forrásmunka címe) után  a megjelenésének dátumát, valamint az 
+irodalomjegyzékben a forrásmunka bibliográfiai adatai után a letöltés dátumát is – 
+amint a fenti példában  látható. Ha viszont a publikálás dátuma nem állapítható meg, 
+akkor – jobb híján – a helyett is a letöltés dátumát kell feltüntetnie, amint az alábbi 
+példa mutatja. 
+A szövegben: 
+Az információtechnológiák körüli felhajtás Gartner-féle ciklusa (Gartner Hype Cycle) öt 
+jellegzetes szakaszból áll (Hype Cycles, 2013). 
+ Az irodalomjegyzékben: 
+Hype Cycles . (2013) Gartner, Stamford, Connecticut. 
+http://www.gartner.com/technology/research/methodologies/hype-cycle.jsp 2013. 1. 31. 
+Többnyire van valamilyen címe minden írott anyagnak, ábrának, táblázatnak, 
+adattárnak vagy bárminek az interneten is, amire hivatkozhat, még ha a szerzőjét nem 
+is tüntették fel, ld. az alábbi példán. (A szerző nélküli forrásmunkákra való hivatkozásra 
+még visszatérünk.) 
+A szövegben: 
+Az Academy of Management egy komplex kapcsolatépítő szolgáltatással is segíti a 
+szakmai hálózatok fejlődését (AOM Connect, 2013). 
+Az irodalomjegyzékben: 
+AOM Connect (2013) http://aom.org/Networking/AOM-Connect.aspx 2013. 1. 31. 
+Ha netán még címe sem lenne a felhasznált internetes forrásnak, akkor a honlap 
+valamilyen érthető megnevezésével hivatkozzon rá a szövegben, pl.: (Business Week 
+honlapja, 2013). Az irodalomjegyzékben ebben az esetben is pontosan ugyanannak a 
+megnevezésnek kell szerepelnie, mint a hivatkozásban, hogy könnyen megtalálható 
+és egyértelműen azonosítható legyen. 
+A webről letöltött forrásmunkák bibliográfiai adatainak fenti megadási módja 
+helyett használhatja az idézett dokumentum ún. digitális objektumazonosítóját (DOI: 
+Digital Object Identifier) is, hogyha van neki olyan. A hivatkozás módja a szövegben 
+változatlan, csak az irodalomjegyzékben van különbség: a DOI szerepel az URL és a 
+dátum helyett, amint az alábbi példán látható. 
+A szövegben: 
+Oreg, Vakola és Armenakis (2011) 60 évre visszamenőleg rendszerezte a változásokra 
+adott reakciók kvantitatív kutatási eredményeit. 
+ Az irodalomjegyzékben: 
+Oreg, S., Vakola, M., Armenakis, A. (2011): Change recipients’ reactions to 
+organizational change: a 60 -year review of quantitative studies . The Journal of Applied 
+Behavioral Science, DOI: 10.1177/0021886310396550  
+A nyomtatott és az elektronikus változat adatai akár együtt is megadhatók az 
+irodalomjegyzékben, ha mindkét formában létezik az idézett mű: 
+=== Page 12 ===
+12 
+ 
+Oreg, S., Vakola, M., Armenakis, A. (2011): Change recipients’ reactions to 
+organizational change: a 60 -year review of q uantitative studies . The Journal of Applied 
+Behavioral Science, 47 (4),461-524, DOI: 10.1177/0021886310396550 
+Nagyon sok szerző közös munkája 
+ Ha egy forrásmunkának háromnál több szerzője van, akkor a szövegközi 
+hivatkozásban nem soroljuk föl mindet, hanem csak az elsőt, majd az „et al.” rövidítést 
+írjuk utána  (azt jelenti: és társai) , illetve az évszámot (és szükség esetén az 
+oldalszámot). Az irodalomjegyzékben viszont maradéktalanul föl kell sorolni az összes 
+szerzőt. 
+ A szövegben: 
+A McKinsey üzleti kutat ó és tanácsadó cég szerint a következő 12 megbontó 
+technológiára kell a leginkább odafigyelnünk (Manyika et al., 2013). 
+ Az irodalomjegyzékben: 
+Manyika, J., Chui, M., Bughin, J., Dobbs, R., Bisson, P., Marss, A. (2013): Disruptive 
+technologies: advances that will transform life, business, and the global economy. McKinsey 
+Global Institute, 
+http://www.mckinsey.com/insights/business_technology/disruptive_technologies?cid=other-
+eml-ttn-mip-mck-oth-1307 2015. 1. 26. 
+Több forrásmunka 
+Ha ugyanannak a szerzőnek több művére is hivatkozik egyszerre, akkor a szerző 
+nevét nem kell többször is feltüntetnie, elég egyszer, és utána az idézett művek 
+megjelenési dátumai következnek, pl.: (Balogh, 2004, 2011, 326, 2015). Az évszámok 
+természetesen ilyen esetekben is kiegészülhetnek oldalszámokkal, ahogyan a fenti 
+példában is látható a 2011-es mű után. Hogy mikor kell oldalszámot is feltüntetni, arról 
+a „Könyv” c. szakaszban volt szó. 
+Ha egy szerzőnek ugyanabban az évben megjelent több publikációjára is 
+hivatkozik, akkor az évszám után írt betűjelekkel különböztesse meg őket  mind a 
+szövegközi hivatkozásokban , pl.: (Balogh, 2007a), (Balogh, 2007b) , mind az 
+irodalomjegyzékben. 
+ Ha különböző szerzők több művére hivatkozik egyszerre, akkor pontosvesszővel 
+válassza el az egyes szerzőkre való hivatkozásokat, pl. : (Balogh, 2004, 2011, 326; 
+Porter, 2006; Takács, 2009, 2014; Wankel, 2010, 115). A szerzőket  ABC-sorrendben 
+szokás felsorolni, egy szerzőn belül az évszámokat pedig időbeli sorrendben, mivel az 
+irodalomjegyzékben is ugyanilyen sorrendben vannak. 
+Szerző nélküli forrásmunka 
+Ha egy forrásmunkának nincs feltüntetve a szerzője, akkor cím ének első két-
+három szavát használja hivatkozásra az ismeretlen név helyett, ld. az alábbi példán 
+(ugyanerre a megoldásra már az internetes hivatkozásnál is láthatott egy példát). 
+A szövegben: 
+ A technomenedzsment tipikusan keresztfunkcionális vállalati tevékenység (Management 
+of …, 1987, 8-9). 
+Az irodalomjegyzékben: 
+Management of Technology: the Hidden Competitive Advantage (1987) National 
+Academy Press, Washington 
+Törvény, rendelet, paragrafus 
+Törvények, rendeletek  egészére vagy egyes paragrafusaira a számukkal kell 
+hivatkozni, pl. ( 2006. évi IV. törvény ), illetve ( 2006. évi IV. törvény  5. § (4)). Mivel a 
+törvényeket és paragrafusaikat a számuk egyértelműen azonosítja, és azok alapján 
+=== Page 13 ===
+13 
+ 
+bárki pillanatok alatt megtalálhatja őket az interneten, az irodalomjegyzékben nem kell 
+fölsorolni őket, elég csak hivatkozni rájuk a szövegben. 
+Publikálatlan írásbeli vagy szóbeli közlés 
+Sehol sem publikált, így az olvasó számára hozzáférhetetlen szóbeli vagy írásbeli 
+személyes közlésekre, interjúkra , kiadvány formájában nem létező vállalati 
+dokumentumokra így szokás hivatkozni: (Zivatar  Tivadar személyes közlése) , vagy 
+(vállalati dokumentumok alapján). Ha hosszú szövegrészek, teljes fejezetek alapulnak 
+egy-egy kulcsszeméllyel folytatott beszélgetés(ek)en, akkor jobb, ha zárójeles 
+hivatkozás helyett inkább az elején jelzi ezt a tényt egy mondatban, pl.: „A cég 
+tevékenységét Zivatar Tivadar gazdasági igazgató személyes közlései (vagy: … 
+igazgatóval készített interjúm) alapján ismertetem ”. Hasonlóan jelezheti  azt is, ha 
+kiadványok formájában nem létező vállalati dokumentumokból vett át információkat, 
+pl.: „A vizsgált munkafolyamatot vál lalati belső dokumentumok felhasználásával 
+ismertetem”. Az irodalomjegyzékben sem  a személyes közléseket, sem a 
+publikálatlan, kiadvány formájában nem létező vállalati dokumentumokat nem tüntetjük 
+fel. 
+Közvetett hivatkozás másvalaki által idézett műre 
+Fontos ismernie és alkalmaznia a k özvetett hivatkozást: hozzáférhetetlen, ezért 
+eredetiben nem olvasott, másvalaki művében idézett forrásmunkák  felhasználásakor 
+az idézett eredeti szerzőre és az idézőre egyaránt kell hivatkoznia. 
+A szövegben: 
+Az IQ-tesztek tömeges használatának 1918-as elkezdése óta az átlagos teszteredmény 24 
+ponttal nőtt (Neisser, 1997, id.: Goleman, 2002, 34). 
+A fenti példa azt jelenti, hogy ön Goleman könyvének 34. oldalán olvasta, mit írt 
+Neisser, de nem olvasta eredetiben Neisser könyvét. Ennek megadására azért van 
+szükség, mert ha az ön által olvasott mű szerzője pontatlanul idézte az ön által nem 
+olvasott művet, akkor az nem az ön hibája. 
+Az irodalomjegyzékben mindkét mű adatait meg kell adnia, ott is jelezve az 
+idézett műnél, hogy nem eredetiben olvasta, hanem csak idézetben: 
+ Goleman, D. (2002): Érzelmi intelligencia a munkahelyen. SHL Hungary, Budapest 
+ Neisser, U. (1997): The Rising Curve. American Psychological Press, Washington DC. 
+Id.: Goleman, 2002, 34 
+ Az „id.:” nem tévesztendő össze az „in:” -nel! Az „id.:” arra vonatkozik, hogy ki 
+idézte a szóban forgó, ön által eredetiben nem olvasott művet, az „in:” pedig arra, hogy 
+melyik tanulmánykötetben jelent meg a hivatkozott tanulmány. 
+ Törekedjen a lehető legkevesebb közvetett hivatkozásra, eredetiben 
+tanulmányozzon minden hozzáférhető  művet! A közvetett hivatkozás kizárólag 
+hozzáférhetetlen forrásmunkák esetén fogadható el,  mint kényszermegoldás. 
+Könnyen hozzáférhető forrás munkák feldolgozása helyett nem fogadható el a 
+jegyzetek vagy más művek forrásidézeteinek továbbidézése. (Bővebben ld. a tartalmi 
+útmutató 4. részében.) 
+Felhasználás módosítással 
+Ha több-kevesebb módosítással használja fel más szerzők munkáit, akkor ezt a 
+hivatkozásban is világossá kell tennie, nehogy abban a tévhitben használják fel, 
+idézzék tovább az ön írásából, hogy az ugyanúgy van az eredeti műben is. Az olvasók 
+számára egyértelművé kell tennie, hogy aki pontosan az eredetire kíváncs i, az nem 
+hagyatkozhat az ön változatára, hanem meg kell néznie az eredetit is. Néhány példa 
+módosított felhasználások esetére: (Orridge, 2009, kiegészítve), (Orridge, 2009, 
+rövidítve), (Orridge, 2009, módosítva), (Orridge, 2009, terminológiai módosítással ), 
+(Orridge, 2009 felhasználásával), (Orridge, 2009 alapján), (Orridge, 2009 nyomán) stb. 
+=== Page 14 ===
+14 
+ 
+Más megfogalmazást is használhat, mindig olyat, ami megítélése szerint a legjobban 
+kifejezi az átvétel ill. a módosítás mértékét. 
+Egyéb esetek 
+Ha olyan forrásmunkára támaszkodik, amire a fentebb bemutatott minták 
+egyikével sem tudna hivatkozni, akkor Gyurgyák János „Szerzők és szerkesztők 
+kézikönyve” című könyvét (Osiris Kiadó, Budapest, 2005) érdemes fellapoznia 
+útmutatásért. 
+További hivatkozási és irodalomjegyzék -szerkesztési példák at a világszerte 
+referenciának tekintett formai útmutatók valamelyikében találhat. 
+Jól használhatók  pl. a Chicago Manual of Style (CMS) ajánlásai: 
+http://www.chicagomanualofstyle.org/tools_citationguide.html 
+ Hasonló segítség a Publication Manual of the American Psychological 
+Association (APA Style) útmutató, hangzó magyarázattal is ellátva: 
+http://www.apastyle.org/learn/tutorials/basics-tutorial.aspx 
+ További hivatkozási és irodalomjegyzék-szerkesztési példák a Modern Language 
+Association (MLA) Style Gudie-ból: 
+https://mlaformat.org/ 
+ A Purdue University honlapjának Online Writing Lab (OWL) oldala egy 
+táblázatban össze is hasonlítja a fenti három híres útmutató (MLA, APA, CMS) 
+hivatkozási formátumait: 
+http://owl.english.purdue.edu/owl/resource/949/01/ 
+ Az Anglia Ruskin University , a University of Exeter és a University of Sydney  
+könyvtárának hivatkozási és bibliográfiai útmutatója is nagyon jól használható: 
+http://libweb.anglia.ac.uk/referencing/harvard.htm 
+https://libguides.exeter.ac.uk/referencing 
+http://sydney.edu.au/library/subjects/downloads/citation/Harvard_Complete.pdf 
+ A fenti külföldi formai útmutatókra csak akkor támaszkodjon, ha olyasmire kell 
+hivatkoznia, amire ebben a formai útmutatóban nem talált példát! Amire van itt példa, 
+arra az itt látható formátumban hivatkozzon! Az esetek túlnyomó többségében nincs 
+szükség ezeknél többre. 
+10. Ábrák és táblázatok 
+ Minden ábrának és táblázatnak sorszámot és címet kell adni, és mindegyikre a 
+sorszámával kell utalni a szöveg rá vonatkozó részén, pl.: „Amint a 3. ábrán látható…”, 
+vagy „A mért adatok alátámasztják feltevésünket (ld. a 8. táblázatban).” Nem 
+fogadható el „az alábbi ábrán” vagy „a következő táblázatban” típusú utalás,  mert a 
+szöveg áttördelésekor ezek könnyen máshova kerülhetnek, mint ah ol eredetileg 
+voltak, és az olvasó nem tudja kitalálni, melyik ábrára vagy táblázatra is utalhat egy -
+egy szövegrész. Csakis a sorszámukra utalva egyértelmű, mi hová tartozik, ezért 
+alkalmazzák világszerte ezt a módszert. 
+ Mivel a táblázatokra és az ábrákra mindig a sorszámukkal utalunk a szövegben, 
+a táblázatoknak és az ábráknak nem kell pont oda esniük, ahol utal rájuk. A sorszámos 
+utalás lehetővé teszi, hogy esztétikusan tördelhesse a dolgozatát, fölösleges sorrendi 
+kötöttségek nélkül.  Gyakori tördelési hiba, hogy a dolgozat szerzője jókora helyet 
+üresen hagy egy-egy oldal alsó részén, amikor az ábrára vagy táblázatra utaló mondat 
+után közvetlenül már nem fér ki ugyanarra az oldalra az az ábra vagy táblázat, amelyre 
+utalt. A szöveget kihagyásmentesen  kell írni, ahogyan bármelyik könyvben vagy 
+folyóiratban látható.  A sorszámos utalás jóvoltából teljesen mindegy, hogy az ábra 
+vagy táblázat a rá utaló mondat előtt vagy után, attól mekkora távolságra, és egyáltalán 
+ugyanazon vagy másik oldalon van-e. 
+=== Page 15 ===
+15 
+ 
+ Fejezet v agy alfejezet soha ne kezdődjön  ábrával vagy táblázattal, mindig 
+szöveggel! Több ábra vagy táblázat lehetőleg ne kövesse egymást közvetlenül, hanem 
+legyen közöttük szöveg, ha megoldható. Mindig úgy tördelje a szöveget, hogy az egy 
+oldalnyinál nem nagyobb méretű táblázatok teljes egészükben egy oldalon legyenek,  
+ne vágja ketté őket oldaltörés, ne lógjanak át másik oldalra! Ez persze nem vonatkozik 
+a többoldalas óriástáblázatokra, amelyeket nem tud egy oldalra bezsúfolni, és csak az 
+olvashatóság rovására tudná lekicsinyíteni őket. Ha egy táblázat csak több oldalra fér 
+ki, akkor úgy tördelje, hogy az oldaltörések ‒ ha csak lehet ‒ cellahatárokra essenek, 
+ne vágják ketté a táblázat celláit! 
+Ha egy ábra vagy táblázat  a szöveg semelyik részéhez sem köthető , ha nincs 
+hol utalni rá a szövegben, akkor valószínűleg fölösleges, ezért törlendő. A helykitöltő, 
+„üres” ábrák és „töltelék” táblázatok, amelyek csupán a terjedelem növelését 
+szolgálják, hibának számítanak, és rontják a dolgozat megítélését. 
+ A szakirodalomban kialakult formai szokás szerint az ábrák sorszámát és címét 
+alájuk, a táblázatokét föléjük írjuk. Ez tehát nem véletlenül van így a formai sablonban, 
+ne térjen el tőle! Az ábrák előtt és a táblázatok után hagyjon ki 1-2 üres sort, hogy ne 
+folyjanak össze a szöveggel!  Az ábracímek után és a táblázatcímek előtt nem kell 
+feltétlenül üres sort beszúrnia, mert a sablon címstílusaiban már be van állítva a 
+megnövelt térköz. Ez alól kivétel, ha saját készítésű ábrája címe alól törli a „Forrás: …” 
+sort, mert az ábracím sorában nincs beállítva  megnövelt térköz, ilyenkor kézzel kell 
+beszúrnia 1-2 üres so rt ahhoz, hogy az ábra címe ne folyjon össze a szöveggel, és 
+harmonikus képet mutasson az adott oldal. 
+Egyetlen ábrának sem szabad két vagy több helyen feltüntetni a címét, kizárólag 
+egy helyen: alatta.  Gyakori hiba, hogy a máshonnan (pl. Excelből vagy PowerPoint-
+ból) átmásolt ábrában benne felejtik az oda beírt címét, amit általában a fölső részére 
+írtak, majd pedig alá is írnak egy ábracímet, a formai sablonnak megfelelően. Így két 
+címe lesz ugyanannak az ábrának: e gy fölül, az ábra képmezején  belül, egy pedig 
+alatta, sorszámmal ellátva. Az ábra képmezején belüli címet törölni kell, kizárólag az 
+ábra alatt lehet egyetlen ábracím. 
+ Az ábra vagy táblázat címének ugyanazon az oldalon kell lennie, mint ahol az 
+ábra vagy táblázat van. Tehát nem szabad előfordulnia olyan tördelési hibának, hogy 
+egy oldal alján van a táblázat címe, és a következő oldal tetején a táb lázat, vagy egy 
+oldal tetején van az ábra címe, és az előző oldal alján az ábra. 
+ Gyakori hiba a mennyiségi adatokat (pl. koordinátarendszert) tartalmazó ábrákra 
+elfelejteni ráírni, hogy melyik tengelyen pontosan mi van, és annak mi a 
+mértékegysége. Ne feledkezzen meg róla! 
+ Magyar nyelvű szövegben magyar nyelvű ábráknak és táblázatoknak kell 
+szerepelniük! Idegen nyelvű csak kivételes esetben fordulhat elő, amikor 
+megoldhatatlan a magyar változat megszerkesztése. Ez utóbbi esetben viszont meg 
+kell adnia az összes idegen nyelvű ábrafelirat magyar megfelelőjét, vagy közvetlenül 
+az ábra alatt, vagy ha oda nem tudja jól betördelni, akkor a szövegnek azon a részén, 
+ahol a hivatkozás történik az ábrára. 
+ Szkennelt ábrákat vagy táblázatokat csak kifogástalan minőségben vegyen át!  
+Ha kifogásolható a minősége, akkor újra meg kell szerkesztenie, és azt kell 
+beillesztenie. 
+ Az ábrák és tá blázatok forrását pontosan ugyanolyan szabályos harvardi 
+hivatkozással kell feltüntetnie, mint a szövegben,  nincs semmi különbség. Tehát itt 
+sem állhat URL a szabályos hivatkozás helyett, sem pedig teljes irodalomjegyzék-tételt 
+nem szabad odaírni. 
+=== Page 16 ===
+16 
+ 
+11. Matematikai képletek 
+A matematikai képleteket, egyenleteket sorszámmal kell ellátni. A sorszámot a 
+jobb oldali margó közelébe, zárójelbe kell írni, pl.: 
+N=F−Kf      (3) 
+ahol N: nyereség, F: fedezet, Kf: fix költség. 
+A képletben szereplő mennyiségeket csak akko r kell így megnevezni, ha addig 
+még nem szerepeltek a dolgozatban ezek a jelölések. A szövegben ezzel a zárójeles 
+sorszámmal kell hivatkozni a képletre, pl.: „Amint a (3) egyenletből látható, … ” stb. A 
+matematikai mennyiségeket dőlt betűkkel jelöljük, hogy egyértelműen meg lehessen 
+különböztetni őket a szöveg többi részétől (pl. az a matematikai változót az a határozott 
+névelőtől). 
+12. Függelékek (mellékletek) 
+A háttéradatokat, hosszadalmas részletszámításokat, és általában mindent, ami 
+nem kell feltétlenül mondanivalója követéséhez, tegye inkább függelékbe, mellékletbe. 
+A fő részben szereplő túl sok részlet ugyanis megtöri a szöveg lendületét, és gátolja a 
+lényeg megértését. Amire viszont szükség van a szöveg megértéséhez, annak a fő 
+részben a helye, nem a függelékben! Ne tegyen minden ábrát és táblázatot a 
+függelékbe, tekintet nélkül arra, hogy a fő szöveg megértéséhez,  a mondanivaló 
+követéséhez kell, vagy csak háttéradatokat, kiegészítő információkat tartalmaz! Az 
+olvasónak ugyanis ilyenkor megállás nélkül  előre-hátra kell lapozgatnia, ami 
+meglehetősen bosszantó. A fő mondanivaló (szöveg, ábra, táblázat, minden) a fő 
+részbe való, a háttéradatok pedig a függelékbe, mellékletbe. A függelékek, mellékletek 
+terjedelme lehetőleg ne legyen több  kb. 8-10 oldalnál. Ez azonban nem szigorúan 
+betartandó korlát, a témától függően e ttől hosszabbra is szükség lehet, csak 
+indokolatlanul, öncélúan ne növelje a terjedelm ét! Természetesen az sem baj, ha 
+egyáltalán nincs függelék. Mindig a tartalomtól függ, hogy szükség va n-e rá, vagy 
+nincs. 
+13. Feltöltés előtt 
+ Amint arra a 3. fejezetben már felhívtuk a figyelmét: a dolgozat feltöltése előtt 
+frissítse a tartalomjegyzéket (jobb egérgomb, mezőfrissítés)! 
+ Feltöltés előtt a Word korrektúramenüjének „Elfogadás” menüpontjában fogadja 
+el a dokumentum összes módosítását! Ezt nem helyettesíti, ha a „Korrektúra 
+megjelenítése” menüpontban azt a lehetőséget választja, hogy ne mutassa a 
+korrekciókat! Az ugyanis csak egy megjelenítési lehetőség, amely nem törli  a 
+korrektúrajeleket, csupán nem mutatja őke t, de bármikor újra megjeleníthetők . Ha a 
+bíráló gépén  be van kapcsolva a korrekciók mutatása (és az esetek túlnyomó 
+többségében be van), akkor nála korrektúrákkal tark ítva jelenik meg a dolgozat , ami 
+formai hiba . Kizárólag a módosítások el fogadásával törölhetők ki a korrekciók  a 
+dokumentumból, ezért azt a funkciót használja! 
+ Feltöltés előtt törölje a dolgozatából az összes megjegyzést, amelyet akár ön, 
+akár a konzulens e írt a margóra a Word korrektúramenüjének megjegyzésíró 
+funkciójával! A megjegyzések csak egyenként törölhetők (jobb egérgomb, megjegyzés 
+törlése), az előző bekezdésben írt „Elfogadás” csak a korrektúrajeleket törli, a 
+megjegyzéseket nem. 

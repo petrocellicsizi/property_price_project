@@ -93,6 +93,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusAlertMessage = document.getElementById('statusAlertMessage');
     const btnCloseAlert = document.getElementById('btnCloseAlert');
 
+    // ÚJ: Mezők független szerkesztése és AI árhatás gomb / modál elemek
+    const chkLockFieldCoupling = document.getElementById('chk_lock_field_coupling');
+    const lblFieldCouplingStatus = document.getElementById('lblFieldCouplingStatus');
+    const btnShowAiImpact = document.getElementById('btnShowAiImpact');
+    const modalAiImpactEl = document.getElementById('modalAiImpact');
+    const modalAiImpactBody = document.getElementById('modalAiImpactBody');
+    const btnApplyAiAdjustmentsModal = document.getElementById('btnApplyAiAdjustmentsModal');
+
+    function isFieldCouplingLocked() {
+        return chkLockFieldCoupling && chkLockFieldCoupling.checked;
+    }
+
+    function updateAiImpactButtonVisibility() {
+        const hasOtherInfo = (propOtherInfo && propOtherInfo.value.trim().length > 0) ||
+                             (loanOtherInfo && loanOtherInfo.value.trim().length > 0) ||
+                             (rentOtherInfo && rentOtherInfo.value.trim().length > 0) ||
+                             (invOtherInfo && invOtherInfo.value.trim().length > 0);
+        
+        if (btnShowAiImpact) {
+            if (hasOtherInfo) {
+                btnShowAiImpact.classList.remove('d-none');
+            } else {
+                btnShowAiImpact.classList.add('d-none');
+            }
+        }
+    }
+
+    if (chkLockFieldCoupling) {
+        chkLockFieldCoupling.addEventListener('change', () => {
+            if (lblFieldCouplingStatus) {
+                if (chkLockFieldCoupling.checked) {
+                    lblFieldCouplingStatus.innerHTML = '<span class="text-primary fw-semibold"><i class="bi bi-lock-fill me-1"></i>Független szerkesztés aktív: a mezők nem írják át egymást.</span>';
+                } else {
+                    lblFieldCouplingStatus.innerHTML = '<span class="text-muted"><i class="bi bi-link-45deg me-1"></i>Automatikus mezőkapcsolatok aktívak (pl. m² szorozza a vételárat).</span>';
+                }
+            }
+        });
+    }
+
     // Felhasználói egyedi felülírás állapotjelzők
     // Alapértelmezetten true, így induláskor/betöltéskor nem írja felül a mentett értékeket az AI javaslattal.
     // Csak akkor váltanak false-ra, ha a user külön rányom a "Javaslat" gombra.
@@ -143,6 +182,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let calcDebounceTimer = null;
     let currentAiEvaluations = null;
+    let lastEvaluatedNotesSignature = null;
+
+    function getOtherInfoSignature() {
+        return [
+            propOtherInfo ? propOtherInfo.value.trim() : "",
+            loanOtherInfo ? loanOtherInfo.value.trim() : "",
+            rentOtherInfo ? rentOtherInfo.value.trim() : "",
+            invOtherInfo ? invOtherInfo.value.trim() : ""
+        ].join("|||");
+    }
 
     function triggerPythonCalculations() {
         if (calcDebounceTimer) clearTimeout(calcDebounceTimer);
@@ -172,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (badgeSuggestedPriceSqm) {
                 badgeSuggestedPriceSqm.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_price_per_sqm}`;
             }
-            if (!userCustomPrice && propPriceSqm && propPriceTotal) {
+            if (!userCustomPrice && !isFieldCouplingLocked() && propPriceSqm && propPriceTotal) {
                 propPriceSqm.value = formatWithDots(raw.suggested_price_per_sqm_huf);
                 propPriceTotal.value = formatWithDots(raw.suggested_price_total_huf);
                 updateLoanFromDownPaymentPct();
@@ -184,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     : '';
                 badgeSuggestedFurnishing.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_furnishing}${extraBadge}`;
             }
-            if (!userCustomFurnishing && propFurnishingHuf) {
+            if (!userCustomFurnishing && !isFieldCouplingLocked() && propFurnishingHuf) {
                 propFurnishingHuf.value = formatWithDots(raw.suggested_furnishing_huf);
             }
 
@@ -195,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     : '';
                 badgeSuggestedRent.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_rent}${extraBadge}`;
             }
-            if (!userCustomRent && rentMonthlyHuf) {
+            if (!userCustomRent && !isFieldCouplingLocked() && rentMonthlyHuf) {
                 rentMonthlyHuf.value = formatWithDots(raw.suggested_rent_huf);
             }
 
@@ -206,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     : '';
                 badgeSuggestedUtilities.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_utilities}${extraBadge}`;
             }
-            if (!userCustomUtilities && rentUtilitiesHuf) {
+            if (!userCustomUtilities && !isFieldCouplingLocked() && rentUtilitiesHuf) {
                 rentUtilitiesHuf.value = formatWithDots(raw.suggested_utilities_huf);
             }
 
@@ -231,6 +280,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (raw.sensitivity) {
                 renderHeatmap(raw.sensitivity);
             }
+            // --- ÚJ: Szcenárióelemzés & Valószínűségi Modell Táblázat Renderelése ---
+            if (raw.scenarios) {
+                renderScenarioAnalysis(raw.scenarios);
+            }
         } catch (err) {
             console.error("Hiba a Python kvantitatív kalkuláció hívásakor:", err);
         }
@@ -250,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 : '';
             badgeSuggestedRent.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_rent}${badgeExtra}`;
         }
-        if ((!userCustomRent || (applied.rent_adjustment_pct && applied.rent_adjustment_pct !== 0)) && raw.suggested_rent_huf) {
+        if (!isFieldCouplingLocked() && (!userCustomRent || (applied.rent_adjustment_pct && applied.rent_adjustment_pct !== 0)) && raw.suggested_rent_huf) {
             rentMonthlyHuf.value = formatWithDots(raw.suggested_rent_huf);
             userCustomRent = false;
         }
@@ -263,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 : '';
             badgeSuggestedUtilities.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_utilities}${badgeExtra}`;
         }
-        if ((!userCustomUtilities || (applied.utilities_adjustment_pct && applied.utilities_adjustment_pct !== 0)) && raw.suggested_utilities_huf) {
+        if (!isFieldCouplingLocked() && (!userCustomUtilities || (applied.utilities_adjustment_pct && applied.utilities_adjustment_pct !== 0)) && raw.suggested_utilities_huf) {
             rentUtilitiesHuf.value = formatWithDots(raw.suggested_utilities_huf);
             userCustomUtilities = false;
         }
@@ -276,11 +329,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 : '';
             badgeSuggestedFurnishing.innerHTML = `<i class="bi bi-magic me-1"></i>Javaslat: ${fmt.suggested_furnishing}${badgeExtra}`;
         }
-        if ((!userCustomFurnishing || (applied.furnishing_adjustment_huf && applied.furnishing_adjustment_huf !== 0)) && raw.suggested_furnishing_huf) {
+        if (!isFieldCouplingLocked() && (!userCustomFurnishing || (applied.furnishing_adjustment_huf && applied.furnishing_adjustment_huf !== 0)) && raw.suggested_furnishing_huf) {
             propFurnishingHuf.value = formatWithDots(raw.suggested_furnishing_huf);
             userCustomFurnishing = false;
         }
 
+        updateAiImpactButtonVisibility();
         runPythonCalculations();
     }
 
@@ -367,6 +421,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // A) Méret & m² ár -> Vételár
     function updatePriceFromSqm() {
+        if (isFieldCouplingLocked()) {
+            triggerPythonCalculations();
+            return;
+        }
         const size = parseFloat(propSizeSqm.value) || 0;
         const priceSqm = parseCleanNumber(propPriceSqm.value);
         const total = Math.round(size * priceSqm);
@@ -379,6 +437,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Vételár -> m² ár
     function updateSqmFromTotalPrice() {
+        if (isFieldCouplingLocked()) {
+            triggerPythonCalculations();
+            return;
+        }
         const size = parseFloat(propSizeSqm.value) || 1;
         const total = parseCleanNumber(propPriceTotal.value);
         propPriceSqm.value = formatWithDots(Math.round(total / size));
@@ -390,6 +452,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // B) Ügyvédi díj: Százalék -> Forint
     function updateLawyerFeeFromPct() {
+        if (isFieldCouplingLocked()) {
+            triggerPythonCalculations();
+            return;
+        }
         const total = parseCleanNumber(propPriceTotal.value);
         const pct = parseFloat(propLawyerPct.value) || 0;
         propLawyerHuf.value = formatWithDots(Math.round(total * (pct / 100.0)));
@@ -398,6 +464,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Ügyvédi díj: Forint -> Százalék
     function updateLawyerFeeFromHuf() {
+        if (isFieldCouplingLocked()) {
+            triggerPythonCalculations();
+            return;
+        }
         const total = parseCleanNumber(propPriceTotal.value) || 1;
         const huf = parseCleanNumber(propLawyerHuf.value);
         const pct = (huf / total) * 100.0;
@@ -407,12 +477,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // C) Önerő: Százalék -> Forint és Hitelösszeg
     function updateLoanFromDownPaymentPct() {
-        const total = parseCleanNumber(propPriceTotal.value);
         const pct = parseFloat(loanDownPaymentPct.value) || 0;
-        const downHuf = Math.round(total * (pct / 100.0));
-        loanDownPaymentHuf.value = formatWithDots(downHuf);
         rngDownPayment.value = Math.round(pct);
         lblDownPaymentBadge.textContent = `${pct}% önerő`;
+
+        if (isFieldCouplingLocked()) {
+            triggerPythonCalculations();
+            return;
+        }
+
+        const total = parseCleanNumber(propPriceTotal.value);
+        const downHuf = Math.round(total * (pct / 100.0));
+        loanDownPaymentHuf.value = formatWithDots(downHuf);
 
         const loanAmount = Math.max(0, total - downHuf);
         loanAmountHuf.value = formatWithDots(loanAmount);
@@ -421,6 +497,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Önerő: Forint -> Százalék és Hitelösszeg
     function updateLoanFromDownPaymentHuf() {
+        if (isFieldCouplingLocked()) {
+            triggerPythonCalculations();
+            return;
+        }
         const total = parseCleanNumber(propPriceTotal.value) || 1;
         const downHuf = parseCleanNumber(loanDownPaymentHuf.value);
         const pct = Math.min(100, Math.max(0, (downHuf / total) * 100.0));
@@ -435,6 +515,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hitelösszeg közvetlen átírása
     function updateDownPaymentFromLoanAmount() {
+        if (isFieldCouplingLocked()) {
+            triggerPythonCalculations();
+            return;
+        }
         const total = parseCleanNumber(propPriceTotal.value);
         const loan = parseCleanNumber(loanAmountHuf.value);
         const downHuf = Math.max(0, total - loan);
@@ -569,6 +653,78 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chkBabavaro) chkBabavaro.addEventListener('change', applyBabavaroDownPayment);
     if (radBabavaroUnder90) radBabavaroUnder90.addEventListener('change', applyBabavaroDownPayment);
     if (radBabavaroOver90) radBabavaroOver90.addEventListener('change', applyBabavaroDownPayment);
+
+    // Egyéb AI mezők figyelése (gomb dinamikus megjelenítése és állapotkezelés)
+    function onOtherInfoChanged() {
+        updateAiImpactButtonVisibility();
+    }
+
+    [propOtherInfo, loanOtherInfo, rentOtherInfo, invOtherInfo].forEach(el => {
+        if (el) {
+            el.addEventListener('input', onOtherInfoChanged);
+        }
+    });
+
+    async function handleShowAiImpact(forceRefresh = false) {
+        if (!modalAiImpactEl) return;
+        const modal = bootstrap.Modal.getInstance(modalAiImpactEl) || new bootstrap.Modal(modalAiImpactEl);
+        modal.show();
+
+        const currentSig = getOtherInfoSignature();
+        const hasText = currentSig.replace(/\|/g, "").trim().length > 0;
+        const isDirty = !lastEvaluatedNotesSignature || currentSig !== lastEvaluatedNotesSignature;
+
+        if ((forceRefresh || isDirty || !currentAiEvaluations) && hasText) {
+            modalAiImpactBody.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-warning me-2" role="status" style="width: 2.8rem; height: 2.8rem;"></div>
+                    <h5 class="fw-bold text-dark mt-3">Gemini AI szakértői elemzés folyamatban...</h5>
+                    <p class="text-muted small mb-0">A beírt kiegészítő információk DCF modellre gyakorolt hatásának és piaci relevanciájának számítása...</p>
+                </div>
+            `;
+            try {
+                await saveInputsToServer('AI Árhatás Lekérés', false);
+                lastEvaluatedNotesSignature = currentSig;
+                if (currentAiEvaluations) {
+                    renderAiImpactModalContent(currentAiEvaluations);
+                } else {
+                    modalAiImpactBody.innerHTML = `
+                        <div class="alert alert-warning text-center my-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>Az AI elemzés válasza nem volt elérhető. Kérjük próbáld újra!
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                console.error("AI elemzési hiba:", err);
+                modalAiImpactBody.innerHTML = `
+                    <div class="alert alert-danger text-center my-3">
+                        <i class="bi bi-exclamation-circle me-2"></i>Hiba történt a szerverrel való kommunikáció során.
+                    </div>
+                `;
+            }
+        } else if (currentAiEvaluations) {
+            renderAiImpactModalContent(currentAiEvaluations);
+        } else {
+            modalAiImpactBody.innerHTML = `
+                <div class="text-center py-4 text-muted">
+                    <i class="bi bi-info-circle fs-3 text-secondary d-block mb-2"></i>
+                    <p class="mb-0">Nem található egyedi kiegészítő információ az egyéb mezőkben.</p>
+                </div>
+            `;
+        }
+    }
+
+    if (btnShowAiImpact) {
+        btnShowAiImpact.addEventListener('click', () => handleShowAiImpact(false));
+    }
+
+    if (btnApplyAiAdjustmentsModal) {
+        btnApplyAiAdjustmentsModal.addEventListener('click', () => {
+            const modalInstance = bootstrap.Modal.getInstance(modalAiImpactEl);
+            if (modalInstance) modalInstance.hide();
+            if (btnRunSimulation) btnRunSimulation.click();
+        });
+    }
 
     // --- 6. Form Adatok Összegyűjtése ---
     function collectFormData() {
@@ -759,6 +915,294 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    // --- 7/B. Egyéb AI Mezők Ár-befolyásoló Hatása Modal Renderelése ---
+    function renderAiImpactModalContent(evaluations) {
+        if (!modalAiImpactBody) return;
+        const ev = evaluations || {};
+        const propEv = ev.property || {};
+        const loanEv = ev.loan || {};
+        const rentEv = ev.rent || {};
+        const invEv = ev.investment || {};
+
+        function getRelevanceBadge(score) {
+            if (!score || score <= 0) {
+                return `<span class="badge bg-secondary-subtle text-secondary border p-1 px-2" style="font-size:0.75rem;">0/10 (Nincs adat)</span>`;
+            }
+            if (score >= 8) {
+                return `<span class="badge bg-danger text-white p-1 px-2 fw-bold" style="font-size:0.75rem;"><i class="bi bi-exclamation-triangle-fill me-1"></i>${score}/10 - Kiemelt hatás</span>`;
+            }
+            if (score >= 5) {
+                return `<span class="badge bg-warning text-dark p-1 px-2 fw-bold" style="font-size:0.75rem;"><i class="bi bi-info-circle-fill me-1"></i>${score}/10 - Közepes hatás</span>`;
+            }
+            return `<span class="badge bg-info text-dark p-1 px-2 fw-bold" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>${score}/10 - Csekély hatás</span>`;
+        }
+
+        const priceTotal = parseCleanNumber(propPriceTotal.value) || 80600000;
+        const currentRent = parseCleanNumber(rentMonthlyHuf.value) || 270000;
+
+        const mktPct = propEv.market_value_adjustment_pct || 0;
+        const mktHuf = Math.round(priceTotal * (mktPct / 100.0));
+
+        const furnHuf = propEv.furnishing_adjustment_huf || 0;
+
+        const rentPct = rentEv.rent_adjustment_pct || 0;
+        const rentHufDiff = Math.round(currentRent * (rentPct / 100.0));
+
+        const utilsPct = rentEv.utilities_adjustment_pct || 0;
+
+        const propScore = propEv.relevance_score || 0;
+        const loanScore = loanEv.relevance_score || 0;
+        const rentScore = rentEv.relevance_score || 0;
+        const invScore = invEv.relevance_score || 0;
+
+        const propShow = propScore > 0 || Boolean(propOtherInfo && propOtherInfo.value.trim().length > 0);
+        const loanShow = loanScore > 0 || Boolean(loanOtherInfo && loanOtherInfo.value.trim().length > 0);
+        const rentShow = rentScore > 0 || Boolean(rentOtherInfo && rentOtherInfo.value.trim().length > 0);
+        const invShow = invScore > 0 || Boolean(invOtherInfo && invOtherInfo.value.trim().length > 0);
+
+        modalAiImpactBody.innerHTML = `
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-3">
+                    <div class="card bg-white border-0 shadow-sm p-3 h-100 text-center border-top border-3 ${mktPct > 0 ? 'border-danger' : (mktPct < 0 ? 'border-success' : 'border-secondary')}">
+                        <small class="text-muted fw-bold text-uppercase" style="font-size:0.75rem;">Lakás Vételár Hatás</small>
+                        <h4 class="fw-bold mb-0 mt-2 ${mktPct > 0 ? 'text-danger' : (mktPct < 0 ? 'text-success' : 'text-secondary')}">
+                            ${mktPct > 0 ? '+' : ''}${mktPct}%
+                        </h4>
+                        <small class="text-muted fw-semibold">${mktHuf !== 0 ? (mktHuf > 0 ? '+' : '') + formatHUF(mktHuf) : 'Nincs felár'}</small>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card bg-white border-0 shadow-sm p-3 h-100 text-center border-top border-3 ${furnHuf !== 0 ? 'border-warning' : 'border-secondary'}">
+                        <small class="text-muted fw-bold text-uppercase" style="font-size:0.75rem;">Bútorozási Költség</small>
+                        <h4 class="fw-bold mb-0 mt-2 ${furnHuf > 0 ? 'text-warning text-dark' : (furnHuf < 0 ? 'text-success' : 'text-secondary')}">
+                            ${furnHuf !== 0 ? (furnHuf > 0 ? '+' : '') + formatHUF(furnHuf) : '0 Ft'}
+                        </h4>
+                        <small class="text-muted fw-semibold">${furnHuf !== 0 ? 'Egyedi berendezés' : 'Standard költség'}</small>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card bg-white border-0 shadow-sm p-3 h-100 text-center border-top border-3 ${rentPct > 0 ? 'border-danger' : (rentPct < 0 ? 'border-success' : 'border-secondary')}">
+                        <small class="text-muted fw-bold text-uppercase" style="font-size:0.75rem;">Bérleti Díj Hatás</small>
+                        <h4 class="fw-bold mb-0 mt-2 ${rentPct > 0 ? 'text-danger' : (rentPct < 0 ? 'text-success' : 'text-secondary')}">
+                            ${rentPct > 0 ? '+' : ''}${rentPct}%
+                        </h4>
+                        <small class="text-muted fw-semibold">${rentHufDiff !== 0 ? (rentHufDiff > 0 ? '+' : '') + formatHUF(rentHufDiff) + '/hó' : 'Nincs felár'}</small>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card bg-white border-0 shadow-sm p-3 h-100 text-center border-top border-3 ${utilsPct !== 0 ? 'border-info' : 'border-secondary'}">
+                        <small class="text-muted fw-bold text-uppercase" style="font-size:0.75rem;">Rezsi Hatás</small>
+                        <h4 class="fw-bold mb-0 mt-2 ${utilsPct > 0 ? 'text-danger' : (utilsPct < 0 ? 'text-success' : 'text-secondary')}">
+                            ${utilsPct > 0 ? '+' : ''}${utilsPct}%
+                        </h4>
+                        <small class="text-muted fw-semibold">${utilsPct !== 0 ? 'Energetikai korrekció' : 'Standard rezsi'}</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-3 rounded border shadow-sm mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-robot text-warning me-2"></i>Gemini AI Szakértői Hatáselemzés & Indoklás:</h6>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="btnRefreshAiModal" title="Újraértékelés lekérése">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Újraelemzés
+                    </button>
+                </div>
+                <div class="accordion" id="accordionAiImpact">
+                    <div class="accordion-item border-0 mb-2 rounded bg-light">
+                        <h2 class="accordion-header" id="headingProp">
+                            <button class="accordion-button rounded fw-bold py-2 ${propShow ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProp" aria-expanded="${propShow ? 'true' : 'false'}" aria-controls="collapseProp">
+                                <span class="d-flex justify-content-between align-items-center w-100 me-2">
+                                    <span><i class="bi bi-house-door-fill text-primary me-2"></i>1. Lakás & Ingatlan: ${propEv.category || 'Alapértelmezett'}</span>
+                                    ${getRelevanceBadge(propScore)}
+                                </span>
+                            </button>
+                        </h2>
+                        <div id="collapseProp" class="accordion-collapse collapse ${propShow ? 'show' : ''}" aria-labelledby="headingProp">
+                            <div class="accordion-body small py-2">
+                                <p class="mb-1"><strong>Kihatás:</strong> ${propEv.impact_analysis || 'Nincs egyedi hatás rögzítve.'}</p>
+                                <p class="mb-0 text-primary fw-semibold"><strong>Javaslat:</strong> ${propEv.quantitative_recommendation || 'Nincs korrekció.'}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-2 rounded bg-light">
+                        <h2 class="accordion-header" id="headingLoan">
+                            <button class="accordion-button rounded fw-bold py-2 ${loanShow ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoan" aria-expanded="${loanShow ? 'true' : 'false'}" aria-controls="collapseLoan">
+                                <span class="d-flex justify-content-between align-items-center w-100 me-2">
+                                    <span><i class="bi bi-bank2 text-success me-2"></i>2. Hitel & Finanszírozás: ${loanEv.category || 'Alapértelmezett'}</span>
+                                    ${getRelevanceBadge(loanScore)}
+                                </span>
+                            </button>
+                        </h2>
+                        <div id="collapseLoan" class="accordion-collapse collapse ${loanShow ? 'show' : ''}" aria-labelledby="headingLoan">
+                            <div class="accordion-body small py-2">
+                                <p class="mb-1"><strong>Kihatás:</strong> ${loanEv.impact_analysis || 'Nincs egyedi hatás rögzítve.'}</p>
+                                <p class="mb-0 text-success fw-semibold"><strong>Javaslat:</strong> ${loanEv.quantitative_recommendation || 'Nincs korrekció.'}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-2 rounded bg-light">
+                        <h2 class="accordion-header" id="headingRent">
+                            <button class="accordion-button rounded fw-bold py-2 ${rentShow ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRent" aria-expanded="${rentShow ? 'true' : 'false'}" aria-controls="collapseRent">
+                                <span class="d-flex justify-content-between align-items-center w-100 me-2">
+                                    <span><i class="bi bi-key-fill text-warning me-2"></i>3. Albérlet & Rezsi: ${rentEv.category || 'Alapértelmezett'}</span>
+                                    ${getRelevanceBadge(rentScore)}
+                                </span>
+                            </button>
+                        </h2>
+                        <div id="collapseRent" class="accordion-collapse collapse ${rentShow ? 'show' : ''}" aria-labelledby="headingRent">
+                            <div class="accordion-body small py-2">
+                                <p class="mb-1"><strong>Kihatás:</strong> ${rentEv.impact_analysis || 'Nincs egyedi hatás rögzítve.'}</p>
+                                <p class="mb-0 text-warning text-dark fw-semibold"><strong>Javaslat:</strong> ${rentEv.quantitative_recommendation || 'Nincs korrekció.'}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-0 rounded bg-light">
+                        <h2 class="accordion-header" id="headingInv">
+                            <button class="accordion-button rounded fw-bold py-2 ${invShow ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInv" aria-expanded="${invShow ? 'true' : 'false'}" aria-controls="collapseInv">
+                                <span class="d-flex justify-content-between align-items-center w-100 me-2">
+                                    <span><i class="bi bi-piggy-bank-fill text-info me-2"></i>4. Befektetés & TBSZ: ${invEv.category || 'Alapértelmezett'}</span>
+                                    ${getRelevanceBadge(invScore)}
+                                </span>
+                            </button>
+                        </h2>
+                        <div id="collapseInv" class="accordion-collapse collapse ${invShow ? 'show' : ''}" aria-labelledby="headingInv">
+                            <div class="accordion-body small py-2">
+                                <p class="mb-1"><strong>Kihatás:</strong> ${invEv.impact_analysis || 'Nincs egyedi hatás rögzítve.'}</p>
+                                <p class="mb-0 text-info fw-semibold"><strong>Javaslat:</strong> ${invEv.quantitative_recommendation || 'Nincs korrekció.'}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const btnRefreshAiModal = document.getElementById('btnRefreshAiModal');
+        if (btnRefreshAiModal) {
+            btnRefreshAiModal.addEventListener('click', () => handleShowAiImpact(true));
+        }
+    }
+
+    // --- 7/C. Szcenárióelemzés & Valószínűségi Modell Renderelése (Fekete doboz feloldása) ---
+    function renderScenarioAnalysis(scenariosData) {
+        if (!scenariosData) return;
+        const metrics = scenariosData.metrics || {};
+        const scenarios = scenariosData.scenarios || [];
+
+        // KPI kártyák frissítése
+        const valBuyWin = document.getElementById('valScenarioBuyWinProb');
+        const valRentWin = document.getElementById('valScenarioRentWinProb');
+        const barBuyWin = document.getElementById('barScenarioBuyWin');
+        const barRentWin = document.getElementById('barScenarioRentWin');
+        const valExpectedDelta = document.getElementById('valScenarioExpectedDelta');
+        const valExpectedBep = document.getElementById('valScenarioExpectedBep');
+        const badgeRiskProfile = document.getElementById('badgeScenarioRiskProfile');
+        const valRec = document.getElementById('valScenarioRecommendation');
+
+        const buyProb = metrics.buy_win_probability_pct ?? 70.0;
+        const rentProb = metrics.rent_win_probability_pct ?? 30.0;
+
+        if (valBuyWin) {
+            valBuyWin.textContent = `${buyProb.toFixed(1)}%`;
+            valBuyWin.className = `fw-bold mb-0 ${buyProb >= 60 ? 'text-success' : (buyProb >= 40 ? 'text-warning' : 'text-danger')}`;
+        }
+        if (valRentWin) valRentWin.textContent = `(Bérlés: ${rentProb.toFixed(1)}%)`;
+        if (barBuyWin) barBuyWin.style.width = `${buyProb}%`;
+        if (barRentWin) barRentWin.style.width = `${rentProb}%`;
+
+        if (valExpectedDelta) {
+            const ev = metrics.expected_wealth_delta_30y || 0;
+            const sign = ev > 0 ? '+' : '';
+            valExpectedDelta.textContent = `${sign}${formatHUF(ev)}`;
+            valExpectedDelta.className = `fw-bold mb-0 mt-2 ${ev > 0 ? 'text-primary' : 'text-danger'}`;
+        }
+
+        if (valExpectedBep) {
+            valExpectedBep.textContent = metrics.expected_break_even_display || '-- év';
+        }
+
+        if (badgeRiskProfile && metrics.risk_profile) {
+            badgeRiskProfile.innerHTML = `<i class="bi bi-shield-check me-1"></i>${metrics.risk_profile}`;
+            if (buyProb >= 65) {
+                badgeRiskProfile.className = 'badge bg-success-subtle text-success fw-semibold px-3 py-2';
+            } else if (buyProb >= 45) {
+                badgeRiskProfile.className = 'badge bg-warning-subtle text-warning fw-semibold px-3 py-2';
+            } else {
+                badgeRiskProfile.className = 'badge bg-danger-subtle text-danger fw-semibold px-3 py-2';
+            }
+        }
+
+        if (valRec && metrics.recommendation) {
+            valRec.textContent = metrics.recommendation;
+        }
+
+        // Táblázat feltöltése
+        const tbody = document.getElementById('tbodyScenarios');
+        if (!tbody || !scenarios.length) return;
+
+        let rowsHtml = '';
+        scenarios.forEach(s => {
+            const isBuyWinner = (s.wealth_delta_30y || 0) > 0;
+            const delta10Sign = (s.wealth_delta_10y || 0) > 0 ? '+' : '';
+            const delta30Sign = (s.wealth_delta_30y || 0) > 0 ? '+' : '';
+
+            rowsHtml += `
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge ${s.badge_class || 'bg-secondary'}">${s.probability_pct}%</span>
+                            <div>
+                                <strong class="text-dark d-block">${s.name}</strong>
+                                <small class="text-muted d-block" style="font-size:0.75rem;">${s.description}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <strong class="text-dark small">${s.probability_pct}%</strong>
+                            <div class="progress flex-grow-1" style="height: 6px; min-width: 60px;">
+                                <div class="progress-bar ${s.progress_class || 'bg-primary'}" role="progressbar" style="width: ${s.probability_pct}%;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <small class="d-block text-muted">
+                            <i class="bi bi-graph-up-arrow me-1"></i>Ingatlan: <strong>${s.property_growth_pct}%/év</strong>
+                        </small>
+                        <small class="d-block text-muted">
+                            <i class="bi bi-cash me-1"></i>Bérlet: <strong>${s.rent_growth_pct}%/év</strong>
+                        </small>
+                        <small class="d-block text-muted">
+                            <i class="bi bi-pie-chart me-1"></i>ETF hozam: <strong>${s.opportunity_cost_pct}%/év</strong>
+                        </small>
+                    </td>
+                    <td class="text-center">
+                        <strong class="${s.break_even_year ? 'text-primary' : 'text-muted'}">
+                            ${s.break_even_display}
+                        </strong>
+                    </td>
+                    <td class="text-end">
+                        <strong class="${(s.wealth_delta_10y || 0) > 0 ? 'text-success' : 'text-danger'}">
+                            ${delta10Sign}${s.formatted_delta_10y || formatHUF(s.wealth_delta_10y)}
+                        </strong>
+                    </td>
+                    <td class="text-end">
+                        <strong class="fs-6 ${(s.wealth_delta_30y || 0) > 0 ? 'text-success' : 'text-danger'}">
+                            ${delta30Sign}${s.formatted_delta_30y || formatHUF(s.wealth_delta_30y)}
+                        </strong>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge ${isBuyWinner ? 'bg-success' : 'bg-danger'} px-2 py-1">
+                            <i class="bi ${isBuyWinner ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-1"></i>
+                            ${s.winner}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = rowsHtml;
+    }
+
     // --- 8. Szerver Adatmentés (POST /api/inputs) ---
     async function saveInputsToServer(profileName, shouldSaveProfile = true) {
         if (!profileName) profileName = 'Utolsó szimuláció';
@@ -931,6 +1375,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (loanOtherInfo) loanOtherInfo.value = "";
                 if (rentOtherInfo) rentOtherInfo.value = "";
                 if (invOtherInfo) invOtherInfo.value = "";
+                lastEvaluatedNotesSignature = "";
+                updateAiImpactButtonVisibility();
             }
         } catch (err) {
             console.error("Nem sikerült lekérni a mentett adatokat:", err);
@@ -1018,6 +1464,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        updateAiImpactButtonVisibility();
         runPythonCalculations();
     }
 
@@ -2078,5 +2525,89 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- 10. PDF Export Funkció (html2pdf.js) ---
+    const btnExportPdfTop = document.getElementById('btnExportPdfTop');
+    const btnExportPdfResults = document.getElementById('btnExportPdfResults');
+
+    async function exportToPdf(buttonEl) {
+        const originalText = buttonEl ? buttonEl.innerHTML : '';
+        if (buttonEl) {
+            buttonEl.disabled = true;
+            buttonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> PDF készítése...';
+        }
+
+        try {
+            // 1. Győződjünk meg róla, hogy az Eredmények tab látható, hogy a grafikonok és táblázatok renderelve legyenek
+            const tabBtn = document.getElementById('tab-btn-results');
+            const tabPane = document.getElementById('tab-results');
+            if (tabBtn && tabPane && !tabPane.classList.contains('active')) {
+                const bsTab = bootstrap.Tab.getInstance(tabBtn) || new bootstrap.Tab(tabBtn);
+                bsTab.show();
+                await new Promise(resolve => setTimeout(resolve, 350));
+            }
+
+            // 2. Ha még nincsenek legenerálva a grafikonok, futtassuk le a kalkulációt
+            if (!wealthChartInstance) {
+                await runPythonCalculations();
+                await new Promise(resolve => setTimeout(resolve, 350));
+            }
+
+            const sourceEl = document.getElementById('resultsSection');
+            if (!sourceEl) {
+                throw new Error("A szimulációs eredmény szekció nem található!");
+            }
+
+            // 3. Rejtsük el az interaktív gombokat, range csúszkákat a PDF generálás idejére
+            const buttonsToHide = sourceEl.querySelectorAll('button, .btn, input[type="range"]');
+            buttonsToHide.forEach(el => {
+                el.setAttribute('data-pdf-orig-disp', el.style.display);
+                el.style.display = 'none';
+            });
+
+            const dateStr = new Date().toISOString().slice(0, 10);
+            const opt = {
+                margin: [8, 8, 8, 8],
+                filename: `lakas_vs_berles_szimulacio_${dateStr}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    windowWidth: 1200
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+
+            if (window.html2pdf) {
+                await html2pdf().set(opt).from(sourceEl).save();
+            } else {
+                window.print();
+            }
+
+            // 4. Állítsuk vissza a gombokat
+            buttonsToHide.forEach(el => {
+                const orig = el.getAttribute('data-pdf-orig-disp');
+                el.style.display = orig || '';
+                el.removeAttribute('data-pdf-orig-disp');
+            });
+
+        } catch (err) {
+            console.error("PDF exportálási hiba:", err);
+            alert("A PDF generálása során hiba lépett fel. Próbáld meg a böngésző Nyomtatás (Ctrl+P -> Mentés PDF-ként) funkcióját!");
+        } finally {
+            if (buttonEl) {
+                buttonEl.disabled = false;
+                buttonEl.innerHTML = originalText;
+            }
+        }
+    }
+
+    if (btnExportPdfTop) {
+        btnExportPdfTop.addEventListener('click', () => exportToPdf(btnExportPdfTop));
+    }
+    if (btnExportPdfResults) {
+        btnExportPdfResults.addEventListener('click', () => exportToPdf(btnExportPdfResults));
+    }
 
 });

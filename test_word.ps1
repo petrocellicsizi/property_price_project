@@ -1,0 +1,1 @@
+ = New-Object -ComObject Word.Application; Write-Host .Version; .Quit()

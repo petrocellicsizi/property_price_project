@@ -15,40 +15,46 @@ def calculate_suggested_furnishing(
 ) -> int:
     """
     Kiszámítja az ajánlott berendezési és bútorozási összeget forintban.
-    Függ az ingatlan típusától (belmagasság, konyha jellege), méretétől és szobaszámától.
+    A teljes lakás 0-ról való berendezését jelenti (kulcsrakész átadás után):
+    1. Konyha: beépített konyhabútor és komplett géppark (sütő, indukciós főzőlap, elszívó, hűtő-fagyasztó, mosogatógép, mosogatótálca + bekötés).
+    2. Nappali és étkező: kanapé, dohányzóasztal, TV-bútor, étkezőasztal és székek.
+    3. Hálószoba / szobák: ágykeret, minőségi matrac, gardróbszekrények, éjjeliszekrények.
+    4. Előszoba & fürdőszoba: előszobafal, fürdőszobabútor, mosógép.
+    5. Világítás és textíliák: lámpatestek minden helyiségbe, karnisok, sötétítő függönyök.
     """
     size_sqm = max(10.0, float(size_sqm or 52.0))
     room_count = max(1.0, float(room_count or 2.0))
     pt = (property_type or "").strip()
 
     if "Újépítésű" in pt or "AA+" in pt:
-        base_kitchen = 1350000  # modern beépített konyhabútor és gépek
-        room_rate = 550000      # modern nappali / hálóberendezés
-        sqm_rate = 12000
+        # Komplett új beépített konyha gépekkel, modern bútorzat, gépesítés
+        base_kitchen = 2400000  # beépített konyhabútor + beépített gépek + bekötési munkadíj
+        room_rate = 950000      # szobánkénti komplett bútorozás (nappali ill. hálószoba minőségi bútorai)
+        sqm_rate = 25000        # m2 alapú kiegészítők: világítás, karnisok, előszoba, fürdőszoba, mosógép
     elif "Korszerű tégla" in pt:
-        base_kitchen = 1100000
-        room_rate = 450000
-        sqm_rate = 10000
+        base_kitchen = 2100000
+        room_rate = 850000
+        sqm_rate = 22000
     elif "Régi nagypolgári" in pt:
-        base_kitchen = 1800000  # 3.8m belmagasság, egyedi beépítés, alapfestés
-        room_rate = 750000      # nagyobb terek, klasszikus bútorok
-        sqm_rate = 18000
+        base_kitchen = 2800000  # 3.8m belmagasság, egyedi beépítés, konyhabútor gépekkel
+        room_rate = 1200000     # nagyméretű szobák klasszikus bútorozása, gardróbok
+        sqm_rate = 30000
     elif "Panel (felújított" in pt or "panelprogramos" in pt:
-        base_kitchen = 850000   # szabvány méretezésű konyhabútor
-        room_rate = 350000
-        sqm_rate = 8000
+        base_kitchen = 1800000  # szabvány méretezésű konyhabútor beépített gépekkel
+        room_rate = 750000
+        sqm_rate = 18000
     elif "Panel (eredeti" in pt:
-        base_kitchen = 1400000  # elkerülhetetlen gépészeti és konyhai csere
-        room_rate = 450000
-        sqm_rate = 14000
+        base_kitchen = 2200000  # konyhabútor és alapvető gépészeti cserék
+        room_rate = 850000
+        sqm_rate = 25000
     elif "Családi ház" in pt or "Ikerház" in pt:
-        base_kitchen = 2100000  # nagyobb konyha, előtér, kerti kiegészítők
-        room_rate = 650000
-        sqm_rate = 15000
+        base_kitchen = 3200000  # nagyméretű konyha, beépített gépek, étkező
+        room_rate = 1100000
+        sqm_rate = 28000
     else:
-        base_kitchen = 1200000
-        room_rate = 500000
-        sqm_rate = 10000
+        base_kitchen = 2200000
+        room_rate = 900000
+        sqm_rate = 22000
 
     raw = base_kitchen + (room_count * room_rate) + (size_sqm * sqm_rate)
     # Kerekítés a legközelebbi 50 000 Ft-ra
