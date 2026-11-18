@@ -2108,7 +2108,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (equityChartInstance) equityChartInstance.resize();
             if (deadMoneyChartInstance) deadMoneyChartInstance.resize();
             if (ltvChartInstance) ltvChartInstance.resize();
-            if (scenarioFanChartInstance) scenarioFanChartInstance.resize();
+        });
+    }
+
+    const scenariosTabEl = document.getElementById('tab-btn-scenarios');
+    if (scenariosTabEl) {
+        scenariosTabEl.addEventListener('shown.bs.tab', function (event) {
+            if (scenarioFanChartInstance) {
+                scenarioFanChartInstance.resize();
+                scenarioFanChartInstance.update();
+            } else if (lastScenariosData) {
+                const simYearsInput = document.getElementById('rngSimYears');
+                const targetYear = simYearsInput ? parseInt(simYearsInput.value) : 30;
+                renderScenarioFanChart(lastScenariosData, currentScenarioWeights, currentScenarioChartMode, targetYear);
+            }
         });
     }
 
