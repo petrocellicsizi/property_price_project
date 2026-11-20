@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Squircle Background Tile -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#brandGrad)"/>
+
+  <!-- Chimney with subtle cap -->
+  <rect x="40" y="18" width="6" height="10" rx="1" fill="#FFFFFF"/>
+  <rect x="39" y="16.5" width="8" height="2.5" rx="1" fill="#FFFFFF"/>
+
+  <!-- House Roof & Walls (Unified simplified silhouette) -->
+  <path d="M 12 30 
+           L 30.2 16.2 
+           C 31.3 15.3, 32.7 15.3, 33.8 16.2 
+           L 52 30 
+           C 52.8 30.6, 52.4 31.8, 51.4 31.8 
+           L 47.5 31.8 
+           L 47.5 47.5 
+           C 47.5 48.9, 46.4 50, 45 50 
+           L 19 50 
+           C 17.6 50, 16.5 48.9, 16.5 47.5 
+           L 16.5 31.8 
+           L 12.6 31.8 
+           C 11.6 31.8, 11.2 30.6, 12 30 Z" 
+        fill="#FFFFFF"/>
+
+  <!-- Arched Doorway (Cut-out to background) -->
+  <path d="M 27 50 
+           V 40 
+           C 27 37.2, 37 37.2, 37 40 
+           V 50 Z" 
+        fill="#1D4ED8"/>
+
+  <!-- Attic Window (Warm glowing amber circle) -->
+  <circle cx="32" cy="25.5" r="3.2" fill="#F59E0B"/>
+</svg>

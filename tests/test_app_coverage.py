@@ -60,3 +60,16 @@ def test_chat_endpoint(client, mocker):
     
     response_fail = client.post('/api/chat')
     assert response_fail.status_code == 400
+
+
+def test_favicon_endpoint(client):
+    response = client.get('/favicon.ico')
+    assert response.status_code == 200
+    assert "image" in response.content_type
+    assert len(response.data) > 0
+
+    resp_index = client.get('/')
+    assert resp_index.status_code == 200
+    assert 'favicon.svg' in resp_index.text
+    assert 'favicon.ico' in resp_index.text
+

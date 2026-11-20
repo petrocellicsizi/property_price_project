@@ -5,7 +5,7 @@ A teljes matematikai és ingatlanpiaci modellezés a Python utils modulokban fut
 import json
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 
 from core.gemini_service import gemini_service
 from core.logger import logger
@@ -63,6 +63,16 @@ def index():
     """Dashboard nézet megjelenítése."""
     current_data = load_inputs()
     return render_template("index.html", initial_data=current_data)
+
+
+@app.route("/favicon.ico")
+def favicon():
+    """Favicon kiszolgálása a böngészők számára."""
+    return send_from_directory(
+        os.path.join(app.root_path, "static"),
+        "favicon.ico",
+        mimetype="image/vnd.microsoft.icon",
+    )
 
 
 @app.route("/api/inputs", methods=["GET"])
