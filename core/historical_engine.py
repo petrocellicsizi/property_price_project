@@ -243,6 +243,7 @@ class HistoricalEngine:
         sp500_hedged_net_worth = [int(base_capital)]
         allampapir_net_worth = [int(base_capital)]
         bux_net_worth = [int(base_capital)]
+        owner_savings_values = [0]
         
         buy_cashflows = [int(initial_monthly_buy)]
         rent_cashflows = [int(initial_monthly_rent)]
@@ -259,6 +260,7 @@ class HistoricalEngine:
         cum_dead_buy = float(upfront_fees_huf)
         cum_dead_rent = 0.0
         total_invested_sp500_huf = base_capital
+        owner_savings_balance = 0.0
         total_rent_paid = 0.0
         total_interest_paid = 0.0
         total_maintenance_paid = 0.0
@@ -321,7 +323,9 @@ class HistoricalEngine:
             rent_costs = annual_rent + annual_utils
             
             cash_difference_huf = buy_costs - rent_costs
-            total_invested_sp500_huf += cash_difference_huf
+            rent_invest_huf = max(0.0, cash_difference_huf)
+            buy_savings_huf = max(0.0, -cash_difference_huf)
+            total_invested_sp500_huf += rent_invest_huf
             
             # Halott pénz felhalmozódás (tiszta lakhatási költség rezsi nélkül + induló illeték)
             cum_dead_buy += (interest_paid + annual_maintenance)
@@ -331,25 +335,29 @@ class HistoricalEngine:
             dividend_yield = 0.015
             dividend_value_usd = sp500_shares * y_sp500 * dividend_yield
             sp500_shares += (dividend_value_usd / y_sp500)
-            sp500_shares += (cash_difference_huf / y_usdhuf) / y_sp500
-            sp500_shares = max(0.0, sp500_shares)
+            if rent_invest_huf > 0:
+                sp500_shares += (rent_invest_huf / y_usdhuf) / y_sp500
             rent_nw = sp500_shares * y_sp500 * y_usdhuf
             
             # S&P 500 FX-Hedged (devizafedezett, fix induló USD/HUF árfolyamon) [Idea 4]
             sp500_shares_hedged += (sp500_shares_hedged * y_sp500 * dividend_yield) / y_sp500
-            sp500_shares_hedged += (cash_difference_huf / start_usdhuf) / y_sp500
-            sp500_shares_hedged = max(0.0, sp500_shares_hedged)
+            if rent_invest_huf > 0:
+                sp500_shares_hedged += (rent_invest_huf / start_usdhuf) / y_sp500
             rent_nw_hedged = sp500_shares_hedged * y_sp500 * start_usdhuf
             
             # Magyar Állampapír (PMÁP / DKJ)
             bond_yield = fin_year.get('allampapir_yield', 5.0) / 100.0
-            allampapir_balance = max(0.0, (allampapir_balance * (1.0 + bond_yield)) + cash_difference_huf)
+            allampapir_balance = (allampapir_balance * (1.0 + bond_yield)) + rent_invest_huf
             
             # BUX Index
             prev_bux = self.financial_data.get(prev_y_str, {}).get('bux', 10000.0)
             curr_bux = fin_year.get('bux', prev_bux)
             bux_growth = (curr_bux / prev_bux) if prev_bux > 0 else 1.0
-            bux_balance = max(0.0, (bux_balance * bux_growth) + cash_difference_huf)
+            bux_balance = (bux_balance * bux_growth) + rent_invest_huf
+
+            # Vevő megtakarítása (amikor a vásárlás olcsóbb, mint a bérlés)
+            owner_savings_balance = (owner_savings_balance * (1.0 + bond_yield)) + buy_savings_huf
+            owner_savings_values.append(int(owner_savings_balance))
             
             buy_nw = current_prop_val - current_loan_balance
             ltv = (current_loan_balance / current_prop_val * 100.0) if current_prop_val > 0 else 0.0
@@ -368,10 +376,11 @@ class HistoricalEngine:
             dead_money_rent.append(int(cum_dead_rent))
             ltv_values.append(round(min(100.0, max(0.0, ltv)), 1))
             
-            cf_re.append(-buy_costs)
-            cf_sp.append(-buy_costs)
-            cf_sp_hedged.append(-buy_costs)
-            cf_bond.append(-buy_costs)
+            budget_costs = max(buy_costs, rent_costs)
+            cf_re.append(-budget_costs)
+            cf_sp.append(-budget_costs)
+            cf_sp_hedged.append(-budget_costs)
+            cf_bond.append(-budget_costs)
 
         final_re_val = real_estate_net_worth[-1]
         final_sp_val = sp500_net_worth[-1]
@@ -456,6 +465,7 @@ class HistoricalEngine:
             "sp500_hedged_values": sp500_hedged_net_worth,
             "allampapir_values": allampapir_net_worth,
             "bux_values": bux_net_worth,
+            "owner_savings_values": owner_savings_values,
             "buy_cashflows": buy_cashflows,
             "rent_cashflows": rent_cashflows,
             "dead_money_buy": dead_money_buy,

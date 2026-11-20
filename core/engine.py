@@ -20,7 +20,9 @@ class QuantitativeSimulationEngine:
         self.sim_years = int(params.get("simulation_years", 30))
         self.total_months = self.sim_years * 12
         self.loan_term_years = int(params.get("loan_term_years", 20))
-        self.loan_months = min(self.loan_term_years * 12, self.total_months)
+        self.contract_loan_months = self.loan_term_years * 12
+        self.active_loan_months = min(self.contract_loan_months, self.total_months)
+        self.loan_months = self.contract_loan_months
         
         self.t = np.arange(1, self.total_months + 1)
 
@@ -40,8 +42,9 @@ class QuantitativeSimulationEngine:
         tax_rate = float(self.params.get("transfer_tax_rate", 0.04))
         legal_rate = float(self.params.get("legal_fee_rate", 0.01))
         renovation_initial = float(self.params.get("renovation_cost_initial", 2_500_000.0))
+        other_fees = float(self.params.get("other_fees_huf", self.params.get("other_fees_initial", 120_000.0)))
         
-        initial_upfront_fees = (property_val_0 * (tax_rate + legal_rate)) + renovation_initial
+        initial_upfront_fees = (property_val_0 * (tax_rate + legal_rate)) + renovation_initial + other_fees
         initial_equity_needed = down_payment + initial_upfront_fees
         loan_principal_0 = max(0.0, property_val_0 - down_payment)
 
@@ -54,33 +57,34 @@ class QuantitativeSimulationEngine:
         loan_interest_paid = np.zeros(self.total_months)
         loan_principal_paid = np.zeros(self.total_months)
         
-        if loan_principal_0 > 0 and self.loan_months > 0:
+        if loan_principal_0 > 0 and self.contract_loan_months > 0:
             if r_loan_m > 0:
-                pmt_monthly = loan_principal_0 * (r_loan_m * (1.0 + r_loan_m)**self.loan_months) / ((1.0 + r_loan_m)**self.loan_months - 1.0)
+                pmt_monthly = loan_principal_0 * (r_loan_m * (1.0 + r_loan_m)**self.contract_loan_months) / ((1.0 + r_loan_m)**self.contract_loan_months - 1.0)
                 
-                # Hitel futamideje alatti hónapok (1 .. loan_months)
-                t_loan = np.arange(1, self.loan_months + 1)
-                balance_during_loan = loan_principal_0 * (((1.0 + r_loan_m)**self.loan_months - (1.0 + r_loan_m)**t_loan) 
-                                                          / ((1.0 + r_loan_m)**self.loan_months - 1.0))
-                balance_during_loan = np.maximum(balance_during_loan, 0.0)
-                loan_balance[:self.loan_months] = balance_during_loan
+                # A szimuláció alatt lefutó hónapok (1 .. active_loan_months)
+                t_active = np.arange(1, self.active_loan_months + 1)
+                balance_active = loan_principal_0 * (((1.0 + r_loan_m)**self.contract_loan_months - (1.0 + r_loan_m)**t_active) 
+                                                     / ((1.0 + r_loan_m)**self.contract_loan_months - 1.0))
+                balance_active = np.maximum(balance_active, 0.0)
+                loan_balance[:self.active_loan_months] = balance_active
                 
                 # Kamat és tőkerész bontás
-                prev_balance = np.empty(self.loan_months)
+                prev_balance = np.empty(self.active_loan_months)
                 prev_balance[0] = loan_principal_0
-                prev_balance[1:] = balance_during_loan[:-1]
+                if self.active_loan_months > 1:
+                    prev_balance[1:] = balance_active[:-1]
                 
                 interest_during_loan = prev_balance * r_loan_m
                 principal_during_loan = pmt_monthly - interest_during_loan
                 
-                loan_interest_paid[:self.loan_months] = interest_during_loan
-                loan_principal_paid[:self.loan_months] = principal_during_loan
+                loan_interest_paid[:self.active_loan_months] = interest_during_loan
+                loan_principal_paid[:self.active_loan_months] = principal_during_loan
             else:
                 # 0%-os kamat kedvezmény / támogatás esete
-                pmt_monthly = loan_principal_0 / self.loan_months
-                principal_during_loan = np.full(self.loan_months, pmt_monthly)
-                loan_principal_paid[:self.loan_months] = principal_during_loan
-                loan_balance[:self.loan_months] = np.maximum(loan_principal_0 - np.cumsum(principal_during_loan), 0.0)
+                pmt_monthly = loan_principal_0 / self.contract_loan_months
+                principal_during_loan = np.full(self.active_loan_months, pmt_monthly)
+                loan_principal_paid[:self.active_loan_months] = principal_during_loan
+                loan_balance[:self.active_loan_months] = np.maximum(loan_principal_0 - np.cumsum(principal_during_loan), 0.0)
 
         # 3. Ingatlan piaci értékének időbeli növekedése
         prop_growth_annual = float(self.params["property_growth_rate_annual"])
@@ -100,7 +104,13 @@ class QuantitativeSimulationEngine:
         
         # Havi tulajdonosi készpénzkiadás
         monthly_buy_pmt = np.zeros(self.total_months)
-        monthly_buy_pmt[:self.loan_months] = pmt_monthly
+        monthly_buy_pmt[:self.active_loan_months] = pmt_monthly
+
+        babavaro_monthly_pmt = float(self.params.get("babavaro_monthly_pmt", 0.0))
+        if babavaro_monthly_pmt > 0:
+            babavaro_active_months = min(240, self.total_months)
+            monthly_buy_pmt[:babavaro_active_months] += babavaro_monthly_pmt
+
         monthly_buy_outflow = monthly_buy_pmt + maintenance_traj + common_cost_traj
 
         # Tulajdonosi Nettó Vagyon (Net Worth) - 1.5% eladási tranzakciós költséggel diszkontálva
@@ -133,10 +143,12 @@ class QuantitativeSimulationEngine:
         buy_investment_monthly = budget_m - monthly_buy_outflow
         
         # 3. Szcenárió: Befektetési célú lakásvásárlás (Buy-to-Let / BTL)
-        # Felhasználói kérés: nem számoljuk bele a saját lakhatás (albérlet) költségét, tisztán befektetésként nézzük.
         # Adózás a bérleti díj után: 15% SZJA a bevétel 90%-a után (10% költséghányad) -> effektív 13.5% adó
         tax_on_rent_rate = 0.135 
-        rent_traj_net = rent_traj * (1.0 - tax_on_rent_rate)
+        btl_vacancy_rate = float(self.params.get("btl_vacancy_rate", 0.05))
+        btl_management_rate = float(self.params.get("btl_management_rate", 0.05))
+        collected_rent = rent_traj * (1.0 - btl_vacancy_rate)
+        rent_traj_net = collected_rent * (1.0 - tax_on_rent_rate - btl_management_rate)
         
         # BTL befektetési egyenleg = Rendelkezésre álló büdzsé - Saját lakhatás költsége (albérlet) + Nettó bérleti díj - Hitel - Karbantartás
         btl_investment_monthly = budget_m - monthly_rent_outflow + rent_traj_net - monthly_buy_pmt - maintenance_traj
@@ -156,7 +168,11 @@ class QuantitativeSimulationEngine:
             buy_wealth = buy_wealth * (1.0 + r_opp_m) + buy_investment_monthly[m]
             buy_portfolio[m] = buy_wealth
             
-            btl_wealth = btl_wealth * (1.0 + r_opp_m) + btl_investment_monthly[m]
+            if btl_wealth >= 0:
+                btl_wealth = btl_wealth * (1.0 + r_opp_m) + btl_investment_monthly[m]
+            else:
+                borrow_rate_m = r_loan_m if r_loan_m > 0 else 0.05 / 12.0
+                btl_wealth = btl_wealth * (1.0 + borrow_rate_m) + btl_investment_monthly[m]
             btl_portfolio[m] = btl_wealth
 
         # Ingatlan tőkeértéke (eladási költséggel és hitellel csökkentve)
@@ -169,19 +185,28 @@ class QuantitativeSimulationEngine:
         # 6. Break-Even Point (Fordulópont) keresése
         wealth_delta = buy_net_worth - rent_portfolio
         
-        # Keressük az első olyan hónapot, ahol a saját lakás vagyona tartósan meghaladja a bérlőjét
-        bep_indices = np.where(wealth_delta >= 0)[0]
-        
-        bep_month: Optional[int] = None
-        bep_year: Optional[float] = None
-        if len(bep_indices) > 0:
-            bep_idx = int(bep_indices[0])
-            bep_month = bep_idx + 1
-            bep_year = round(bep_month / 12.0, 2)
+        # Első keresztezési pont
+        first_bep_indices = np.where(wealth_delta >= 0)[0]
+        first_bep_month: Optional[int] = None
+        first_bep_year: Optional[float] = None
+        if len(first_bep_indices) > 0:
+            first_bep_month = int(first_bep_indices[0]) + 1
+            first_bep_year = round(first_bep_month / 12.0, 2)
+
+        # Tartós fordulópont: ahonnan kezdve végig pozitív marad a delta
+        durable_month: Optional[int] = None
+        durable_year: Optional[float] = None
+        for i in range(len(wealth_delta)):
+            if np.all(wealth_delta[i:] >= 0):
+                durable_month = i + 1
+                durable_year = round(durable_month / 12.0, 2)
+                break
+
+        bep_month = durable_month if durable_month is not None else first_bep_month
+        bep_year = durable_year if durable_year is not None else first_bep_year
 
         # 7. Diszkontált Cash-Flow (DCF) és Jelenérték (NPV)
-        # A diszkontrátát logikusan az alternatív költséghez (opportunity cost = ETF hozam) kötjük!
-        discount_annual = r_opp_annual
+        discount_annual = float(self.params.get("discount_rate_annual", r_opp_annual))
         r_disc_m = (1.0 + discount_annual)**(1.0 / 12.0) - 1.0
         discount_factors = 1.0 / ((1.0 + r_disc_m)**self.t)
         
@@ -189,9 +214,9 @@ class QuantitativeSimulationEngine:
         total_outflow_buy = monthly_buy_outflow + buy_investment_monthly
         total_outflow_rent = monthly_rent_outflow + rent_investment_monthly
         
-        # NPV profilok
+        # NPV profilok: mindkét oldal pontosan megterhelve az induló tőkeszükséglettel
         dcf_buy = np.cumsum(-total_outflow_buy * discount_factors) - initial_equity_needed + (buy_net_worth * discount_factors)
-        dcf_rent = np.cumsum(-total_outflow_rent * discount_factors) - 0.0 + (rent_portfolio * discount_factors)
+        dcf_rent = np.cumsum(-total_outflow_rent * discount_factors) - initial_equity_needed + (rent_portfolio * discount_factors)
 
         # Összegző metrikák
         total_interest = float(np.sum(loan_interest_paid))
@@ -233,6 +258,10 @@ class QuantitativeSimulationEngine:
             "summary": {
                 "break_even_month": bep_month,
                 "break_even_year": bep_year,
+                "first_crossover_month": first_bep_month,
+                "first_crossover_year": first_bep_year,
+                "durable_break_even_month": durable_month,
+                "durable_break_even_year": durable_year,
                 "break_even_status": "Elérve" if bep_year is not None else "Nem térül meg a vizsgált időtávon",
                 "initial_equity_needed": round(float(initial_equity_needed), 0),
                 "property_initial_value": round(float(property_val_0), 0),
@@ -362,6 +391,7 @@ class QuantitativeSimulationEngine:
                     "property_growth_rate_annual": round(max(0.015, base_growth - 0.03), 4),
                     "rent_growth_rate_annual": round(max(0.02, base_rent_growth - 0.02), 4),
                     "maintenance_rate_annual": round(base_maint * 1.3, 4),
+                    "loan_interest_rate_annual": round(float(base_params.get("loan_interest_rate_annual", 0.065)) + 0.02, 4),
                 }
             },
             {

@@ -26,8 +26,10 @@ from utils.finance import (
     calculate_down_payment_metrics,
 )
 from core.defaults import SCENARIOS
+from api.v1.endpoints import api_bp
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
+app.register_blueprint(api_bp)
 
 @app.before_request
 def log_request_info():
@@ -152,8 +154,20 @@ def calculate_metrics():
     interest_pct = parse_clean_number(loan.get("interest_rate_annual_pct", base_params.get("loan_interest_rate_annual", 0.065) * 100))
     term_years = int(parse_clean_number(loan.get("loan_term_years", base_params.get("loan_term_years", 20))))
 
+    csok_plusz = loan.get("csok_plusz", False)
+    applied_transfer_tax_rate = 0.0 if csok_plusz else base_params.get("transfer_tax_rate", 0.04)
+    # Ha CSOK Plusz aktív, kamattámogatott hitelként a kamatplafon max 3.0%
+    if csok_plusz:
+        interest_pct = min(3.0, interest_pct)
+
+    babavaro = loan.get("babavaro", False)
+    # Babaváró havi törlesztési terhe (11M Ft 20 évre kamatmentesen ~45.833 Ft + állami kezességvállalási díj ~50.416 Ft/hó)
+    babavaro_monthly = 50_416.0 if babavaro else 0.0
+
     # Hitel annuitásos törlesztő
     monthly_installment = calculate_monthly_installment(loan_amount, interest_pct, term_years)
+    if babavaro:
+        monthly_installment += int(round(babavaro_monthly))
 
     # Induló tőkeigény
     down_payment = parse_clean_number(loan.get("down_payment_huf", default_down_payment))
@@ -162,9 +176,6 @@ def calculate_metrics():
     lawyer_fee = parse_clean_number(prop.get("lawyer_fee_huf", default_lawyer_fee))
     other_fees = parse_clean_number(loan.get("other_fees_huf", 120000))
     furnishing = parse_clean_number(prop.get("furnishing_cost_huf", suggested_furnishing))
-
-    csok_plusz = loan.get("csok_plusz", False)
-    applied_transfer_tax_rate = 0.0 if csok_plusz else base_params.get("transfer_tax_rate", 0.04)
 
     total_initial_outlay = calculate_total_initial_outlay(
         down_payment_huf=down_payment,
@@ -187,17 +198,22 @@ def calculate_metrics():
     # 6. Szimulációs Motor Meghívása
     from core.engine import QuantitativeSimulationEngine
     
-    # Engine paraméterek felépítése
+    # Engine paraméterek felépítése - teljes szinkronban a dashboard fejléccel
+    effective_price_per_sqm = int(round(price_total / size)) if (size > 0 and price_total > 0) else int(prop.get("price_per_sqm_huf", suggested_price_per_sqm))
+    effective_down_payment_ratio = (down_payment / price_total) if (price_total > 0 and down_payment > 0) else parse_clean_number(loan.get("down_payment_pct", base_params.get("down_payment_ratio", 0.25) * 100)) / 100.0
+
     sim_params = {
         "simulation_years": int(parse_clean_number(inv.get("simulation_years", 30))),
         "loan_term_years": term_years,
         "property_size_sqm": size,
-        "price_per_sqm": int(prop.get("price_per_sqm_huf", suggested_price_per_sqm)),
-        "down_payment_ratio": parse_clean_number(loan.get("down_payment_pct", base_params.get("down_payment_ratio", 0.25) * 100)) / 100.0,
+        "price_per_sqm": effective_price_per_sqm,
+        "down_payment_ratio": effective_down_payment_ratio,
         "transfer_tax_rate": applied_transfer_tax_rate,
-        "legal_fee_rate": parse_clean_number(prop.get("lawyer_fee_pct", base_params.get("legal_fee_rate", 0.01) * 100)) / 100.0,
-        "renovation_cost_initial": parse_clean_number(prop.get("furnishing_cost_huf", suggested_furnishing)),
-        "loan_interest_rate_annual": parse_clean_number(loan.get("interest_rate_annual_pct", base_params.get("loan_interest_rate_annual", 0.065) * 100)) / 100.0,
+        "legal_fee_rate": (lawyer_fee / price_total) if price_total > 0 else parse_clean_number(prop.get("lawyer_fee_pct", base_params.get("legal_fee_rate", 0.01) * 100)) / 100.0,
+        "renovation_cost_initial": furnishing,
+        "other_fees_huf": other_fees,
+        "loan_interest_rate_annual": interest_pct / 100.0,
+        "babavaro_monthly_pmt": babavaro_monthly,
         "property_growth_rate_annual": parse_clean_number(inv.get("property_growth_pct", base_params.get("property_growth_rate_annual", 0.055) * 100)) / 100.0,
         "maintenance_rate_annual": base_params.get("maintenance_rate_annual", 0.01),
         "common_cost_monthly": rent_utilities,
@@ -205,7 +221,7 @@ def calculate_metrics():
         "initial_rent_monthly": rent_monthly,
         "opportunity_cost_rate_annual": inv_return_pct / 100.0,
         "tbsz_enabled": inv.get("tbsz_enabled", True),
-        "discount_rate_annual": inv_return_pct / 100.0  # Align discount rate with opportunity cost
+        "discount_rate_annual": parse_clean_number(inv.get("discount_rate_annual_pct", inv_return_pct)) / 100.0
     }
     
     engine = QuantitativeSimulationEngine(sim_params)
@@ -349,13 +365,33 @@ def creditworthiness_endpoint():
     net_income = float(payload.get("net_monthly_income_huf", 850_000.0))
     loan_principal = float(payload.get("loan_principal_huf", 60_000_000.0))
     annual_rate = float(payload.get("annual_interest_rate_pct", 6.5))
+    csok_plusz = bool(payload.get("csok_plusz", False))
+    if csok_plusz:
+        annual_rate = min(3.0, annual_rate)
+
     loan_term = int(payload.get("loan_term_years", 20))
-    interest_period = float(payload.get("interest_period_years", 10.0))
+    interest_period = payload.get("interest_period_years")
+    if interest_period is not None:
+        interest_period = float(interest_period)
+    else:
+        interest_period = 10.0
+
     existing_loans = float(payload.get("existing_monthly_loans_huf", 0.0))
+    babavaro = bool(payload.get("babavaro", False))
+    if babavaro:
+        # Babaváró havi adósságszolgálata (~50.416 Ft/hó)
+        existing_loans += 50_416.0
+
     credit_card_limits = float(payload.get("credit_card_limits_huf", 0.0))
     prop_price = float(payload.get("property_price_huf", 80_000_000.0))
     is_first_buyer = bool(payload.get("is_first_home_buyer", False))
     is_green = bool(payload.get("is_green_certified", False))
+    applicant_age = payload.get("applicant_age")
+    if applicant_age is not None:
+        applicant_age = int(applicant_age)
+    bank_appraised_val = payload.get("bank_appraised_value_huf")
+    if bank_appraised_val is not None:
+        bank_appraised_val = float(bank_appraised_val)
 
     result = calculate_creditworthiness(
         net_monthly_income_huf=net_income,
@@ -367,7 +403,9 @@ def creditworthiness_endpoint():
         credit_card_limits_huf=credit_card_limits,
         property_price_huf=prop_price,
         is_first_home_buyer=is_first_buyer,
-        is_green_certified=is_green
+        is_green_certified=is_green,
+        applicant_age=applicant_age,
+        bank_appraised_value_huf=bank_appraised_val
     )
 
     return jsonify({"status": "success", "data": result}), 200

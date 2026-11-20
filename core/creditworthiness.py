@@ -8,13 +8,13 @@ from typing import Dict, Any, List, Optional
 from utils.formatters import format_huf
 
 
-def calculate_jtm_limit(net_income: float, interest_period_years: float) -> float:
+def calculate_jtm_limit(net_income: float, interest_period_years: float, high_income_threshold: float = 800_000.0) -> float:
     """
     Meghatározza a jogszabályi maximális JTM plafont (%) az MNB rendelet szerint.
-    - 600.000 Ft nettó jövedelemhatár
+    - 800.000 Ft nettó jövedelemhatár (2026. január 1-től hatályos MNB szabályozás)
     - Kamatperiódus hossza (5 évnél rövidebb, 5-10 év közötti, vagy legalább 10 év / fix)
     """
-    is_high_income = net_income >= 600_000.0
+    is_high_income = net_income >= high_income_threshold
 
     if interest_period_years >= 10.0:
         # Végig fix vagy min. 10 éves kamatperiódus
@@ -32,12 +32,14 @@ def calculate_creditworthiness(
     loan_principal_huf: float,
     annual_interest_rate_pct: float,
     loan_term_years: int = 20,
-    interest_period_years: float = 10.0,
+    interest_period_years: Optional[float] = 10.0,
     existing_monthly_loans_huf: float = 0.0,
     credit_card_limits_huf: float = 0.0,
     property_price_huf: float = 0.0,
     is_first_home_buyer: bool = False,
     is_green_certified: bool = False,
+    applicant_age: Optional[int] = None,
+    bank_appraised_value_huf: Optional[float] = None,
 ) -> Dict[str, Any]:
     """
     Részletes hitelbírálati és JTM vizsgálatot végez az MNB szabályok szerint.
@@ -46,7 +48,7 @@ def calculate_creditworthiness(
     principal = max(0.0, float(loan_principal_huf or 0.0))
     rate_annual = max(0.0, float(annual_interest_rate_pct or 0.0))
     term_years = max(1, int(loan_term_years or 20))
-    int_period = float(interest_period_years or 10.0)
+    int_period = float(10.0 if interest_period_years is None else interest_period_years)
     existing_loans = max(0.0, float(existing_monthly_loans_huf or 0.0))
     cc_limits = max(0.0, float(credit_card_limits_huf or 0.0))
     prop_price = max(0.0, float(property_price_huf or 0.0))
@@ -87,20 +89,28 @@ def calculate_creditworthiness(
         max_loan_amount = available_pmt_capacity * total_months
 
     # 7. Szükséges minimális nettó jövedelem az adott hitelhez
-    # Ha 600k alatt van a jövedelem, az 50%/35%/25% szabály érvényes, ha felette, a 60%/40%/30%
-    rate_low = calculate_jtm_limit(500_000.0, int_period) / 100.0
-    rate_high = calculate_jtm_limit(700_000.0, int_period) / 100.0
+    # Ha 800k alatt van a jövedelem, az 50%/35%/25% szabály érvényes, ha felette, a 60%/40%/30%
+    rate_low = calculate_jtm_limit(700_000.0, int_period) / 100.0
+    rate_high = calculate_jtm_limit(900_000.0, int_period) / 100.0
 
     req_income_at_high = total_debt_service / rate_high
-    if req_income_at_high >= 600_000.0:
+    if req_income_at_high >= 800_000.0:
         min_required_income = req_income_at_high
     else:
         min_required_income = total_debt_service / rate_low
 
     # 8. Hitelfedezeti arány (HFM / LTV) vizsgálata
-    max_allowed_ltv = 90.0 if is_first_home_buyer else 80.0
-    current_ltv_pct = (principal / prop_price * 100.0) if prop_price > 0 else 0.0
-    is_ltv_compliant = current_ltv_pct <= max_allowed_ltv if prop_price > 0 else True
+    # MNB 32/2014 rendelet: 10% minimális önerő (90% HFM) csak a legfeljebb 41 éves első lakásvásárlókra vonatkozik
+    max_allowed_ltv = 80.0
+    if is_first_home_buyer:
+        if applicant_age is not None and applicant_age > 41:
+            max_allowed_ltv = 80.0
+        else:
+            max_allowed_ltv = 90.0
+            
+    effective_valuation = float(bank_appraised_value_huf) if (bank_appraised_value_huf and bank_appraised_value_huf > 0) else prop_price
+    current_ltv_pct = (principal / effective_valuation * 100.0) if effective_valuation > 0 else 0.0
+    is_ltv_compliant = current_ltv_pct <= max_allowed_ltv if effective_valuation > 0 else True
     is_jtm_compliant = calculated_jtm_pct <= mnb_limit_pct
 
     # 9. Szabad jövedelem a törlesztés után
@@ -164,7 +174,7 @@ def calculate_creditworthiness(
         )
     if not is_first_home_buyer and prop_price > 0 and current_ltv_pct > 80.0:
         recommendations.append(
-            "Amennyiben 35 év alatti első lakásvásárló vagy, a jogszabály 10% minimális önerőt enged meg (90% HFM), "
+            "Amennyiben legfeljebb 41 éves első lakásvásárló vagy, a jogszabály 10% minimális önerőt enged meg (90% HFM), "
             "amely azonnal jóváhagyhatóvá teheti az igénylést!"
         )
     if is_green_certified:

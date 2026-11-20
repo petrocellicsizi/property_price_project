@@ -37,6 +37,12 @@ class SimulationInputSchema(BaseModel):
         le=0.05, 
         description="Ügyvédi és földhivatali bejegyzési díj aránya"
     )
+    other_fees_huf: float = Field(
+        default=120_000.0,
+        ge=0.0,
+        le=5_000_000.0,
+        description="Egyéb kezdeti banki és földhivatali díjak"
+    )
 
     # Finanszírozás (Hitel)
     down_payment_ratio: float = Field(

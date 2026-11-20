@@ -5,7 +5,31 @@ A budapesti és VIII. kerületi historikus és empirikus piaci adatokra támaszk
 2. Ekvivalens megvásárolandó lakás piaci bérleti díjának becslése
 3. Havi becsült rezsiköltség energetika és alapterület alapján
 """
-from typing import Optional
+from typing import Optional, Dict, Any
+import re
+
+
+def _extract_district_token(district_str: str) -> str:
+    """Kinyeri a kerület sorszámát szabványos formában (pl. 'VIII.', '8.' -> 'VIII.')."""
+    if not district_str:
+        return ""
+    d_clean = district_str.strip().upper()
+    # Keresünk római számot szóhatárok között (hosszabbaktól a rövidebbek felé)
+    m_roman = re.search(r'\b(XXIII|XXII|XXI|XX|XIX|XVIII|XVII|XVI|XV|XIV|XIII|XII|XI|X|IX|VIII|VII|VI|V|IV|III|II|I)\.?\b', d_clean)
+    if m_roman:
+        return f"{m_roman.group(1)}."
+    # Keresünk arab számot
+    m_arabic = re.search(r'\b([1-9]|1[0-9]|2[0-3])\.?\b', d_clean)
+    if m_arabic:
+        num = int(m_arabic.group(1))
+        roman_map = {
+            1: "I.", 2: "II.", 3: "III.", 4: "IV.", 5: "V.", 6: "VI.", 7: "VII.", 8: "VIII.",
+            9: "IX.", 10: "X.", 11: "XI.", 12: "XII.", 13: "XIII.", 14: "XIV.", 15: "XV.",
+            16: "XVI.", 17: "XVII.", 18: "XVIII.", 19: "XIX.", 20: "XX.", 21: "XXI.",
+            22: "XXII.", 23: "XXIII."
+        }
+        return roman_map.get(num, "")
+    return ""
 
 
 def calculate_suggested_furnishing(
@@ -116,11 +140,12 @@ def calculate_suggested_rent(
     if city_str.lower() != "budapest":
         loc_multiplier = 0.82  # Vidéki egyetemi nagyvárosok átlaga
     else:
-        if any(d in dist_str for d in ["V.", "VI.", "VII."]):
+        dist_token = _extract_district_token(dist_str)
+        if dist_token in ["V.", "VI.", "VII."]:
             loc_multiplier = 1.10  # Belső pesti prémium belváros
-        elif any(d in dist_str for d in ["VIII.", "IX.", "XI.", "XIII."]):
+        elif dist_token in ["VIII.", "IX.", "XI.", "XIII."]:
             loc_multiplier = 1.00  # Egyetemi / Corvin folyosó referencia
-        elif any(d in dist_str for d in ["I.", "II.", "XII."]):
+        elif dist_token in ["I.", "II.", "XII."]:
             loc_multiplier = 1.12  # Buda prémium
         else:
             loc_multiplier = 0.88  # Külső kerületek
@@ -181,11 +206,12 @@ def calculate_suggested_price_per_sqm(
         else:
             loc_multiplier = 0.40  # Egyéb vidék
     else:
-        if any(d in dist_str for d in ["V.", "I.", "II.", "XII."]):
+        dist_token = _extract_district_token(dist_str)
+        if dist_token in ["V.", "I.", "II.", "XII."]:
             loc_multiplier = 1.35  # Prémium Buda & V. kerület
-        elif any(d in dist_str for d in ["VI.", "VII.", "XI.", "XIII."]):
+        elif dist_token in ["VI.", "VII.", "XI.", "XIII."]:
             loc_multiplier = 1.15  # Külső belváros & Újbuda
-        elif any(d in dist_str for d in ["VIII.", "IX.", "XIV."]):
+        elif dist_token in ["VIII.", "IX.", "XIV."]:
             loc_multiplier = 1.00  # Referencia / Átlag pesti
         else:
             loc_multiplier = 0.75  # Külső pesti kerületek

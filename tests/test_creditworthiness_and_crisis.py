@@ -15,16 +15,20 @@ def client():
 
 
 def test_jtm_limit_rules():
-    """MNB 32/2014 rendelet szerinti JTM limitek ellenőrzése."""
-    # < 600.000 Ft nettó jövedelem
+    """MNB 32/2014 rendelet (800.000 Ft-os jövedelemhatár) szerinti JTM limitek ellenőrzése."""
+    # < 800.000 Ft nettó jövedelem
     assert calculate_jtm_limit(500_000, 10.0) == 50.0
+    assert calculate_jtm_limit(700_000, 10.0) == 50.0
     assert calculate_jtm_limit(500_000, 5.0) == 35.0
     assert calculate_jtm_limit(500_000, 3.0) == 25.0
+    assert calculate_jtm_limit(500_000, 0.0) == 25.0
 
-    # >= 600.000 Ft nettó jövedelem
-    assert calculate_jtm_limit(600_000, 10.0) == 60.0
+    # >= 800.000 Ft nettó jövedelem
+    assert calculate_jtm_limit(800_000, 10.0) == 60.0
+    assert calculate_jtm_limit(900_000, 10.0) == 60.0
     assert calculate_jtm_limit(800_000, 5.0) == 40.0
     assert calculate_jtm_limit(1_000_000, 3.0) == 30.0
+    assert calculate_jtm_limit(1_000_000, 0.0) == 30.0
 
 
 def test_calculate_creditworthiness_approved():
@@ -146,3 +150,28 @@ def test_crisis_replay_api_endpoint(client):
     assert data["status"] == "success"
     assert "metrics" in data["data"]
     assert "trajectories" in data["data"]
+
+
+def test_zero_fixation_and_first_buyer_age():
+    """0 év kamatfixálás (változó) és 41 év feletti első vásárló MNB korlátainak ellenőrzése."""
+    res_var = calculate_creditworthiness(
+        net_monthly_income_huf=700_000,
+        loan_principal_huf=40_000_000,
+        annual_interest_rate_pct=6.5,
+        loan_term_years=20,
+        interest_period_years=0.0,
+        property_price_huf=60_000_000
+    )
+    assert res_var["metrics"]["mnb_limit_pct"] == 25.0
+
+    res_older = calculate_creditworthiness(
+        net_monthly_income_huf=1_500_000,
+        loan_principal_huf=85_000_000,
+        annual_interest_rate_pct=6.0,
+        loan_term_years=20,
+        property_price_huf=100_000_000,
+        is_first_home_buyer=True,
+        applicant_age=42
+    )
+    assert res_older["status_code"] == "rejected_ltv"
+    assert res_older["metrics"]["is_ltv_compliant"] is False

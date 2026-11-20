@@ -168,23 +168,33 @@ def run_crisis_replay(
         
         if current_loan_bal > 0:
             if cur_rate_m > 0:
-                cur_annual_pmt = current_loan_bal * (cur_rate_m * (1.0 + cur_rate_m)**rem_months) / ((1.0 + cur_rate_m)**rem_months - 1.0) * 12.0
+                cur_monthly_pmt = current_loan_bal * (cur_rate_m * (1.0 + cur_rate_m)**rem_months) / ((1.0 + cur_rate_m)**rem_months - 1.0)
             else:
-                cur_annual_pmt = current_loan_bal / rem_months * 12.0
-            
-            # Tőketörlesztés becslése
-            approx_interest = current_loan_bal * cur_rate_annual
-            approx_principal = max(0.0, cur_annual_pmt - approx_interest)
-            current_loan_bal = max(0.0, current_loan_bal - approx_principal)
+                cur_monthly_pmt = current_loan_bal / rem_months
+            cur_annual_pmt = 0.0
+            for _ in range(12):
+                if current_loan_bal <= 0:
+                    break
+                m_int = current_loan_bal * cur_rate_m
+                m_pmt = min(cur_monthly_pmt, current_loan_bal + m_int)
+                m_prin = m_pmt - m_int
+                current_loan_bal = max(0.0, current_loan_bal - m_prin)
+                cur_annual_pmt += m_pmt
         else:
             cur_annual_pmt = 0.0
 
         # Baseline hiteltörlesztés
         if current_baseline_loan_bal > 0:
-            base_annual_pmt = base_pmt * 12.0
-            b_interest = current_baseline_loan_bal * float(loan_annual_rate)
-            b_principal = max(0.0, base_annual_pmt - b_interest)
-            current_baseline_loan_bal = max(0.0, current_baseline_loan_bal - b_principal)
+            b_rate_m = float(loan_annual_rate) / 12.0
+            base_annual_pmt = 0.0
+            for _ in range(12):
+                if current_baseline_loan_bal <= 0:
+                    break
+                m_int = current_baseline_loan_bal * b_rate_m
+                m_pmt = min(base_pmt, current_baseline_loan_bal + m_int)
+                m_prin = m_pmt - m_int
+                current_baseline_loan_bal = max(0.0, current_baseline_loan_bal - m_prin)
+                base_annual_pmt += m_pmt
         else:
             base_annual_pmt = 0.0
 
@@ -204,7 +214,7 @@ def run_crisis_replay(
 
         # Havi büdzsé különbség megtakarítása
         buy_outflow = cur_annual_pmt + annual_maintenance + (common_cost_monthly * 12.0 * (1.0 + util_jump))
-        rent_outflow = annual_rent_paid + (common_cost_monthly * 12.0)
+        rent_outflow = annual_rent_paid + (common_cost_monthly * 12.0 * (1.0 + util_jump))
         
         diff_savings = max(0.0, buy_outflow - rent_outflow)
         cashflow_shock_diff_sum += (buy_outflow - (base_pmt * 12.0 + annual_maintenance + common_cost_monthly * 12.0))
