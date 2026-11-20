@@ -6,7 +6,7 @@
   [![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
   [![Flask](https://img.shields.io/badge/flask-3.1.3-%23000.svg?style=flat&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
   [![Coverage](https://img.shields.io/badge/coverage-87%25-brightgreen.svg)](https://pytest-cov.readthedocs.io/)
-  [![Tests](https://img.shields.io/badge/tests-68%20passed-success.svg)](https://docs.pytest.org/)
+  [![Tests](https://img.shields.io/badge/tests-75%20passed-success.svg)](https://docs.pytest.org/)
   [![Bootstrap](https://img.shields.io/badge/bootstrap-5.3-%238511FA.svg?style=flat&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
   [![Google Gemini AI](https://img.shields.io/badge/Google_Gemini-3.5__Flash__Lite_%26_3.8__Flash-orange.svg)](https://ai.google.dev/)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)

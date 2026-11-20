@@ -239,9 +239,11 @@ class QuantitativeSimulationEngine:
         # LTV (Loan-to-Value) pálya
         ltv_traj = loan_balance / property_value_traj
         
-        # Infláció-korrigált reálvagyon pálya (bérletidíj-növekedést használva inflációs proxy-ként)
-        real_buy_net_worth = buy_net_worth / ((1.0 + g_rent_m)**self.t)
-        real_rent_net_worth = rent_portfolio / ((1.0 + g_rent_m)**self.t)
+        # Infláció-korrigált reálvagyon pálya (CPI inflációt használva, alapértelmezetten 3.5% jegybanki célérték)
+        cpi_annual = float(self.params.get("inflation_rate_annual", self.params.get("cpi_annual", 0.035)))
+        g_cpi_m = (1.0 + cpi_annual)**(1.0 / 12.0) - 1.0
+        real_buy_net_worth = buy_net_worth / ((1.0 + g_cpi_m)**self.t)
+        real_rent_net_worth = rent_portfolio / ((1.0 + g_cpi_m)**self.t)
         
         # Price-to-Rent Ratio és Bruttó Hozam
         annual_rent = rent_initial_monthly * 12.0
